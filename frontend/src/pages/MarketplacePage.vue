@@ -14,7 +14,7 @@
             </div>
             <h3 class="q-mb-md">Material breakdown</h3>
             <div class="row q-mb-md">
-                <div class="column q-mr-lg">
+                <div class="column q-mr-xl">
                     <div class="row justify-between items-center matbreakpair">
                         <span>Silicone</span>
                         <QInput outlined v-model.number="siliconeinput" type="text" class="matbreakinput">
@@ -24,7 +24,7 @@
                         </QInput>
                     </div>
                 </div>
-                <div class="column q-mr-lg">
+                <div class="column">
                     <div class="row justify-between items-center matbreakpair">
                         <span>Silver</span>
                         <QInput outlined v-model.number="siliconeinput" type="text" class="matbreakinput">
@@ -36,7 +36,7 @@
                 </div>
             </div>
             <div class="row q-mb-md">
-                <div class="column q-mr-lg">
+                <div class="column q-mr-xl">
                     <div class="row justify-between items-center matbreakpair">
                         <span>Polymers</span>
                         <QInput outlined v-model.number="siliconeinput" type="text" class="matbreakinput">
@@ -46,7 +46,7 @@
                         </QInput>
                     </div>
                 </div>
-                <div class="column q-mr-lg">
+                <div class="column">
                     <div class="row justify-between items-center matbreakpair">
                         <span>Aluminium</span>
                         <QInput outlined v-model.number="siliconeinput" type="text" class="matbreakinput">
@@ -58,7 +58,7 @@
                 </div>
             </div>
             <div class="row q-mb-xl">
-                <div class="column q-mr-lg">
+                <div class="column q-mr-xl">
                     <div class="row justify-between items-center matbreakpair">
                         <span>Copper</span>
                         <QInput outlined v-model.number="siliconeinput" type="text" class="matbreakinput">
@@ -68,7 +68,7 @@
                         </QInput>
                     </div>
                 </div>
-                <div class="column q-mr-lg">
+                <div class="column">
                     <div class="row justify-between items-center matbreakpair">
                         <span>Glass</span>
                         <QInput outlined v-model.number="siliconeinput" type="text" class="matbreakinput">
