@@ -46,16 +46,22 @@ public class UserController {
 
     // Update user details
     @PutMapping("/{id}/update")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
-        Optional<User> optionalUser = userRepository.findById(Math.toIntExact(id));
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            user.setEmail(userDetails.getEmail()); // Update username
-            user.setPassword(userDetails.getPassword()); // Update password
-            // Update other fields as necessary
-            return ResponseEntity.ok(userRepository.save(user));
-        } else {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody User updateUserRequest) {
+        // Fetch the user by ID
+        Optional<User> userOptional = userRepository.findById(id);
+        if (!userOptional.isPresent()) {
+            return ResponseEntity.badRequest().body(null);
         }
+
+        User user = userOptional.get();
+
+        // Update the email and password
+        user.setEmail(updateUserRequest.getEmail());
+        user.setPassword(updateUserRequest.getPassword()); // Remember to hash the password before saving
+
+        // Save the updated user
+        userRepository.save(user);
+
+        return ResponseEntity.ok(user);
     }
 }
