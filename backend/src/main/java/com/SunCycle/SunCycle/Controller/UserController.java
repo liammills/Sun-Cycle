@@ -18,23 +18,22 @@ public class UserController {
 
     // Create a new user
     @PostMapping("/create")
-    public ResponseEntity<User> createUser(@RequestParam String email, @RequestParam String password) {
+    public ResponseEntity<String> createUser(@RequestBody User user) {
 
-        User user = new User(email, password);
-        User savedUser = userRepository.save(user);
-        return ResponseEntity.ok(savedUser);
+        // Check if email already exists
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            return ResponseEntity.badRequest().body("Email already in use.");
+        }
 
-//        // Check if the username already exists
-//        if (userRepository.findById(user.getId()).isPresent()) {
-//            return ResponseEntity.badRequest().body(null); // or return a custom error message
-//        }
-//        User savedUser = userRepository.save(user);
-//        return ResponseEntity.ok(savedUser);
+        // Save the new user
+        userRepository.save(user);
+        return ResponseEntity.ok("User created successfully.");
+
     }
 
     // User login
     @PostMapping("/login")
-    public ResponseEntity<User> loginUser(@RequestBody User user) {
+    public ResponseEntity<User> loginUser(@RequestParam User user) {
         Optional<User> foundUser = userRepository.findById(user.getId());
         if (foundUser.isPresent() && foundUser.get().getPassword().equals(user.getPassword())) { // Assuming you're storing passwords in plain text for simplicity. In a real-world scenario, you'd use hashed passwords.
             return ResponseEntity.ok(foundUser.get());
