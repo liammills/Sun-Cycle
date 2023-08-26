@@ -30,6 +30,7 @@
           no-caps
           label="Your Panels"
           class="header-text"
+          @click="$router.push('/panels')"
         />
         <q-space />
         <q-space />
