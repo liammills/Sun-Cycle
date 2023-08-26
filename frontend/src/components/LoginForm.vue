@@ -1,13 +1,14 @@
 <template>
   <div class="form-container column items-center">
     <div class="column q-py-lg full-width items-center">
-      <h3 class="login-text q-pb-md">
-        Log in
-      </h3>
+      <h1 class="q-pb-lg">
+        Login
+      </h1>
       <div class="column full-width">
-        <h3 class="q-py-xs">Email</h3>
-        <input
+        <QInput
           v-model="handleEmail"
+          outlined
+          label="Email"
           type="email"
           name="email"
           autocomplete="email"
@@ -16,26 +17,29 @@
           maxlength="255"
           aria-label="Email"
           :class="{ 'field-error': !!error }"
-        >
-        <h3 class="q-py-xs">Password</h3>
-        <input
+        />
+        <QInput
           v-model="handlePassword"
+          outlined
+          label="Password"
           type="password"
+          autofocus
           aria-label="Password"
-          class="full-width no-outline"
+          maxlength="255"
+          class="full-width no-outline q-mt-md"
           :class="{ 'field-error': !!error }"
           @keyup.enter="$emit('submit')"
-        >
+        />
         <div v-if="error">
           <span class="text-red">{{ error }}</span>
         </div>
       </div>
-      <span
-        class="q-mt-sm cursor-pointer text-underline"
+      <a
+        class="q-mt-md cursor-pointer text-uderline"
         @click="$emit('toggle-reset')"
       >
         Forgot your password?
-      </span>
+      </a>
     </div>
     <QBtn
       flat
@@ -45,7 +49,7 @@
     >
       Login
     </QBtn>
-    <p class="q-mt-sm text-smaller">
+    <p class="q-mt-xl text-small">
       Don’t have an account? 
       <a
         href="https://www.emmi.io/privacy"
@@ -80,6 +84,7 @@ export default {
         return this.email;
       },
       set(val) {
+        console.log("Setting email:", val);
         this.$emit('update:email', val);
       },
     },
@@ -95,11 +100,8 @@ export default {
 };
 </script>
 
-<!-- <style lang="scss" scoped>
+<style lang="scss" scoped>
   .form-container {
     min-width: 300px;
   }
-  .login-text {
-    font-size: 1.6em;
-  }
-</style> -->
+</style>
