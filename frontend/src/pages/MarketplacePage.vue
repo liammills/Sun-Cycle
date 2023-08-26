@@ -6,7 +6,7 @@
             <div class="row q-my-xl">
                 <div class="column q-mr-md">
                     <QSelect class="q-mb-md" outlined v-model="model" :options="options" label="Method of recycling" style="width: 300px;" />
-                    <QInput outlined v-model="text" label="City/town" />
+                    <QInput outlined v-model="text" label="Address" />
                 </div>
                 <div class="column">
                     <QInput class="q-mb-md" outlined v-model="text" type="date" label="Retired by" />
