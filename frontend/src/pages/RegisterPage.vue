@@ -1,20 +1,11 @@
 <template>
   <q-page class="flex flex-center">
-    <ResetPasswordForm
-      v-if="resetForm"
-      v-model:email="email"
-      v-model:error="error"
-      @toggle-reset="toggleReset()"
-      @reset="resetPassword()"
-    />
     <UserForm
-      v-else
-      title="Login"
-      submit-text="Login"
+      title="Sign up"
+      submit-text="Sign up"
       v-model:email="email"
       v-model:password="password"
       v-model:error="error"
-      @toggle-reset="toggleReset()"
       @submit="submit()"
     />
   </q-page>
@@ -23,17 +14,14 @@
 <script>
 import { defineComponent } from 'vue';
 import UserForm from '../components/UserForm.vue';
-import ResetPasswordForm from '../components/ResetPasswordForm.vue';
 
 export default defineComponent({
-  name: 'LoginPage',
+  name: 'RegisterPage',
   components: {
     UserForm,
-    ResetPasswordForm,
   },
   data() {
     return {
-      resetForm: false,
       email: null,
       password: null,
       error: null,
@@ -67,22 +55,6 @@ export default defineComponent({
       //   }
       // }
     },
-    // async resetPassword() {
-    //   try {
-    //     this.error = null;
-    //     await this.$api.post('users/reset_password',
-    //       {
-    //         email: this.email,
-    //       });
-    //     this.toggleReset();
-    //     this.error = 'Password reset email sent, please check your email';
-    //   } catch (error) {
-    //     this.error = 'Error resetting password';
-    //     if (error.response?.data?.message) {
-    //       this.error = error.response.data.message;
-    //     }
-    //   }
-    // },
   },
 })
 </script>
