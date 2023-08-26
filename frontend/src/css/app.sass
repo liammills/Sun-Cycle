@@ -1,0 +1,23 @@
+// app global css in SASS form
+
+@import 'themes/blocks.sass'
+@import 'themes/flexbox.sass'
+@import 'themes/fonts.sass'
+@import 'themes/icons.sass'
+@import url('https://fonts.googleapis.com/css?family=Roboto:light,regular,medium,thin,italic,mediumitalic,bold')
+
+body
+  background-color: $background-color
+  font-family: Roboto, Arial, sans-serif
+  font-size: 14px
+  letter-spacing: normal
+  font-weight: normal
+
+.q-tab > .q-focus-helper
+  visibility: hidden
+
+.q-tab
+  transition: opacity 0.3s
+
+.q-tab:hover
+  opacity: 0.6
