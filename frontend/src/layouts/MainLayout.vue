@@ -1,17 +1,7 @@
 <template>
   <QLayout view="hHh lpR fFf">
 
-    <QHeader class="bg-transparent text-black q-px-md q-py-sm">
-      <QToolbar>
-        <QToolbarTitle>
-          <img
-            class="q-mr-sm"
-            style="width: 220px"
-            src="src/assets/suncycle-logo.svg"
-          >
-        </QToolbarTitle>
-      </QToolbar>
-    </QHeader>
+    <SCHeader :loggedin="true"/>
 
     <QPageContainer>
       <RouterView />
@@ -38,8 +28,10 @@
 
 <script>
 import { defineComponent } from 'vue'
+import SCHeader from 'src/components/SCHeader.vue';
 
 export default defineComponent({
-  name: 'MainLayout',
+    name: 'MainLayout',
+    components: { SCHeader }
 })
 </script>
