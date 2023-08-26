@@ -1,7 +1,7 @@
 <template>
   <q-page class="flex justify-center">
     <div class="main-container">
-        <div class="row justify-between items-center q-mb-md">
+      <div class="row justify-between items-center q-mb-md">
         <h1>Your Panels</h1>
         <QBtn
           flat

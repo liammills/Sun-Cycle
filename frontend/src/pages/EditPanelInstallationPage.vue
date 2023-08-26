@@ -2,74 +2,85 @@
   <q-page class="flex justify-center">
     <div class="main-container">
       <h1>{{ panelInstallationId ? 'Edit' : 'Add' }} a solar panel installation</h1>
-      <!-- <div>
-        <p
-          v-if="panels.length === 0"
-          class="text-center q-pt-xl"
+      <div class="row justify-between q-mt-lg">
+        <div class="row">
+          <QInput
+            outlined
+            v-model="text"
+            label="Address"
+            class="q-mr-md"
+          />
+          <QSelect
+            outlined
+            v-model="model"
+            :options="options"
+            label="Method of recycling"
+            style="width: 220px;"
+          />
+        </div>
+        <QBtn
+          flat
+          no-caps
+          class="bg-primary text-white submit-button"
+          @click="submit()"
         >
-          You have no panels yet. Add an installation to get started.
-        </p>
-        <div v-else>
-          <div class="text-right">
+          Save
+        </QBtn>
+      </div>
+      <QBtn
+        flat
+        no-caps
+        class="bg-grey-4 text-black q-mt-md"
+        @click="addPanel()"
+      >
+        Add a panel
+      </QBtn>
+      <div
+        v-for="panel in panels"
+        :key="panel.id"
+        class="card-container full-width q-mt-md"
+        style="font-size: 16px"
+      >
+        <div style="font-weight: 600">Panel</div>
+        <div class="row justify-between q-my-sm">
+          <QInput
+            outlined
+            type="text"
+            v-model="panel.model"
+            label="Model"
+            class="q-mr-md"
+          />
+          <QInput
+            outlined
+            type="number"
+            v-model="panel.qty"
+            label="Quantity"
+            class="q-mr-md"
+          />
+          <QInput
+            outlined
+            type="date"
+            v-model="panel.installation_date"
+            label="Installation Date"
+          />
+        </div>
+        <div class="row justify-between q-mt-md">
+          <div class="text-smaller">
+            Can’t find the model? 
             <a
-              class="cursor-pointer q-mb-md"
-              @click="exportData"
+              class="text-underline"
             >
-              Export data as csv
+              Make a new one.
             </a>
           </div>
           <div
-            v-for="panel in panels"
-            :key="panel.id"
-            class="card-container full-width q-mt-md"
+            class="cursor-pointer text-smaller orange-hover"
+            @click="deletePanel(panel.id)"
           >
-            <div class="row justify-between items-center">
-              <h3 style="font-weight: 600">{{ panel.address }}</h3>
-              <div class="row items-center q-mt-xs">
-                <QIcon
-                  name="add"
-                  size="sm"
-                  class="q-mr-md"
-                />
-                <QIcon
-                  name="edit"
-                  size="20px"
-                />
-              </div>
-            </div>
-            <div class="row justify-between">
-              <div style="font-size: 16px">
-                <div class="q-mt-xs row">
-                  <div class="q-mr-lg">
-                    <span style="font-weight: 600">Type: </span>
-                    <span>{{ panel.type }}</span>
-                  </div>
-                  <div>
-                    <span style="font-weight: 600">Added: </span>
-                    <span>{{ panel.createdAt }}</span>
-                  </div>
-                </div>
-                <div
-                  class="q-mt-xs"
-                  style="font-weight: 600"
-                >
-                  Panels
-                </div>
-                <div
-                  v-for="panel in panel.panels"
-                  :key="panel.id"
-                  class="q-mt-xs q-ml-sm row items-center"
-                >
-                  <div class="q-mr-lg">
-                    <span class="q-mr-xs">{{ panel.name }}</span>
-                    <span>({{ panel.units }} units)</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            Delete
           </div>
         </div>
-      </div> -->
+      </div>
     </div>
   </q-page>
 </template>
@@ -89,7 +100,7 @@ export default {
       panels: [
         {
           id: 1,
-          address: '123 Main St, Chinchilla QLD',
+          address: '131 Heeney Street, Chinchilla QLD 4413',
           type: 'Commercial',
           createdAt: '27/08/2021',
           size: '10kW',
@@ -97,18 +108,58 @@ export default {
           panels: [
             {
               id: 1,
-              name: 'SunPower Maxeon',
+              model: 'SunPower Maxeon',
               units: 186,
             },
             {
               id: 2,
-              name: 'Tindo Karra 300',
+              model: 'Tindo Karra 300',
+              units: 40,
+            }
+          ],
+        },
+        {
+          id: 2,
+          address: '123 Fake St, Chinchilla QLD 4413',
+          type: 'Commercial',
+          createdAt: '27/08/2021',
+          size: '10kW',
+          status: 'Active',
+          panels: [
+            {
+              id: 1,
+              model: 'SunPower Maxeon',
+              units: 186,
+            },
+            {
+              id: 2,
+              model: 'Tindo Karra 300',
+              units: 40,
+            }
+          ],
+        },
+        {
+          id: 3,
+          address: '123 Main St, Chinchilla QLD 4413',
+          type: 'Commercial',
+          createdAt: '27/08/2021',
+          size: '10kW',
+          status: 'Active',
+          panels: [
+            {
+              id: 1,
+              model: 'SunPower Maxeon',
+              units: 186,
+            },
+            {
+              id: 2,
+              model: 'Tindo Karra 300',
               units: 40,
             }
           ],
         },
       ],
-    };
+    }
   },
   // methods: {
   //   // async getPanels() {

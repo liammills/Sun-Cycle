@@ -22,6 +22,7 @@
 
 <script>
 import { defineComponent } from 'vue';
+import { mapState } from 'vuex';
 import UserForm from '../components/UserForm.vue';
 import ResetPasswordForm from '../components/ResetPasswordForm.vue';
 
@@ -39,6 +40,13 @@ export default defineComponent({
       error: null,
     };
   },
+  computed: {
+    ...mapState('global', ['user']),
+    ...mapState('login', ['isLoggedIn']),
+    areFieldsValid() {
+      return /^(\S+@\S+\.\S+|\d{10}|\d{11})$/.test(this.email);
+    },
+  },
   methods: {
     toggleReset() {
       this.error = null;
@@ -49,23 +57,23 @@ export default defineComponent({
         return;
       }
       this.error = null;
-      // try {
-      //   const result = await this.$store.dispatch('login/login', {
-      //     email: this.email,
-      //     password: this.password,
-      //   });
+      try {
+        const result = await this.$store.dispatch('login/login', {
+          email: this.email,
+          password: this.password,
+        });
 
-      //   if (!result) {
-      //     this.password = '';
-      //     this.error = 'Invalid login. Please try again';
-      //   }
-      //   this.$router.push(this.redirect || '/panels');
-      // } catch (error) {
-      //   this.password = '';
-      //   if (error.response?.data?.message) {
-      //     this.error = error.response.data.message;
-      //   }
-      // }
+        if (!result) {
+          this.password = '';
+          this.error = 'Invalid login. Please try again';
+        }
+        this.$router.push(this.redirect || '/panels');
+      } catch (error) {
+        this.password = '';
+        if (error.response?.data?.message) {
+          this.error = error.response.data.message;
+        }
+      }
     },
     // async resetPassword() {
     //   try {
