@@ -2,42 +2,100 @@
     <q-page class="row justify-around">
         <div class="column">
             <h1>Discover installations</h1>
-            <div class="row">
-                <div class="column">
-                    <QSelect outlined v-model="model" :options="options" label="Method of recycling" />
+            <div class="row q-my-xl">
+                <div class="column q-mr-md">
+                    <QSelect class="q-mb-md" outlined v-model="model" :options="options" label="Method of recycling" style="width: 300px;" />
                     <QInput outlined v-model="text" label="City/town" />
                 </div>
                 <div class="column">
-                    <QInput outlined v-model="text" type="date" label="Retired by" />
-                    <QSelect outlined v-model="model" :options="states" label="State" />
+                    <QInput class="q-mb-md" outlined v-model="text" type="date" label="Retired by" />
+                    <QSelect outlined v-model="stateselect" :options="states" label="State" />
                 </div>
             </div>
-            <h3>Material breakdown</h3>
-            <div class="row">
-                <div class="column">
-                    <QInput outlined v-model.number="text" type="text">
-                        <template v-slot:append>
-                            <span style="font-size: 14px;">g</span>
-                        </template>
-                    </QInput>
+            <h3 class="q-mb-md">Material breakdown</h3>
+            <div class="row q-mb-md">
+                <div class="column q-mr-lg">
+                    <div class="row justify-between items-center matbreakpair">
+                        <span>Silicone</span>
+                        <QInput outlined v-model.number="siliconeinput" type="text" class="matbreakinput">
+                            <template v-slot:append>
+                                <span style="font-size: 14px;">g</span>
+                            </template>
+                        </QInput>
+                    </div>
                 </div>
-                <div class="column">
-                    <QInput outlined v-model.number="text" type="text" label="Retired by" />
+                <div class="column q-mr-lg">
+                    <div class="row justify-between items-center matbreakpair">
+                        <span>Silver</span>
+                        <QInput outlined v-model.number="siliconeinput" type="text" class="matbreakinput">
+                            <template v-slot:append>
+                                <span style="font-size: 14px;">g</span>
+                            </template>
+                        </QInput>
+                    </div>
+                </div>
+            </div>
+            <div class="row q-mb-md">
+                <div class="column q-mr-lg">
+                    <div class="row justify-between items-center matbreakpair">
+                        <span>Polymers</span>
+                        <QInput outlined v-model.number="siliconeinput" type="text" class="matbreakinput">
+                            <template v-slot:append>
+                                <span style="font-size: 14px;">g</span>
+                            </template>
+                        </QInput>
+                    </div>
+                </div>
+                <div class="column q-mr-lg">
+                    <div class="row justify-between items-center matbreakpair">
+                        <span>Aluminium</span>
+                        <QInput outlined v-model.number="siliconeinput" type="text" class="matbreakinput">
+                            <template v-slot:append>
+                                <span style="font-size: 14px;">g</span>
+                            </template>
+                        </QInput>
+                    </div>
+                </div>
+            </div>
+            <div class="row q-mb-xl">
+                <div class="column q-mr-lg">
+                    <div class="row justify-between items-center matbreakpair">
+                        <span>Copper</span>
+                        <QInput outlined v-model.number="siliconeinput" type="text" class="matbreakinput">
+                            <template v-slot:append>
+                                <span style="font-size: 14px;">g</span>
+                            </template>
+                        </QInput>
+                    </div>
+                </div>
+                <div class="column q-mr-lg">
+                    <div class="row justify-between items-center matbreakpair">
+                        <span>Glass</span>
+                        <QInput outlined v-model.number="siliconeinput" type="text" class="matbreakinput">
+                            <template v-slot:append>
+                                <span style="font-size: 14px;">g</span>
+                            </template>
+                        </QInput>
+                    </div>
                 </div>
             </div>
         </div>
         <QSelect outlined v-model="model" :options="options" label="Outlined" />
     </q-page>
-  </template>
+</template>
   
-  <script>
+<script>
   import { defineComponent } from 'vue';
+  import { ref } from 'vue'
   
   export default defineComponent({
     name: 'MarketplacePage',
     data() {
       return {
         states: ["NSW", "QLD", "SA", "TAS", "VIC", "WA" ],
+        stateselect: ref(null),
+
+        siliconeinput: ref(null),
       };
     },
     methods: {
@@ -70,5 +128,14 @@
       },
     },
   })
-  </script>
+</script>
   
+<style>
+.matbreakpair {
+    width: 200px;
+}
+
+.matbreakinput {
+    width: 100px;
+}
+</style>

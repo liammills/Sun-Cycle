@@ -30,6 +30,11 @@ const routes = [
         component: () => import('pages/EditPanelInstallationPage.vue'),
         props: true
       },
+      {
+        path: 'marketplace',
+        name: 'marketplace',
+        component: () => import('pages/MarketplacePage.vue')
+      },
     ]
   },
 
