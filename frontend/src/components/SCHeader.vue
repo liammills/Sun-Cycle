@@ -1,35 +1,60 @@
 <template>
-    <QHeader class="bg-transparent text-black q-px-md q-py-sm">
+    <QHeader class="bg-transparent text-black q-px-md q-py-sm" >
       <QToolbar>
-        <QToolbarTitle>
-          <img
-            class="q-mr-sm"
-            style="width: 220px"
-            src="src/assets/suncycle-logo.svg"
-          >
-        </QToolbarTitle>
-        <QBtn v-if="!loggedin" stretch flat no-caps label="About Us" style="font-size: 18px;" />
-        <QBtn stretch flat no-caps label="Marketplace" style="font-size: 18px;" />
-        <QBtn v-if="loggedin" stretch flat no-caps label="Your Panels" style="font-size: 18px;" />
+        <img
+          class="q-mr-sm cursor-pointer"
+          style="width: 220px"
+          src="src/assets/suncycle-logo.svg"
+          @click="$router.push('/')"
+        >
+        <QBtn
+          v-if="!loggedin"
+          stretch
+          flat
+          no-caps
+          label="About Us"
+          class="header-text"
+        />
+        <QBtn
+          stretch
+          flat
+          no-caps
+          label="Marketplace"
+          class="header-text"
+          @click="$router.push('/marketplace')"
+        />
+        <QBtn
+          v-if="loggedin"
+          stretch
+          flat
+          no-caps
+          label="Your Panels"
+          class="header-text"
+        />
         <q-space />
         <q-space />
         <q-space />
         <q-btn-dropdown
           v-if="loggedin"
-          style="font-size: 18px;"
           stretch
           flat
           icon="person"
+          class="header-text"
         >
           <q-list>
             <q-item clickable v-close-popup> 
               <q-item-section>
-                <q-item-label style="font-size: 18px;">Edit profile</q-item-label>
+                <q-item-label
+                  class="header-text"
+                  @click="$router.push('/profile')"
+                >
+                  Edit profile
+                </q-item-label>
               </q-item-section>
             </q-item>
             <q-item clickable v-close-popup>
               <q-item-section>
-                <q-item-label style="font-size: 18px;">Log out</q-item-label>
+                <q-item-label class="header-text">Log out</q-item-label>
               </q-item-section>
             </q-item>
           </q-list>
@@ -61,3 +86,9 @@ export default defineComponent({
     },
 })
 </script>
+
+<style scoped>
+  .header-text {
+    font-size: 18px;
+  }
+</style>
