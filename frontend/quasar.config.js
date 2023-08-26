@@ -111,6 +111,7 @@ module.exports = configure(function (/* ctx */) {
         'QDrawer',
         'QExpansionItem',
         'QFile',
+        'QFooter',
         'QForm',
         'QHeader',
         'QIcon',

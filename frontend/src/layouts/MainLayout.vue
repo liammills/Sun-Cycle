@@ -17,15 +17,20 @@
       <RouterView />
     </QPageContainer>
 
-    <QFooter class="bg-grey-9 text-white q-pa-md">
-      <!-- <QToolbar>
+    <QFooter class="bg-grey-9 text-white q-px-md q-py-lg">
+      <QToolbar>
         <QToolbarTitle>
-          <QAvatar>
-            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
-          </QAvatar>
-          <div>Title</div>
+          <img
+            class="q-mb-sm"
+            style="width: 120px"
+            src="src/assets/suncycle-logo-white.svg"
+          >
         </QToolbarTitle>
-      </QToolbar> -->
+        <div class="row q-gutter-md">
+          <span>About Us</span>
+          <span>Marketplace</span>
+        </div>
+      </QToolbar>
     </QFooter>
 
   </QLayout>
