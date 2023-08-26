@@ -1,5 +1,6 @@
 <template>
-    <q-page class="row justify-around">
+    <q-page class="flex justify-center">
+      <div class="row main-container large-container justify-between">
         <div class="column">
             <h1>Discover installations</h1>
             <div class="row q-my-xl">
@@ -80,7 +81,8 @@
                 </div>
             </div>
         </div>
-        <QSelect outlined v-model="model" :options="options" label="Outlined" />
+        <QSelect outlined v-model="model" :options="options" label="Outlined" class="column" />
+    </div>
     </q-page>
 </template>
   
