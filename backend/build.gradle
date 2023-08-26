@@ -27,6 +27,9 @@ dependencies {
 
 	// Spring Boot Starter Test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// MySQL
+	implementation 'mysql:mysql-connector-java:8.0.28'
 }
 
 tasks.named('test') {
