@@ -36,15 +36,31 @@
             <div class="row justify-between items-center">
               <h3 style="font-weight: 600">{{ panel.address }}</h3>
               <div class="row items-center q-mt-xs">
-                <QIcon
-                  name="add"
-                  size="sm"
-                  class="q-mr-md"
-                />
-                <QIcon
-                  name="edit"
-                  size="20px"
-                />
+                <QBtn
+                  size="md"
+                  icon="add"
+                  no-caps
+                  ripple
+                  dense
+                  flat
+                  text-color="dark"
+                  class="q-mr-sm"
+                  @click="$router.push(`/panels/${panel.id}/edit`)"
+                >
+                  <QTooltip>Add a panel</QTooltip>
+                </QBtn>
+                <QBtn
+                  size="md"
+                  icon="edit"
+                  no-caps
+                  ripple
+                  dense
+                  flat
+                  text-color="dark"
+                  @click="$router.push(`/panels/${panel.id}/edit`)"
+                >
+                  <QTooltip>Edit</QTooltip>
+                </QBtn>
               </div>
             </div>
             <div class="row justify-between">
@@ -84,7 +100,18 @@
                     <span class="q-mr-xs">{{ panel.name }}</span>
                     <span>({{ panel.units }} units)</span>
                   </div>
-                  <QIcon name="info_outlined" />
+                  <QBtn
+                    size="sm"
+                    icon="info_outline"
+                    no-caps
+                    ripple
+                    dense
+                    flat
+                    text-color="dark"
+                    @click="$router.push(`/panels/${panel.id}/edit`)"
+                  >
+                    <QTooltip>More info</QTooltip>
+                  </QBtn>
                 </div>
               </div>
               <a
@@ -129,7 +156,7 @@ export default {
           ],
         },
         {
-          id: 1,
+          id: 2,
           address: '123 Fake St, Chinchilla QLD 4413',
           type: 'Commercial',
           createdAt: '27/08/2021',
@@ -149,7 +176,7 @@ export default {
           ],
         },
         {
-          id: 1,
+          id: 3,
           address: '123 Main St, Chinchilla QLD 4413',
           type: 'Commercial',
           createdAt: '27/08/2021',
