@@ -46,6 +46,7 @@
       flat
       no-caps
       class="full-width bg-primary text-white submit-button q-mt-lg"
+      :class="submitText == 'Login' ? '' : 'q-mt-xl'"
       @click="$emit('submit')"
     >
       {{ submitText || 'Loading...' }}
