@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -34,7 +35,9 @@ public class UserController {
     // User login
     @PostMapping("/login")
     public ResponseEntity<User> loginUser(@RequestParam User user) {
-        Optional<User> foundUser = userRepository.findById(user.getId());
+
+        Optional<User> foundUser = userRepository.findByEmail(user.getEmail());
+
         if (foundUser.isPresent() && foundUser.get().getPassword().equals(user.getPassword())) { // Assuming you're storing passwords in plain text for simplicity. In a real-world scenario, you'd use hashed passwords.
             return ResponseEntity.ok(foundUser.get());
         } else {
