@@ -34,8 +34,7 @@ public class UserController {
 
     // User login
     @PostMapping("/login")
-    public ResponseEntity<User> loginUser(@RequestParam User user) {
-
+    public ResponseEntity<User> loginUser(@RequestBody User user) {
         Optional<User> foundUser = userRepository.findByEmail(user.getEmail());
 
         if (foundUser.isPresent() && foundUser.get().getPassword().equals(user.getPassword())) { // Assuming you're storing passwords in plain text for simplicity. In a real-world scenario, you'd use hashed passwords.
