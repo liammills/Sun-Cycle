@@ -1,8 +1,8 @@
 <template>
   <div class="form-container column items-center">
-    <div class="column q-py-lg full-width items-center">
+    <div class="column full-width items-center">
       <h1 class="q-pb-lg">
-        Login
+        {{ title || '...' }}
       </h1>
       <div class="column full-width">
         <QInput
@@ -35,6 +35,7 @@
         </div>
       </div>
       <a
+        v-if="submitText === 'Login'"
         class="q-mt-md cursor-pointer text-uderline"
         @click="$emit('toggle-reset')"
       >
@@ -44,15 +45,18 @@
     <QBtn
       flat
       no-caps
-      class="full-width bg-primary text-white submit-button"
+      class="full-width bg-primary text-white submit-button q-mt-lg"
       @click="$emit('submit')"
     >
-      Login
+      {{ submitText || 'Loading...' }}
     </QBtn>
-    <p class="q-mt-xl text-small">
+    <p
+      v-if="submitText === 'Login'"
+      class="q-mt-xl text-small"
+    >
       Don’t have an account? 
       <a
-        href="https://www.emmi.io/privacy"
+        href="/register"
         class="cursor-pointer text-underline"
       >
         Sign up.
@@ -63,8 +67,16 @@
 
 <script>
 export default {
-  name: 'LoginForm',
+  name: 'UserForm',
   props: {
+    title: {
+      type: String,
+      default: null,
+    },
+    submitText: {
+      type: String,
+      default: null,
+    },
     email: {
       type: String,
       default: null,
@@ -84,7 +96,6 @@ export default {
         return this.email;
       },
       set(val) {
-        console.log("Setting email:", val);
         this.$emit('update:email', val);
       },
     },
@@ -99,9 +110,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-  .form-container {
-    min-width: 300px;
-  }
-</style>
