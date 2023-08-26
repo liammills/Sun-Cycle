@@ -9,22 +9,27 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-
 @RestController
 @RequestMapping("/users")
 public class UserController {
+
     @Autowired
     private UserRepository userRepository;
 
     // Create a new user
     @PostMapping("/create")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        // Check if the username already exists
-        if (userRepository.findById(user.getId()).isPresent()) {
-            return ResponseEntity.badRequest().body(null); // or return a custom error message
-        }
+    public ResponseEntity<User> createUser(@RequestParam String email, @RequestParam String password) {
+
+        User user = new User(email, password);
         User savedUser = userRepository.save(user);
         return ResponseEntity.ok(savedUser);
+
+//        // Check if the username already exists
+//        if (userRepository.findById(user.getId()).isPresent()) {
+//            return ResponseEntity.badRequest().body(null); // or return a custom error message
+//        }
+//        User savedUser = userRepository.save(user);
+//        return ResponseEntity.ok(savedUser);
     }
 
     // User login
