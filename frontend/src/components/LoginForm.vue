@@ -1,7 +1,7 @@
 <template>
   <div class="form-container column items-center">
     <div class="column q-py-lg full-width items-center">
-      <h3 class="login-text text-dark q-pb-md text-bold">
+      <h3 class="login-text q-pb-md">
         Log in
       </h3>
       <div class="column full-width">
@@ -39,6 +39,7 @@
     </div>
     <QBtn
       flat
+      no-caps
       class="full-width bg-primary text-white submit-button"
       @click="$emit('submit')"
     >
@@ -94,9 +95,11 @@ export default {
 };
 </script>
 
-<!-- <style lang="sass" scoped>
-  .form-container
-    min-width: 300px
-  .login-text
-    font-size: 1.6em
+<!-- <style lang="scss" scoped>
+  .form-container {
+    min-width: 300px;
+  }
+  .login-text {
+    font-size: 1.6em;
+  }
 </style> -->
