@@ -1,18 +1,8 @@
 <template>
   <q-page class="flex justify-center">
     <div class="main-container">
-        <div class="row justify-between items-center q-mb-md">
-        <h1>Your Panels</h1>
-        <QBtn
-          flat
-          no-caps
-          class="bg-primary text-white submit-button q-mt-sm"
-          @click="$router.push('/panels/add')"
-        >
-          Add an installation
-        </QBtn>
-      </div>
-      <div>
+      <h1>{{ panelInstallationId ? 'Edit' : 'Add' }} a solar panel installation</h1>
+      <!-- <div>
         <p
           v-if="panels.length === 0"
           class="text-center q-pt-xl"
@@ -59,16 +49,6 @@
                     <span>{{ panel.createdAt }}</span>
                   </div>
                 </div>
-                <!-- <div class="q-mt-xs row">
-                  <div class="q-mr-lg">
-                    <span style="font-weight: 600">Size: </span>
-                    <span>{{ panel.size }}</span>
-                  </div>
-                  <div>
-                    <span style="font-weight: 600">Status: </span>
-                    <span>{{ panel.status }}</span>
-                  </div>
-                </div> -->
                 <div
                   class="q-mt-xs"
                   style="font-weight: 600"
@@ -84,73 +64,32 @@
                     <span class="q-mr-xs">{{ panel.name }}</span>
                     <span>({{ panel.units }} units)</span>
                   </div>
-                  <QIcon name="info_outlined" />
                 </div>
               </div>
-              <a
-                :href='`https://www.google.com/maps/search/?api=1&query=${panel.address}`'
-                target="_blank"
-                class="self-end"
-              >
-                Show on map
-              </a>
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </q-page>
 </template>
 
 <script>
 export default {
-  name: 'PanelsPage',
+  name: 'EditPanelInstallationPage',
+  props: {
+    panelInstallationId: {
+      type: Number,
+      default: null,
+      required: false,
+    },
+  },
   data() {
     return {
       panels: [
         {
           id: 1,
-          address: '131 Heeney Street, Chinchilla QLD 4413',
-          type: 'Commercial',
-          createdAt: '27/08/2021',
-          size: '10kW',
-          status: 'Active',
-          panels: [
-            {
-              id: 1,
-              name: 'SunPower Maxeon',
-              units: 186,
-            },
-            {
-              id: 2,
-              name: 'Tindo Karra 300',
-              units: 40,
-            }
-          ],
-        },
-        {
-          id: 1,
-          address: '123 Fake St, Chinchilla QLD 4413',
-          type: 'Commercial',
-          createdAt: '27/08/2021',
-          size: '10kW',
-          status: 'Active',
-          panels: [
-            {
-              id: 1,
-              name: 'SunPower Maxeon',
-              units: 186,
-            },
-            {
-              id: 2,
-              name: 'Tindo Karra 300',
-              units: 40,
-            }
-          ],
-        },
-        {
-          id: 1,
-          address: '123 Main St, Chinchilla QLD 4413',
+          address: '123 Main St, Chinchilla QLD',
           type: 'Commercial',
           createdAt: '27/08/2021',
           size: '10kW',

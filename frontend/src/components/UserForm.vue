@@ -36,7 +36,7 @@
       </div>
       <a
         v-if="submitText === 'Login'"
-        class="q-mt-md cursor-pointer text-uderline"
+        class="q-mt-md cursor-pointer"
         @click="$emit('toggle-reset')"
       >
         Forgot your password?

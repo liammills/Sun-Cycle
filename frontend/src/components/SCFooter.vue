@@ -1,13 +1,11 @@
 <template>
     <QFooter class="bg-grey-9 text-white q-px-md q-py-lg">
       <QToolbar>
-        <QToolbarTitle>
-          <img
-            class="q-mb-sm"
-            style="width: 120px"
-            src="src/assets/suncycle-logo-white.svg"
-          >
-        </QToolbarTitle>
+        <img
+          class="q-mb-sm"
+          style="width: 120px"
+          src="src/assets/suncycle-logo-white.svg"
+        >
         </QToolbar>
         <div class="row q-ml-sm q-pb-lg" style="font-size: 16px; border-bottom: 1px solid white;">
             <span class="q-mr-lg">About Us</span>
@@ -26,9 +24,7 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
-
-export default defineComponent({
+export default {
     name: 'SCFooter',
-})
+}
 </script>

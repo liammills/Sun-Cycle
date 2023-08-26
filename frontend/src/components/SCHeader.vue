@@ -1,61 +1,52 @@
 <template>
     <QHeader class="bg-transparent text-black q-px-md q-py-sm" >
-      <QToolbar>
-        <img
-          class="q-mr-sm cursor-pointer"
-          style="width: 220px"
-          src="src/assets/suncycle-logo.svg"
-          @click="$router.push('/')"
-        >
-        <QBtn
-          v-if="!loggedin"
-          stretch
-          flat
-          no-caps
-          label="About Us"
-          class="header-text"
-        />
-        <QBtn
-          stretch
-          flat
-          no-caps
-          label="Marketplace"
-          class="header-text"
-          @click="$router.push('/marketplace')"
-        />
-        <QBtn
-          v-if="loggedin"
-          stretch
-          flat
-          no-caps
-          label="Your Panels"
-          class="header-text"
-          @click="$router.push('/panels')"
-        />
-        <q-space />
-        <q-space />
-        <q-space />
+      <QToolbar class="row justify-between">
+        <div class="row items-center">
+          <img
+            class="q-mr-lg cursor-pointer"
+            style="width: 220px"
+            src="src/assets/suncycle-logo.svg"
+            @click="$router.push('/')"
+          >
+          <div
+            v-if="!loggedin"
+            class="header-text cursor-pointer orange-hover q-mr-lg q-mt-xs"
+          >
+            About Us
+          </div>
+          <div
+            class="header-text cursor-pointer orange-hover q-mr-lg q-mt-xs"
+            @click="$router.push('/marketplace')"
+          >
+            Marketplace
+          </div>
+          <div
+            v-if="loggedin"
+            class="header-text cursor-pointer orange-hover q-mr-lg q-mt-xs"
+            @click="$router.push('/panels')"
+          >
+            Your Panels
+          </div>
+        </div>
         <q-btn-dropdown
           v-if="loggedin"
-          stretch
           flat
-          icon="person"
-          class="header-text"
+          icon="account_circle"
+          class="header-text cursor-pointer orange-hover"
         >
           <q-list>
-            <q-item clickable v-close-popup> 
+            <q-item clickable class="header-text cursor-pointer orange-hover"> 
               <q-item-section>
-                <q-item-label
-                  class="header-text"
-                  @click="$router.push('/profile')"
-                >
+                <q-item-label @click="$router.push('/profile')">
                   Edit profile
                 </q-item-label>
               </q-item-section>
             </q-item>
-            <q-item clickable v-close-popup>
+            <q-item clickable class="header-text cursor-pointer orange-hover">
               <q-item-section>
-                <q-item-label class="header-text">Log out</q-item-label>
+                <q-item-label>
+                  Log out
+                </q-item-label>
               </q-item-section>
             </q-item>
           </q-list>
@@ -91,5 +82,9 @@ export default defineComponent({
 <style scoped>
   .header-text {
     font-size: 18px;
+    font-weight: 500;
+  }
+  :deep(.q-btn-dropdown__arrow-container) {
+    display: none;
   }
 </style>
