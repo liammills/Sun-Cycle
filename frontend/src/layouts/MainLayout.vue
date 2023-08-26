@@ -1,5 +1,5 @@
 <template>
-  <QLayout view="hHh lpR fFf">
+  <QLayout view="hhh lpR fff">
 
     <SCHeader :loggedin="true"/>
 
