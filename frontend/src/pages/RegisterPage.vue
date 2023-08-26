@@ -28,10 +28,6 @@ export default defineComponent({
     };
   },
   methods: {
-    toggleReset() {
-      this.error = null;
-      this.resetForm = !this.resetForm;
-    },
     async submit() {
       if (!this.areFieldsValid) {
         return;
