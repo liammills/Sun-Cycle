@@ -30,7 +30,10 @@
           :class="{ 'field-error': !!error }"
           @keyup.enter="$emit('submit')"
         />
-        <div v-if="error">
+        <div
+          v-if="error"
+          class="q-mt-sm"
+        >
           <span class="text-red">{{ error }}</span>
         </div>
       </div>

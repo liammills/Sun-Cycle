@@ -42,7 +42,11 @@
                 </q-item-label>
               </q-item-section>
             </q-item>
-            <q-item clickable class="header-text cursor-pointer orange-hover">
+            <q-item
+              clickable
+              class="header-text cursor-pointer orange-hover"
+              @click="authStore.logout()"
+            >
               <q-item-section>
                 <q-item-label>
                   Log out
@@ -66,13 +70,21 @@
 </template>
 
 <script>
+import { useAuthStore } from 'stores/auth';
+
 export default {
-    name: 'SCHeader',
-    data() {
-      return {
-        loggedIn: false,
-      }
+  name: 'SCHeader',
+  setup() {
+    const authStore = useAuthStore();
+    return {
+      authStore,
+    };
+  },
+  computed: {
+    loggedIn() {
+      return this.authStore.isLoggedIn;
     },
+  },
 }
 </script>
 

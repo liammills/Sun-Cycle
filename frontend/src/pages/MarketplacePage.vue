@@ -82,15 +82,16 @@
             </div>
         </div>
         <div class="column">
-          <template>
+<!--          <template>-->
+          ...
+          <div class="full-width full-height">
             <GMapMap
               :center="center"
               :zoom="7"
-              map-type-id="terrain"
-              style="width: 100vw; height: 900px"
+              style="width: 500px; height: 500px"
             >
             </GMapMap>
-          </template>
+          </div>
         </div>
     </div>
     </q-page>
@@ -112,21 +113,6 @@ export default {
           siliconeinput: ref(null),
           center: {lat: 51.093048, lng: 6.842120},
         };
-    },
-    mounted() {
-      this.loadGoogleMapsScript();
-    },
-    methods: {
-      loadGoogleMapsScript() {
-        var script = document.createElement('script');
-        script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDf3yV3ZleoZ_LcpNlJMzQ0QtQ4zJyUSo8&v=weekly&callback=initMap`;
-        script.async = true;
-        document.head.appendChild(script);
-      },
-      initMap() {
-        // This function will be called once the Google Maps script is loaded.
-        // You can initialize your map or perform other map related tasks here.
-      }
     },
 }
 </script>
