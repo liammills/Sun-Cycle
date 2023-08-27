@@ -81,9 +81,7 @@
                 </div>
             </div>
         </div>
-        <div class="column">
-<!--          <template>-->
-          ...
+        <div class="q-ml-xl column self-end">
           <div class="full-width full-height">
             <GMapMap
               :center="center"
