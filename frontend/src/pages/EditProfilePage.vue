@@ -3,8 +3,8 @@
     <UserForm
       title="Edit profile details"
       submit-text="Save"
-      v-model:email="email"
-      v-model:password="password"
+      v-model:email="emailInput"
+      v-model:password="passwordInput"
       v-model:error="error"
       @submit="submit()"
     />
@@ -14,18 +14,29 @@
 <script>
 import { defineComponent } from 'vue';
 import UserForm from '../components/UserForm.vue';
+import { useAuthStore } from 'src/stores/auth';
 
 export default defineComponent({
   name: 'RegisterPage',
+  setup() {
+    const authStore = useAuthStore();
+    return {
+      authStore,
+    };
+  },
   components: {
     UserForm,
   },
   data() {
     return {
-      email: null,
-      password: null,
+      emailInput: null,
+      passwordInput: null,
       error: null,
     };
+  },
+  mounted() {
+    this.emailInput = this.authStore.user?.email?.email;
+    this.passwordInput = this.authStore.user?.email?.password;
   },
   methods: {
     toggleReset() {
