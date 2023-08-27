@@ -4,7 +4,7 @@
         <img
           class="q-mb-sm"
           style="width: 120px"
-          src="src/assets/suncycle-logo-white.svg"
+          src="~/assets/suncycle-logo-white.svg"
         >
         </QToolbar>
         <div class="row q-ml-sm q-pb-lg" style="font-size: 16px; border-bottom: 1px solid white;">

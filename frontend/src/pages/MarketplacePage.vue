@@ -6,7 +6,7 @@
             <div class="row q-my-xl">
                 <div class="column q-mr-md">
                     <QSelect class="q-mb-md" outlined v-model="recmethodselect" :options="recmethods" label="Method of recycling" style="width: 300px;" />
-                    <QInput outlined v-model="text" label="Address" />
+                    <QInput outlined v-model="text" label="City/town" />
                 </div>
                 <div class="column">
                     <QInput class="q-mb-md" outlined v-model="text" type="date" label="Retired by" />
@@ -95,6 +95,9 @@ export default {
         return {
         states: ["NSW", "QLD", "SA", "TAS", "VIC", "WA" ],
         stateselect: ref(null),
+
+        recmethods: ["Chemical processing", "Electrochemical processing", "Hydrometallurgical separation", "Mechanical processing", "Thermal processing"],
+        recmethodselect: ref(null),
 
         siliconeinput: ref(null),
         };

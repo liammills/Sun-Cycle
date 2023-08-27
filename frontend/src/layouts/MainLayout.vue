@@ -1,7 +1,7 @@
 <template>
   <QLayout view="hhh lpR fff">
 
-    <SCHeader :loggedin="true"/>
+    <SCHeader />
 
     <QPageContainer>
       <RouterView />
