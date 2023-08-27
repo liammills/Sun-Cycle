@@ -44,6 +44,18 @@
   resolved "https://registry.npmjs.org/@eslint/js/-/js-8.48.0.tgz"
   integrity sha512-ZSjtmelB7IJfWD2Fvb7+Z+ChTIKWq6kjda95fLcQKNS5aheVHn4IkfgRQE3sIIzTcSLwLcLZUD9UBt+V7+h+Pw==
 
+"@fawmi/vue-google-maps@0.9.67":
+  version "0.9.67"
+  resolved "https://registry.npmjs.org/@fawmi/vue-google-maps/-/vue-google-maps-0.9.67.tgz"
+  integrity sha512-Ji9SiQIdg8mRLAyp0B9P3dU6EUptdrU4hDgkvelpNpWWmtEtj/bGgQvrZlJUBEBRUQhPDnkduIdKnXAvSV57Pg==
+  dependencies:
+    "@googlemaps/markerclustererplus" "^1.2.10"
+
+"@googlemaps/markerclustererplus@^1.2.10":
+  version "1.2.10"
+  resolved "https://registry.npmjs.org/@googlemaps/markerclustererplus/-/markerclustererplus-1.2.10.tgz"
+  integrity sha512-HY4ev+D3kO1+9oQjtKTojxVtJIS/kSWJfry6cpKoXC97kBQc5Vguqu5x6pLnh+70N0Au+16Yl7iu4LZaIOTstw==
+
 "@humanwhocodes/config-array@^0.11.10":
   version "0.11.10"
   resolved "https://registry.npmjs.org/@humanwhocodes/config-array/-/config-array-0.11.10.tgz"

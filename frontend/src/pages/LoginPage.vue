@@ -23,10 +23,16 @@
 <script>
 import UserForm from '../components/UserForm.vue';
 import ResetPasswordForm from '../components/ResetPasswordForm.vue';
-import { useAuthStore } from '@/stores';
+import { useAuthStore } from 'stores/auth';
 
 export default {
   name: 'LoginPage',
+  setup() {
+    const authStore = useAuthStore();
+    return {
+      authStore,
+    };
+  },
   components: {
     UserForm,
     ResetPasswordForm,
@@ -40,8 +46,6 @@ export default {
     };
   },
   computed: {
-    // ...mapState('global', ['user']),
-    // ...mapState('login', ['isLoggedIn']),
     areFieldsValid() {
       return /^(\S+@\S+\.\S+|\d{10}|\d{11})$/.test(this.email);
     },
@@ -53,11 +57,12 @@ export default {
     },
     async submit() {
       if (!this.areFieldsValid) {
+        this.error = 'Please enter a valid email';
         return;
       }
       this.error = null;
       try {
-        const result = await this.$store.dispatch('login/login', {
+        const result = this.authStore.login({
           email: this.email,
           password: this.password,
         });
@@ -65,8 +70,9 @@ export default {
         if (!result) {
           this.password = '';
           this.error = 'Invalid login. Please try again';
+          return;
         }
-        this.$router.push(this.redirect || '/panels');
+        this.$router.push('/panels');
       } catch (error) {
         this.password = '';
         if (error.response?.data?.message) {
