@@ -5,7 +5,7 @@
             <h1>Discover installations</h1>
             <div class="row q-my-xl">
                 <div class="column q-mr-md">
-                    <QSelect class="q-mb-md" outlined v-model="model" :options="options" label="Method of recycling" style="width: 300px;" />
+                    <QSelect class="q-mb-md" outlined v-model="recmethodselect" :options="recmethods" label="Method of recycling" style="width: 300px;" />
                     <QInput outlined v-model="text" label="Address" />
                 </div>
                 <div class="column">
@@ -96,6 +96,8 @@
       return {
         states: ["NSW", "QLD", "SA", "TAS", "VIC", "WA" ],
         stateselect: ref(null),
+        recmethods: ["Chemical processing", "Electrochemical processing", "Hydrometallurgical separation", "Mechanical processing", "Thermal processing"],
+        recmethodselect: ref(null),
 
         siliconeinput: ref(null),
       };
