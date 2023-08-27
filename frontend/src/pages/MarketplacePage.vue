@@ -18,7 +18,7 @@
                 <div class="column q-mr-xl">
                     <div class="row justify-between items-center matbreakpair">
                         <span>Silicone</span>
-                        <QInput outlined v-model.number="siliconeinput" type="text" class="matbreakinput">
+                        <QInput outlined v-model.number="siliconeinput" type="number" class="matbreakinput">
                             <template v-slot:append>
                                 <span style="font-size: 14px;">g</span>
                             </template>
@@ -28,7 +28,7 @@
                 <div class="column">
                     <div class="row justify-between items-center matbreakpair">
                         <span>Silver</span>
-                        <QInput outlined v-model.number="siliconeinput" type="text" class="matbreakinput">
+                        <QInput outlined v-model.number="siliconeinput" type="number" class="matbreakinput">
                             <template v-slot:append>
                                 <span style="font-size: 14px;">g</span>
                             </template>
@@ -40,7 +40,7 @@
                 <div class="column q-mr-xl">
                     <div class="row justify-between items-center matbreakpair">
                         <span>Polymers</span>
-                        <QInput outlined v-model.number="siliconeinput" type="text" class="matbreakinput">
+                        <QInput outlined v-model.number="siliconeinput" type="number" class="matbreakinput">
                             <template v-slot:append>
                                 <span style="font-size: 14px;">g</span>
                             </template>
@@ -50,7 +50,7 @@
                 <div class="column">
                     <div class="row justify-between items-center matbreakpair">
                         <span>Aluminium</span>
-                        <QInput outlined v-model.number="siliconeinput" type="text" class="matbreakinput">
+                        <QInput outlined v-model.number="siliconeinput" type="number" class="matbreakinput">
                             <template v-slot:append>
                                 <span style="font-size: 14px;">g</span>
                             </template>
@@ -62,7 +62,7 @@
                 <div class="column q-mr-xl">
                     <div class="row justify-between items-center matbreakpair">
                         <span>Copper</span>
-                        <QInput outlined v-model.number="siliconeinput" type="text" class="matbreakinput">
+                        <QInput outlined v-model.number="siliconeinput" type="number" class="matbreakinput">
                             <template v-slot:append>
                                 <span style="font-size: 14px;">g</span>
                             </template>
@@ -72,7 +72,7 @@
                 <div class="column">
                     <div class="row justify-between items-center matbreakpair">
                         <span>Glass</span>
-                        <QInput outlined v-model.number="siliconeinput" type="text" class="matbreakinput">
+                        <QInput outlined v-model.number="siliconeinput" type="number" class="matbreakinput">
                             <template v-slot:append>
                                 <span style="font-size: 14px;">g</span>
                             </template>
@@ -87,51 +87,25 @@
 </template>
   
 <script>
-  import { defineComponent } from 'vue';
-  import { ref } from 'vue'
+import { ref } from 'vue'
   
-  export default defineComponent({
+export default {
     name: 'MarketplacePage',
     data() {
-      return {
+        return {
         states: ["NSW", "QLD", "SA", "TAS", "VIC", "WA" ],
         stateselect: ref(null),
-        recmethods: ["Chemical processing", "Electrochemical processing", "Hydrometallurgical separation", "Mechanical processing", "Thermal processing"],
-        recmethodselect: ref(null),
 
         siliconeinput: ref(null),
-      };
+        };
     },
     methods: {
-      toggleReset() {
+        toggleReset() {
         this.error = null;
         this.resetForm = !this.resetForm;
-      },
-      async submit() {
-        if (!this.areFieldsValid) {
-          return;
-        }
-        this.error = null;
-        // try {
-        //   const result = await this.$store.dispatch('login/login', {
-        //     email: this.email,
-        //     password: this.password,
-        //   });
-  
-        //   if (!result) {
-        //     this.password = '';
-        //     this.error = 'Invalid login. Please try again';
-        //   }
-        //   this.$router.push(this.redirect || '/panels');
-        // } catch (error) {
-        //   this.password = '';
-        //   if (error.response?.data?.message) {
-        //     this.error = error.response.data.message;
-        //   }
-        // }
-      },
+        },
     },
-  })
+}
 </script>
   
 <style>
