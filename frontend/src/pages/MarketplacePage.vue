@@ -81,36 +81,56 @@
                 </div>
             </div>
         </div>
-        <QSelect outlined v-model="model" :options="options" label="Outlined" class="column" />
+        <div class="column">
+          <template>
+            <GMapMap
+              :center="center"
+              :zoom="7"
+              map-type-id="terrain"
+              style="width: 100vw; height: 900px"
+            >
+            </GMapMap>
+          </template>
+        </div>
     </div>
     </q-page>
 </template>
-  
+
 <script>
 import { ref } from 'vue'
-  
+
 export default {
     name: 'MarketplacePage',
     data() {
         return {
-        states: ["NSW", "QLD", "SA", "TAS", "VIC", "WA" ],
-        stateselect: ref(null),
+          states: ["NSW", "QLD", "SA", "TAS", "VIC", "WA" ],
+          stateselect: ref(null),
 
-        recmethods: ["Chemical processing", "Electrochemical processing", "Hydrometallurgical separation", "Mechanical processing", "Thermal processing"],
-        recmethodselect: ref(null),
+          recmethods: ["Chemical processing", "Electrochemical processing", "Hydrometallurgical separation", "Mechanical processing", "Thermal processing"],
+          recmethodselect: ref(null),
 
-        siliconeinput: ref(null),
+          siliconeinput: ref(null),
+          center: {lat: 51.093048, lng: 6.842120},
         };
     },
+    mounted() {
+      this.loadGoogleMapsScript();
+    },
     methods: {
-        toggleReset() {
-        this.error = null;
-        this.resetForm = !this.resetForm;
-        },
+      loadGoogleMapsScript() {
+        var script = document.createElement('script');
+        script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDf3yV3ZleoZ_LcpNlJMzQ0QtQ4zJyUSo8&v=weekly&callback=initMap`;
+        script.async = true;
+        document.head.appendChild(script);
+      },
+      initMap() {
+        // This function will be called once the Google Maps script is loaded.
+        // You can initialize your map or perform other map related tasks here.
+      }
     },
 }
 </script>
-  
+
 <style>
 .matbreakpair {
     width: 200px;
