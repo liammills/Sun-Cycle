@@ -6,13 +6,14 @@
         <div class="row">
           <QInput
             outlined
-            v-model="text"
+            v-model="address"
             label="Address"
             class="q-mr-md"
+            style="width: 300px;"
           />
           <QSelect
             outlined
-            v-model="model"
+            v-model="recyclingMethod"
             :options="options"
             label="Method of recycling"
             style="width: 220px;"
@@ -48,20 +49,21 @@
             type="text"
             v-model="panel.model"
             label="Model"
-            class="q-mr-md"
+            class="q-mr-md col-5"
           />
           <QInput
             outlined
             type="number"
             v-model="panel.qty"
             label="Quantity"
-            class="q-mr-md"
+            class="q-mr-md col-3"
           />
           <QInput
             outlined
             type="date"
             v-model="panel.installation_date"
             label="Installation Date"
+            class="col-3"
           />
         </div>
         <div class="row justify-between q-mt-md">
@@ -97,90 +99,45 @@ export default {
   },
   data() {
     return {
+      address: '131 Heeney Street, Chinchilla QLD 4413',
+      recyclingMethod: '',
       panels: [
         {
           id: 1,
-          address: '131 Heeney Street, Chinchilla QLD 4413',
-          type: 'Commercial',
-          createdAt: '27/08/2021',
-          size: '10kW',
-          status: 'Active',
-          panels: [
-            {
-              id: 1,
-              model: 'SunPower Maxeon',
-              units: 186,
-            },
-            {
-              id: 2,
-              model: 'Tindo Karra 300',
-              units: 40,
-            }
-          ],
+          model: 'SunPower Maxeon',
+          qty: 186,
+          installation_date: '2015-03-22',
         },
         {
           id: 2,
-          address: '123 Fake St, Chinchilla QLD 4413',
-          type: 'Commercial',
-          createdAt: '27/08/2021',
-          size: '10kW',
-          status: 'Active',
-          panels: [
-            {
-              id: 1,
-              model: 'SunPower Maxeon',
-              units: 186,
-            },
-            {
-              id: 2,
-              model: 'Tindo Karra 300',
-              units: 40,
-            }
-          ],
-        },
-        {
-          id: 3,
-          address: '123 Main St, Chinchilla QLD 4413',
-          type: 'Commercial',
-          createdAt: '27/08/2021',
-          size: '10kW',
-          status: 'Active',
-          panels: [
-            {
-              id: 1,
-              model: 'SunPower Maxeon',
-              units: 186,
-            },
-            {
-              id: 2,
-              model: 'Tindo Karra 300',
-              units: 40,
-            }
-          ],
+          model: 'Tindo Karra 300',
+          qty: 40,
+          installation_date: '2021-08-27',
         },
       ],
     }
   },
-  // methods: {
-  //   // async getPanels() {
-  //   //   // try {
-  //   //   //   const result = await this.$store.dispatch('login/login', {
-  //   //   //     email: this.email,
-  //   //   //     password: this.password,
-  //   //   //   });
-
-  //   //   //   if (!result) {
-  //   //   //     this.password = '';
-  //   //   //     this.error = 'Invalid login. Please try again';
-  //   //   //   }
-  //   //   //   this.$router.push(this.redirect || '/panels');
-  //   //   // } catch (error) {
-  //   //   //   this.password = '';
-  //   //   //   if (error.response?.data?.message) {
-  //   //   //     this.error = error.response.data.message;
-  //   //   //   }
-  //   //   // }
-  //   // },
-  // },
+  mounted() {
+    this.getPanelInstallation();
+  },
+  methods: {
+    async getPanelInstallation() {
+      // TODO
+    },
+    async savePanelInstallation() {
+      // TODO
+    },
+    addPanel() {
+      this.panels.push({
+        id: this.panels.length + 1,
+        model: '',
+        qty: 0,
+        installation_date: '',
+      });
+    },
+    async deletePanel(id) {
+      this.panels = this.panels.filter((panel) => panel.id !== id);
+    },
+  },
 }
 </script>
