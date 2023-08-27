@@ -1,4 +1,4 @@
-import VueGoogleMaps from '@fawmi/vue-google-maps';
+import VueGoogleMaps from 'vue-google-maps';
 
 export default ({ app }) => {
     app.use(VueGoogleMaps, {
