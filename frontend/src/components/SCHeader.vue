@@ -5,11 +5,11 @@
           <img
             class="q-mr-lg cursor-pointer"
             style="width: 220px"
-            src="src/assets/suncycle-logo.svg"
+            src="~/assets/suncycle-logo.svg"
             @click="$router.push('/')"
           >
           <div
-            v-if="!loggedin"
+            v-if="!loggedIn"
             class="header-text cursor-pointer orange-hover q-mr-lg q-mt-xs"
           >
             About Us
@@ -21,7 +21,7 @@
             Marketplace
           </div>
           <div
-            v-if="loggedin"
+            v-if="loggedIn"
             class="header-text cursor-pointer orange-hover q-mr-lg q-mt-xs"
             @click="$router.push('/panels')"
           >
@@ -29,7 +29,7 @@
           </div>
         </div>
         <q-btn-dropdown
-          v-if="loggedin"
+          v-if="loggedIn"
           flat
           icon="account_circle"
           class="header-text cursor-pointer orange-hover"
@@ -66,17 +66,14 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
-
-export default defineComponent({
+export default {
     name: 'SCHeader',
-    props: {
-      loggedin: {
-        type: Boolean,
-        default: false,
-      },
+    data() {
+      return {
+        loggedIn: false,
+      }
     },
-})
+}
 </script>
 
 <style scoped>

@@ -21,12 +21,11 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue';
-import { mapState } from 'vuex';
 import UserForm from '../components/UserForm.vue';
 import ResetPasswordForm from '../components/ResetPasswordForm.vue';
+import { useAuthStore } from '@/stores';
 
-export default defineComponent({
+export default {
   name: 'LoginPage',
   components: {
     UserForm,
@@ -41,8 +40,8 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapState('global', ['user']),
-    ...mapState('login', ['isLoggedIn']),
+    // ...mapState('global', ['user']),
+    // ...mapState('login', ['isLoggedIn']),
     areFieldsValid() {
       return /^(\S+@\S+\.\S+|\d{10}|\d{11})$/.test(this.email);
     },
@@ -75,22 +74,24 @@ export default defineComponent({
         }
       }
     },
-    // async resetPassword() {
-    //   try {
-    //     this.error = null;
-    //     await this.$api.post('users/reset_password',
-    //       {
-    //         email: this.email,
-    //       });
-    //     this.toggleReset();
-    //     this.error = 'Password reset email sent, please check your email';
-    //   } catch (error) {
-    //     this.error = 'Error resetting password';
-    //     if (error.response?.data?.message) {
-    //       this.error = error.response.data.message;
-    //     }
-    //   }
-    // },
+    async resetPassword() {
+      // TODO
+
+      // try {
+      //   this.error = null;
+      //   await this.$api.post('users/reset_password',
+      //     {
+      //       email: this.email,
+      //     });
+      //   this.toggleReset();
+      //   this.error = 'Password reset email sent, please check your email';
+      // } catch (error) {
+      //   this.error = 'Error resetting password';
+      //   if (error.response?.data?.message) {
+      //     this.error = error.response.data.message;
+      //   }
+      // }
+    },
   },
-})
+}
 </script>

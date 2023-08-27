@@ -14,7 +14,7 @@
           <QSelect
             outlined
             v-model="recyclingMethod"
-            :options="options"
+            :options="recyclingMethods"
             label="Method of recycling"
             style="width: 220px;"
           />
@@ -100,7 +100,29 @@ export default {
   data() {
     return {
       address: '131 Heeney Street, Chinchilla QLD 4413',
-      recyclingMethod: '',
+      recyclingMethod: 'Chemical processing',
+      recyclingMethods: [
+        {
+          label: 'Chemical processing',
+          value: 'chemical',
+        },
+        {
+          label: 'Electrochemical processing',
+          value: 'electrochemical',
+        },
+        {
+          label: 'Hydrometallurgical separation',
+          value: 'hydrometallurgical',
+        },
+        {
+          label: 'Mechanical processing',
+          value: 'mechanical',
+        },
+        {
+          label: 'Thermal processing',
+          value: 'thermal',
+        },
+      ],
       panels: [
         {
           id: 1,
