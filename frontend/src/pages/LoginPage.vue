@@ -62,6 +62,7 @@ export default {
       }
       this.error = null;
       try {
+        console.log('asd');
         const result = this.authStore.login({
           email: this.email,
           password: this.password,
