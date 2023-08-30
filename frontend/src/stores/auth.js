@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { api } from 'src/boot/axios';
 
 export const useAuthStore = defineStore({
     id: 'auth',
@@ -10,17 +11,18 @@ export const useAuthStore = defineStore({
         isLoggedIn: (state) => !!state.user,
     },
     actions: {
-        login(email, password) {
+        async login(email, password) {
             try {
-                // const user = await fetchWrapper.post(`${baseUrl}/authenticate`, { email, password });
-                const user = { id: 1, email, password };
+                const user = await api.post(`${baseUrl}/users/login`, { email, password });
+                // const user = { id: 1, email, password };
+                console.log(user);
 
                 this.user = user;
 
                 // store user details and jwt in local storage to keep user logged in between page refreshes
                 // localStorage.setItem('user', JSON.stringify(user));
 
-                this.router.push('/panels');
+                // this.router.push('/panels');
             } catch (error) {
                 console.log(error);
             }
