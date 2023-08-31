@@ -11,18 +11,16 @@ export const useAuthStore = defineStore({
         isLoggedIn: (state) => !!state.user,
     },
     actions: {
-        async login(email, password) {
+        async login(userDetails) {
             try {
-                const user = await api.post(`/users/login`, { email, password });
-                // const user = { id: 1, email, password };
-                console.log(user);
-
+                const user = await api.post(`/users/login`, {
+                    email: userDetails.email,
+                    password: userDetails.password
+                });
                 this.user = user;
 
                 // store user details and jwt in local storage to keep user logged in between page refreshes
-                // localStorage.setItem('user', JSON.stringify(user));
-
-                // this.router.push('/panels');
+                localStorage.setItem('user', JSON.stringify(user));
             } catch (error) {
                 console.log(error);
             }
