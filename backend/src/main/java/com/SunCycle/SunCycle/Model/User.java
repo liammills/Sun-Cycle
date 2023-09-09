@@ -4,15 +4,20 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-public class User {
+@Table(name = "users")
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Column(name = "user_id")
+    private int userId;
 
     @NotBlank(message = "Email is mandatory")
     @Email(message = "Email should be valid")
@@ -26,21 +31,30 @@ public class User {
     // Constructors, getters, setters, etc.
 
     public User() {
+        super();
+    }
+
+    public User(Integer userId, String email, String password) {
+        super();
+        this.userId = userId;
+        this.email = email;
+        this.password = password;
     }
 
     public User(String email, String password) {
+        super();
         this.email = email;
         this.password = password;
     }
 
     // Getters and setters for each field
 
-    public int getId() {
-        return id;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUserId(int id) {
+        this.userId = id;
     }
 
     public String getEmail() {
@@ -51,8 +65,38 @@ public class User {
         this.email = email;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     public void setPassword(String password) {
@@ -65,7 +109,7 @@ public class User {
             if (this == o)
                 return true;
 
-            return ((User) o).getId() == this.getId();
+            return ((User) o).getUserId() == this.getUserId();
         }
 
         return false;
@@ -73,7 +117,7 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(userId);
     }
 
 }

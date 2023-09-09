@@ -1,47 +1,56 @@
 package com.SunCycle.SunCycle.Controller;
 
+import com.SunCycle.SunCycle.Model.LoginResponseDTO;
 import com.SunCycle.SunCycle.Model.User;
 import com.SunCycle.SunCycle.Repository.UserRepository;
+import com.SunCycle.SunCycle.service.AuthenticationService;
+import com.SunCycle.SunCycle.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
-public class UserController {
+public class AuthenticationController {
 
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PasswordEncoder encoder;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private TokenService tokenService;
+
+    @Autowired
+    private AuthenticationService authenticationService;
+
     // Create a new user
     @PostMapping("/create")
-    public ResponseEntity<String> createUser(@RequestBody User user) {
+    public ResponseEntity<?> createUser(@RequestBody User user) {
 
         // Check if email already exists
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-            return ResponseEntity.badRequest().body("Email already in use.");
+            return ResponseEntity.badRequest().body("email already exists");
         }
 
-        // Save the new user
-        userRepository.save(user);
-        return ResponseEntity.ok("User created successfully.");
+        User registeredUser = authenticationService.registerUser(user.getUsername(), user.getPassword());
+        return ResponseEntity.ok(registeredUser);
 
     }
 
     // User login
     @PostMapping("/login")
-    public ResponseEntity<User> loginUser(@RequestBody User user) {
-        Optional<User> foundUser = userRepository.findByEmail(user.getEmail());
+    public LoginResponseDTO loginUser(@RequestBody User user) {
 
-        if (foundUser.isPresent() && foundUser.get().getPassword().equals(user.getPassword())) { // Assuming you're storing passwords in plain text for simplicity. In a real-world scenario, you'd use hashed passwords.
-            return ResponseEntity.ok(foundUser.get());
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null); // or return a custom error message
-        }
+        return authenticationService.loginUser(user.getUsername(), user.getPassword());
     }
 
     // Update user details
@@ -64,4 +73,5 @@ public class UserController {
 
         return ResponseEntity.ok(user);
     }
+
 }

@@ -7,7 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SunCycleApplication {
 
 	public static void main(String[] args) {
+		System.out.println("Starting SunCycle");
 		SpringApplication.run(SunCycleApplication.class, args);
 	}
+
 
 }
