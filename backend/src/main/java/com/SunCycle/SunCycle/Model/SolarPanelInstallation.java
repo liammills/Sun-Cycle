@@ -96,7 +96,7 @@ public class SolarPanelInstallation {
             if (this == o)
                 return true;
 
-            return ((User) o).getId() == this.getId();
+            return ((User) o).getUserId() == this.getId();
         }
 
         return false;
