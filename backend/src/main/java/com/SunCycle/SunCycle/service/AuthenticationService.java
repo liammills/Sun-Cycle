@@ -51,7 +51,7 @@ public class AuthenticationService  {
 
         } catch(AuthenticationException e){
             System.out.println(e);
-            return new LoginResponseDTO(null, "");
+            return new LoginResponseDTO("login error");
         }
     }
 
