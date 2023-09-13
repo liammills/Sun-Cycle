@@ -5,13 +5,12 @@ import com.SunCycle.SunCycle.Model.User;
 import com.SunCycle.SunCycle.Repository.UserRepository;
 import com.SunCycle.SunCycle.service.AuthenticationService;
 import com.SunCycle.SunCycle.service.TokenService;
+import com.SunCycle.SunCycle.service.UpdateUserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -32,6 +31,9 @@ public class AuthenticationController {
 
     @Autowired
     private AuthenticationService authenticationService;
+
+    @Autowired
+    private UpdateUserInfoService updateUserInfoService;
 
     // Create a new user
     @PostMapping("/create")
@@ -56,23 +58,9 @@ public class AuthenticationController {
 
     // Update user details
     @PutMapping("/{id}/update")
-    public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody User updateUserRequest) {
-        // Fetch the user by ID
-        Optional<User> userOptional = userRepository.findById(id);
-        if (!userOptional.isPresent()) {
-            return ResponseEntity.badRequest().body(null);
-        }
+    public LoginResponseDTO updateUser(@PathVariable int id, @RequestBody User updateUserRequest) {
 
-        User user = userOptional.get();
-
-        // Update the email and password
-        user.setEmail(updateUserRequest.getEmail());
-        user.setPassword(updateUserRequest.getPassword()); // Remember to hash the password before saving
-
-        // Save the updated user
-        userRepository.save(user);
-
-        return ResponseEntity.ok(user);
+        return updateUserInfoService.updateUserById(id, updateUserRequest.getEmail(), updateUserRequest.getPassword());
     }
 
 }
