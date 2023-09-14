@@ -66,6 +66,7 @@ public class SecurityConfig  {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/users/**").permitAll();
+                    auth.requestMatchers("/panels/**").permitAll();
                     auth.requestMatchers("/users/**").hasAnyRole("ADMIN", "USER");
                     auth.anyRequest().authenticated();
                 });

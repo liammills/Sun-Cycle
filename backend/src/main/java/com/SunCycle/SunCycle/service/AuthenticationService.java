@@ -44,7 +44,7 @@ public class AuthenticationService  {
             Authentication auth = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(username, password)
             );
-            System.out.println(auth == null);
+
             String token = tokenService.generateJwt(auth);
 
             return new LoginResponseDTO(userRepository.findByEmail(username).get(), token);
