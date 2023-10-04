@@ -1,5 +1,5 @@
 <template>
-  <q-page class="flex justify-center">
+  <QPage class="flex justify-center">
     <div class="main-container">
       <h1>{{ panelInstallationId ? 'Edit' : 'Add' }} a solar panel installation</h1>
       <div class="row justify-between q-mt-lg">
@@ -70,7 +70,8 @@
           <div class="text-smaller">
             Can’t find the model? 
             <a
-              class="text-underline"
+              class="text-underline cursor-pointer"
+              @click="showAddModelDialog = true"
             >
               Make a new one.
             </a>
@@ -84,7 +85,57 @@
         </div>
       </div>
     </div>
-  </q-page>
+    <QDialog v-model="showAddModelDialog">
+      <QCard
+        class="q-pa-lg"
+        style="width: 500px"
+      >
+        <div class="row items-center justify-between q-mb-md">
+          <div class="text-h6">Add New Model</div>
+          <QBtn
+            flat
+            no-caps
+            class="bg-primary text-white submit-button"
+            @click="submit()"
+          >
+            Save
+          </QBtn>
+        </div>
+        <div>
+          <QInput
+            outlined
+            label="Model Name"
+            v-model="newModelName"
+          />
+          <QSelect class="q-mt-sm q-mb-md" outlined v-model="selectedRecyclingMethod" :options="recyclingMethodOptions" label="Method of recycling"  />
+          <div class="q-mt-md">
+            <h3 class="q-pb-md">Material breakdown</h3>
+            <div class="q-gutter-lg row q-col-gutter-xs">
+              <div class="q-col-4" v-for="material in materials" :key="material.id">
+                <div
+                  class="row justify-between items-center"
+                  style="width: 190px"
+                >
+                  <span class="q-mr-md">{{ material.name }}</span>
+                  <QInput 
+                    outlined
+                    dense
+                    v-model.number="material.input" 
+                    type="number" 
+                    style="width: 100px;"
+                  >
+                    <template v-slot:append>
+                      <span style="font-size: 14px;">g</span>
+                    </template>
+                  </QInput>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </QCard>
+    </QDialog>
+  </QPage>
 </template>
 
 <script>
@@ -124,6 +175,16 @@ export default {
         },
       ],
       panels: [],
+      showAddModelDialog: false,
+      newModelName: '',
+      materials: [
+        { id: 1, name: 'Silicone', input: '' },
+        { id: 2, name: 'Silver', input: '' },
+        { id: 3, name: 'Polymers', input: '' },
+        { id: 4, name: 'Aluminium', input: '' },
+        { id: 5, name: 'Copper', input: '' },
+        { id: 6, name: 'Glass', input: '' }
+      ],
     }
   },
   mounted() {
@@ -164,6 +225,15 @@ export default {
     },
     async deletePanel(id) {
       this.panels = this.panels.filter((panel) => panel.id !== id);
+    },
+    addNewModel() {
+      if (this.newModelName) {
+        // TODO
+        console.log('New model:', this.newModelName);
+
+        this.showAddModelDialog = false;
+        this.newModelName = '';
+      }
     },
   },
 }
