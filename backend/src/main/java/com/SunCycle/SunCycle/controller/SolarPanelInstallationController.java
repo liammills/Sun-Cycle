@@ -1,8 +1,8 @@
-package com.SunCycle.SunCycle.Controller;
+package com.SunCycle.SunCycle.controller;
 
-import com.SunCycle.SunCycle.Model.SolarPanelInstallation;
-import com.SunCycle.SunCycle.Model.SolarPanelInstallationDTO;
-import com.SunCycle.SunCycle.Model.Status;
+import com.SunCycle.SunCycle.model.SolarPanelInstallation;
+import com.SunCycle.SunCycle.model.SolarPanelInstallationDTO;
+import com.SunCycle.SunCycle.model.Status;
 import com.SunCycle.SunCycle.service.SolarPanelInstallationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

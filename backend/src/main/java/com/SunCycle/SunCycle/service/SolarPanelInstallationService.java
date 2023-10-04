@@ -1,11 +1,11 @@
 package com.SunCycle.SunCycle.service;
 
-import com.SunCycle.SunCycle.Model.SolarPanelInstallation;
-import com.SunCycle.SunCycle.Model.SolarPanelInstallationDTO;
-import com.SunCycle.SunCycle.Model.Status;
-import com.SunCycle.SunCycle.Model.User;
-import com.SunCycle.SunCycle.Repository.SolarPanelInstallationRepository;
-import com.SunCycle.SunCycle.Repository.UserRepository;
+import com.SunCycle.SunCycle.model.SolarPanelInstallation;
+import com.SunCycle.SunCycle.model.SolarPanelInstallationDTO;
+import com.SunCycle.SunCycle.model.Status;
+import com.SunCycle.SunCycle.model.User;
+import com.SunCycle.SunCycle.repository.SolarPanelInstallationRepository;
+import com.SunCycle.SunCycle.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;

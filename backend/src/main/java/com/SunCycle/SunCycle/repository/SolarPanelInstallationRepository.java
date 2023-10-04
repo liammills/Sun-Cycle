@@ -1,6 +1,6 @@
-package com.SunCycle.SunCycle.Repository;
+package com.SunCycle.SunCycle.repository;
 
-import com.SunCycle.SunCycle.Model.SolarPanelInstallation;
+import com.SunCycle.SunCycle.model.SolarPanelInstallation;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
