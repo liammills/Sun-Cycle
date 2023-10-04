@@ -1,6 +1,6 @@
 package com.SunCycle.SunCycle.service;
 
-import com.SunCycle.SunCycle.Repository.UserRepository;
+import com.SunCycle.SunCycle.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

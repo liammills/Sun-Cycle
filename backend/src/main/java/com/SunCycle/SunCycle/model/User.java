@@ -1,4 +1,4 @@
-package com.SunCycle.SunCycle.Model;
+package com.SunCycle.SunCycle.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;

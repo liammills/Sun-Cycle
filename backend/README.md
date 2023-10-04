@@ -10,4 +10,3 @@
 6. From /backend, run `./cloud-sql-proxy confident-run-397114:australia-southeast1:suncycle`
 7. Run `mysql -u root -p --host 127.0.0.1 --port 3306`
 8. `gradle bootRun`
-
