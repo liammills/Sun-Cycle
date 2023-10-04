@@ -13,9 +13,9 @@
           />
           <QSelect
             outlined
-            v-model="selectedRecyclingMethod"
-            :options="recyclingMethodOptions"
-            label="Method of recycling"
+            v-model="selectedInstallationType"
+            :options="installationTypeOptions"
+            label="Type"
             style="width: 220px;"
           />
         </div>
@@ -151,6 +151,21 @@ export default {
   data() {
     return {
       address: '',
+      selectedInstallationType: '',
+      installationTypeOptions: [
+        {
+          label: 'Residential',
+          value: 'residential',
+        },
+        {
+          label: 'Commercial',
+          value: 'commercial',
+        },
+        {
+          label: 'Industrial',
+          value: 'industrial',
+        },
+      ],
       selectedRecyclingMethod: '',
       recyclingMethodOptions: [
         {
