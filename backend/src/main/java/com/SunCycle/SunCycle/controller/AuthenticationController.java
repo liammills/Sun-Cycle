@@ -1,8 +1,8 @@
-package com.SunCycle.SunCycle.Controller;
+package com.SunCycle.SunCycle.controller;
 
-import com.SunCycle.SunCycle.Model.LoginResponseDTO;
-import com.SunCycle.SunCycle.Model.User;
-import com.SunCycle.SunCycle.Repository.UserRepository;
+import com.SunCycle.SunCycle.model.LoginResponseDTO;
+import com.SunCycle.SunCycle.model.User;
+import com.SunCycle.SunCycle.repository.UserRepository;
 import com.SunCycle.SunCycle.service.AuthenticationService;
 import com.SunCycle.SunCycle.service.TokenService;
 import com.SunCycle.SunCycle.service.UpdateUserInfoService;

@@ -1,4 +1,4 @@
-package com.SunCycle.SunCycle.Model;
+package com.SunCycle.SunCycle.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

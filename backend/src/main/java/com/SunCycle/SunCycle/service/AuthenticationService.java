@@ -1,8 +1,8 @@
 package com.SunCycle.SunCycle.service;
 
-import com.SunCycle.SunCycle.Model.LoginResponseDTO;
-import com.SunCycle.SunCycle.Model.User;
-import com.SunCycle.SunCycle.Repository.UserRepository;
+import com.SunCycle.SunCycle.model.LoginResponseDTO;
+import com.SunCycle.SunCycle.model.User;
+import com.SunCycle.SunCycle.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
