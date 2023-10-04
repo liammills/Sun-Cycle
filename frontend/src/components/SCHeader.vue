@@ -11,6 +11,7 @@
           <div
             v-if="!loggedIn"
             class="header-text cursor-pointer orange-hover q-mr-lg q-mt-xs"
+            @click="$router.push('/about')"
           >
             About Us
           </div>

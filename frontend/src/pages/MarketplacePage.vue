@@ -5,12 +5,12 @@
         <h1>Discover installations</h1>
         <div class="row q-my-xl">
           <div class="column q-mr-md">
-            <QSelect class="q-mb-md" outlined v-model="recmethodselect" :options="recmethods" label="Method of recycling" style="width: 300px;" />
+            <QSelect class="q-mb-md" outlined v-model="selectedRecyclingMethod" :options="recyclingMethodOptions" label="Method of recycling" style="width: 300px;" />
             <QInput outlined v-model="text" label="City/town" />
           </div>
           <div class="column">
             <QInput class="q-mb-md" outlined v-model="text" type="date" label="Retired by" />
-            <QSelect outlined v-model="stateselect" :options="states" label="State" />
+            <QSelect outlined v-model="selectedState" :options="stateOptions" label="State" />
           </div>
         </div>
         <h3 class="q-mb-md">Material breakdown</h3>
@@ -96,22 +96,66 @@
 </template>
 
 <script>
-import { ref } from 'vue'
-
 export default {
   name: 'MarketplacePage',
   data() {
     return {
-      states: ["NSW", "QLD", "SA", "TAS", "VIC", "WA" ],
-      stateselect: ref(null),
+      stateOptions: ["NSW", "QLD", "SA", "TAS", "VIC", "WA" ],
+      selectedState: '',
 
-      recmethods: ["Chemical processing", "Electrochemical processing", "Hydrometallurgical separation", "Mechanical processing", "Thermal processing"],
-      recmethodselect: ref(null),
+      recyclingMethodOptions: ["Chemical processing", "Electrochemical processing", "Hydrometallurgical separation", "Mechanical processing", "Thermal processing"],
+      selectedRecyclingMethod: '',
 
-      siliconeinput: ref(null),
+      siliconeinput: '',
       center: {lat: 51.093048, lng: 6.842120},
+
+      markers: [],
     };
   },
+  mounted() {
+    this.loadMapData();
+  },
+  watch: {
+    center: function() {
+      this.loadMapData();
+    },
+    selectedState: function() {
+      this.loadMapData();
+    },
+    selectedRecyclingMethod: function() {
+      this.loadMapData();
+    },
+  },
+  methods: {
+    async loadMapData() {
+      try {
+        const response = await this.$api.get('/map',
+          {
+            params: {
+              latitude: this.center.lat,
+              longitude: this.center.lng,
+              radius: 100000,
+              state: this.selectedState,
+              recycling_method: this.selectedRecyclingMethod,
+            },
+          },
+        );
+        const markers = response.data.map(marker => {
+          return {
+            position: {
+              lat: panel.latitude,
+              lng: panel.longitude,
+            },
+            title: panel.name,
+            icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
+          };
+        });
+        this.markers = markers;
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
 }
 </script>
 

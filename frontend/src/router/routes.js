@@ -5,6 +5,16 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {
+        path: '',
+        name: 'home',
+        component: () => import('pages/HomePage.vue')
+      },
+      {
+        path: 'about',
+        name: 'about',
+        component: () => import('pages/AboutPage.vue')
+      },
+      {
         path: 'login',
         component: () => import('pages/LoginPage.vue')
       },

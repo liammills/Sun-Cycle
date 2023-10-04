@@ -36,7 +36,7 @@
             <div class="row justify-between items-center">
               <h3 style="font-weight: 600">{{ panel.address }}</h3>
               <div class="row items-center q-mt-xs">
-                <QBtn
+                <!-- <QBtn
                   size="md"
                   icon="add"
                   no-caps
@@ -48,7 +48,7 @@
                   @click="$router.push(`/panels/${panel.id}/edit`)"
                 >
                   <QTooltip>Add a panel</QTooltip>
-                </QBtn>
+                </QBtn> -->
                 <QBtn
                   size="md"
                   icon="edit"
@@ -198,26 +198,29 @@ export default {
       ],
     };
   },
-  // methods: {
-  //   // async getPanels() {
-  //   //   // try {
-  //   //   //   const result = await this.$store.dispatch('login/login', {
-  //   //   //     email: this.email,
-  //   //   //     password: this.password,
-  //   //   //   });
+  methods: {
+    async getPanels() {
+      // try {
+      //   const result = await this.$store.dispatch('login/login', {
+      //     email: this.email,
+      //     password: this.password,
+      //   });
 
-  //   //   //   if (!result) {
-  //   //   //     this.password = '';
-  //   //   //     this.error = 'Invalid login. Please try again';
-  //   //   //   }
-  //   //   //   this.$router.push(this.redirect || '/panels');
-  //   //   // } catch (error) {
-  //   //   //   this.password = '';
-  //   //   //   if (error.response?.data?.message) {
-  //   //   //     this.error = error.response.data.message;
-  //   //   //   }
-  //   //   // }
-  //   // },
-  // },
+      //   if (!result) {
+      //     this.password = '';
+      //     this.error = 'Invalid login. Please try again';
+      //   }
+      //   this.$router.push(this.redirect || '/panels');
+      // } catch (error) {
+      //   this.password = '';
+      //   if (error.response?.data?.message) {
+      //     this.error = error.response.data.message;
+      //   }
+      // }
+    },
+    exportData() {
+      console.log('use papaparse to export data');
+    }
+  },
 }
 </script>
