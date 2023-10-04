@@ -13,8 +13,8 @@
           />
           <QSelect
             outlined
-            v-model="recyclingMethod"
-            :options="recyclingMethods"
+            v-model="selectedRecyclingMethod"
+            :options="recyclingMethodOptions"
             label="Method of recycling"
             style="width: 220px;"
           />
@@ -99,9 +99,9 @@ export default {
   },
   data() {
     return {
-      address: '131 Heeney Street, Chinchilla QLD 4413',
-      recyclingMethod: 'Chemical processing',
-      recyclingMethods: [
+      address: '',
+      selectedRecyclingMethod: '',
+      recyclingMethodOptions: [
         {
           label: 'Chemical processing',
           value: 'chemical',
@@ -123,7 +123,20 @@ export default {
           value: 'thermal',
         },
       ],
-      panels: [
+      panels: [],
+    }
+  },
+  mounted() {
+    if (this.panelInstallationId) {
+      this.getPanelInstallation();
+    }
+  },
+  methods: {
+    async getPanelInstallation() {
+      // TODO
+      this.address = '131 Heeney Street, Chinchilla QLD 4413';
+      this.selectedRecyclingMethod = 'Chemical processing';
+      this.panels = [
         {
           id: 1,
           model: 'SunPower Maxeon',
@@ -136,15 +149,7 @@ export default {
           qty: 40,
           installation_date: '2021-08-27',
         },
-      ],
-    }
-  },
-  mounted() {
-    this.getPanelInstallation();
-  },
-  methods: {
-    async getPanelInstallation() {
-      // TODO
+      ];
     },
     async savePanelInstallation() {
       // TODO

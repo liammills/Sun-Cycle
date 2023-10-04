@@ -219,7 +219,7 @@ export default {
       // }
     },
     exportData() {
-      console.log('use papaparse to export data');
+      console.log('use papa parse to export data');
     }
   },
 }
