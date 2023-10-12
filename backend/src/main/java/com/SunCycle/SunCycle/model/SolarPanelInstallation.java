@@ -1,23 +1,22 @@
 package com.SunCycle.SunCycle.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.Objects;
 
 @Entity
+@Table(name = "solar_panel_installation")
 public class SolarPanelInstallation {
 
     @Id
+    @Column(name = "installation_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotNull(message = "User ID is mandatory")
-    private int userId;
-
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    private User user;
 
     private String geoLocation;
     private String address;
@@ -30,9 +29,9 @@ public class SolarPanelInstallation {
     public SolarPanelInstallation() {
     }
 
-    public SolarPanelInstallation(int userId, String geoLocation, String address,
+    public SolarPanelInstallation(User user, String geoLocation, String address,
                                   String state, int postcode, String type) {
-        this.userId = userId;
+        this.user = user;
         this.geoLocation = geoLocation;
         this.address = address;
         this.state = state;
@@ -50,12 +49,12 @@ public class SolarPanelInstallation {
         this.id = id;
     }
 
-    public int getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getGeoLocation() {
@@ -122,4 +121,5 @@ public class SolarPanelInstallation {
         this.setState(installation.getState());
         this.setType(installation.getType());
     }
+
 }

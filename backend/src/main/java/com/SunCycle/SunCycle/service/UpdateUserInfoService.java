@@ -1,6 +1,6 @@
 package com.SunCycle.SunCycle.service;
 
-import com.SunCycle.SunCycle.model.LoginResponseDTO;
+import com.SunCycle.SunCycle.dto.LoginResponseDTO;
 import com.SunCycle.SunCycle.model.User;
 import com.SunCycle.SunCycle.repository.UserRepository;
 import jakarta.transaction.Transactional;

@@ -1,4 +1,4 @@
-package com.SunCycle.SunCycle.model;
+package com.SunCycle.SunCycle.dto;
 
 public enum Status {
     SUCCESS,
