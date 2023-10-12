@@ -49,34 +49,46 @@ public class SolarPanelService {
         return new SolarPanelDTO(solarPanelRepository.save(panel), Status.SUCCESS);
     }
 
-//    public SolarPanelDTO updatePanel(int panelId, SolarPanel newPanel) {
-//        Optional<SolarPanel> panelOpt = solarPanelRepository.findById(panelId); // Using provided panelId for fetching.
-//
-//        if (panelOpt.isEmpty()) {
-//            return new SolarPanelDTO("Panel not found", Status.NOT_FOUND);
-//        }
-//
-//        SolarPanel panel = panelOpt.get();
-//
-//        panel.setInstallationDate(newPanel.getInstallationDate());
-//        panel.setRetirementDate(newPanel.getRetirementDate());
-//        panel.setRecyclingMethod(newPanel.getRecyclingMethod());
-//        panel.setInstallation(newPanel.getInstallation());
-//        panel.setModel(newPanel.getModel());
-//
-//        return prepareResponseDTO(panel);
-//    }
-//
-//    public SolarPanelDTO deletePanel(int panelId) {
-//        Optional<SolarPanel> panelOpt = solarPanelRepository.findById(panelId);
-//
-//        if (panelOpt.isEmpty()) {
-//            return new SolarPanelDTO("Panel not found", Status.NOT_FOUND);
-//        }
-//
-//        solarPanelRepository.delete(panelOpt.get());
-//
-//        return new SolarPanelDTO("Panel deleted successfully", Status.SUCCESS);
-//    }
+    public SolarPanelDTO updatePanel(int panelId, SolarPanelDTO dto) {
+        // try to fetch panel by given id
+        Optional<SolarPanel> panelOpt = solarPanelRepository.findById(panelId);
+
+        if (panelOpt.isEmpty())
+            return new SolarPanelDTO("Panel not found", Status.NOT_FOUND);
+
+        SolarPanel panel = panelOpt.get();
+
+        // update panel
+        // check if new model exists
+        Optional<SolarPanelModel> model = solarPanelModelRepository.findById(dto.getModelId());
+        if (model.isEmpty())
+            return new SolarPanelDTO("Model not found", Status.NOT_FOUND);
+        panel.setModel(model.get());
+
+        // check if new installation exists
+        Optional<SolarPanelInstallation> installation = solarPanelInstallationRepository.findById(dto.getInstallationId());
+        if (installation.isEmpty())
+            return new SolarPanelDTO("Installation not found", Status.NOT_FOUND);
+        panel.setInstallation(installation.get());
+
+        // update the rest fields
+        panel.setInstallationDate(dto.getInstallationDate());
+        panel.setRetirementDate(dto.getRetirementDate());
+        panel.setRecyclingMethod(dto.getRecyclingMethod());
+
+        return new SolarPanelDTO(solarPanelRepository.save(panel), Status.SUCCESS);
+    }
+
+    public SolarPanelDTO deletePanel(int panelId) {
+        // try to fetch panel by given id
+        Optional<SolarPanel> panelOpt = solarPanelRepository.findById(panelId);
+
+        if (panelOpt.isEmpty())
+            return new SolarPanelDTO("Panel not found", Status.NOT_FOUND);
+
+        solarPanelRepository.delete(panelOpt.get());
+
+        return new SolarPanelDTO("Panel deleted successfully", Status.SUCCESS);
+    }
 
 }
