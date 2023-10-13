@@ -8,12 +8,13 @@ public class MarketRequestDTO {
     private String retirementDate;
     private String city;
     private String state;
-    private Map<Breakdown, Double> breakdown;
+
+    private Map<String, Double> breakdown;
 
     // constructors
     public MarketRequestDTO() {}
 
-    public MarketRequestDTO(String recyclingMethod, String retirementDate, String city, String state, Map<Breakdown, Double> breakdown) {
+    public MarketRequestDTO(String recyclingMethod, String retirementDate, String city, String state, Map<String, Double> breakdown) {
         this.recyclingMethod = recyclingMethod;
         this.retirementDate = retirementDate;
         this.city = city;
@@ -55,51 +56,51 @@ public class MarketRequestDTO {
     }
 
     public double getPolymers() {
-        return breakdown.get(Breakdown.POLYMERS);
+        return breakdown.get("polymers");
     }
 
     public void setPolymers(double polymers) {
-        breakdown.put(Breakdown.POLYMERS, polymers);
+        breakdown.put("polymers", polymers);
     }
 
     public double getSilicon() {
-        return breakdown.get(Breakdown.SILICON);
+        return breakdown.get("silicon");
     }
 
     public void setSilicon(double silicon) {
-        breakdown.put(Breakdown.SILICON, silicon);
+        breakdown.put("silicon", silicon);
     }
 
     public double getCopper() {
-        return breakdown.get(Breakdown.COPPER);
+        return breakdown.get("copper");
     }
 
     public void setCopper(double copper) {
-        breakdown.put(Breakdown.COPPER, copper);
+        breakdown.put("copper", copper);
     }
 
     public double getGlass() {
-        return breakdown.get(Breakdown.GLASS);
+        return breakdown.get("glass");
     }
 
     public void setGlass(double glass) {
-        breakdown.put(Breakdown.GLASS, glass);
+        breakdown.put("glass", glass);
     }
 
     public double getSilver() {
-        return breakdown.get(Breakdown.SILVER);
+        return breakdown.get("silver");
     }
 
     public void setSilver(double silver) {
-        breakdown.put(Breakdown.SILVER, silver);
+        breakdown.put("silver", silver);
     }
 
     public double getAluminium() {
-        return breakdown.get(Breakdown.ALUMINIUM);
+        return breakdown.get("aluminium");
     }
 
     public void setAluminium(double aluminium) {
-        breakdown.put(Breakdown.ALUMINIUM, aluminium);
+        breakdown.put("aluminium", aluminium);
     }
 
 }
