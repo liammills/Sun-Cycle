@@ -11,42 +11,51 @@ public class SolarPanelModel {
     @Column(name = "model_id")
     private int id;
 
-    private float mass;
-    private float silicon;
-    private float copper;
-    private float glass;
-    private float silver;
-    private float aluminium;
+    private double polymers;
+    private double silicon;
+    private double copper;
+    private double glass;
+    private double silver;
+    private double aluminium;
 
-    // constructor
+    // constructors
     public SolarPanelModel() {}
+
+    public SolarPanelModel(double polymers, double silicon, double copper, double glass, double silver, double aluminium) {
+        this.polymers = polymers;
+        this.silicon = silicon;
+        this.copper = copper;
+        this.glass = glass;
+        this.silver = silver;
+        this.aluminium = aluminium;
+    }
 
     // getters
     public int getId() {
         return id;
     }
 
-    public float getMass() {
-        return mass;
+    public double getPolymers() {
+        return polymers;
     }
 
-    public float getSilicon() {
+    public double getSilicon() {
         return silicon;
     }
 
-    public float getCopper() {
+    public double getCopper() {
         return copper;
     }
 
-    public float getGlass() {
+    public double getGlass() {
         return glass;
     }
 
-    public float getSilver() {
+    public double getSilver() {
         return silver;
     }
 
-    public float getAluminium() {
+    public double getAluminium() {
         return aluminium;
     }
 
@@ -55,27 +64,27 @@ public class SolarPanelModel {
         this.id = id;
     }
 
-    public void setMass(float mass) {
-        this.mass = mass;
+    public void setPolymers(double polymers) {
+        this.polymers = polymers;
     }
 
-    public void setSilicon(float silicon) {
+    public void setSilicon(double silicon) {
         this.silicon = silicon;
     }
 
-    public void setCopper(float copper) {
+    public void setCopper(double copper) {
         this.copper = copper;
     }
 
-    public void setGlass(float glass) {
+    public void setGlass(double glass) {
         this.glass = glass;
     }
 
-    public void setSilver(float silver) {
+    public void setSilver(double silver) {
         this.silver = silver;
     }
 
-    public void setAluminium(float aluminium) {
+    public void setAluminium(double aluminium) {
         this.aluminium = aluminium;
     }
 
