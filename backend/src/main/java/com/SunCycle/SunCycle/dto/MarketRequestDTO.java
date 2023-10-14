@@ -1,5 +1,8 @@
 package com.SunCycle.SunCycle.dto;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 public class MarketRequestDTO {
@@ -31,8 +34,8 @@ public class MarketRequestDTO {
         this.recyclingMethod = recyclingMethod;
     }
 
-    public String getRetirementDate() {
-        return retirementDate;
+    public Date getRetirementDate() {
+        try { return stringToDate(retirementDate); } catch (ParseException e) { return null; }
     }
 
     public void setRetirementDate(String retirementDate) {
@@ -101,6 +104,11 @@ public class MarketRequestDTO {
 
     public void setAluminium(double aluminium) {
         breakdown.put("aluminium", aluminium);
+    }
+
+    private Date stringToDate(String dateStr) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        return formatter.parse(dateStr);
     }
 
 }

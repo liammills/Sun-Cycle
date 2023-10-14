@@ -88,7 +88,7 @@ public class SolarPanel {
     }
 
     private Date stringToDate(String dateStr) throws ParseException {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         return formatter.parse(dateStr);
     }
 
