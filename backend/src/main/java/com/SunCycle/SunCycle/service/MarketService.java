@@ -164,7 +164,6 @@ public class MarketService {
         // get lat, lng
         double lat = root.get("results").get(0).get("geometry").get("location").get("lat").asDouble();
         double lng = root.get("results").get(0).get("geometry").get("location").get("lng").asDouble();
-        System.out.println("lat: " + lat + " lng: " + lng);
 
         return new double[]{lat, lng};
     }
@@ -180,7 +179,6 @@ public class MarketService {
                         Math.sin(dLng / 2) * Math.sin(dLng / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-        System.out.println("distance: " + earthRadius * c);
         return earthRadius * c;
     }
 
