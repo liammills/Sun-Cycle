@@ -10,6 +10,8 @@ import com.SunCycle.SunCycle.repository.SolarPanelInstallationRepository;
 import com.SunCycle.SunCycle.repository.SolarPanelModelRepository;
 import com.SunCycle.SunCycle.repository.SolarPanelRepository;
 import com.SunCycle.SunCycle.utils.GeocodeResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -96,9 +98,10 @@ public class MarketService {
     // find solar panels by location
     private List<SolarPanel> findPanelsByLocation(MarketRequestDTO dto) {
         // get lat, lng for the query location
-        GeocodeResponse queryLocation = getGeocodeResponse(dto.getCity() + ", " + dto.getState() + ", AU");
-        double queryLat = queryLocation.getLat();
-        double queryLng = queryLocation.getLng();
+        double[] queryGeoLocation = getLatAndLng(dto.getCity() + ", " + dto.getState() + ", AU");
+        assert queryGeoLocation != null;
+        double queryLat = queryGeoLocation[0];
+        double queryLng = queryGeoLocation[1];
 
         // check if each installation satisfies the location requirement
         List<SolarPanelInstallation> goodInstallations = (List<SolarPanelInstallation>) solarPanelInstallationRepository.findAll();
@@ -115,10 +118,16 @@ public class MarketService {
             }
         }
 
+        // compute a list of installation ids
+        List<Integer> installationIds = new ArrayList<>();
+        for (SolarPanelInstallation installation: goodInstallations) {
+            installationIds.add(installation.getId());
+        }
+
         // return a list of panels that are associated with good installations
         List<SolarPanel> result = new ArrayList<>();
         for (SolarPanel panel: solarPanelRepository.findAll()) {
-            if ( goodInstallations.contains(panel.getInstallation()) ) {
+            if ( installationIds.contains(panel.getInstallation().getId()) ) {
                 result.add(panel);
             }
         }
@@ -126,22 +135,8 @@ public class MarketService {
         return result;
     }
 
-    // map response instance
-    private GeocodeResponse getGeocodeResponse(String address) {
-        // get response
-        String jsonResponse = getGeocodeData(address);
-        ObjectMapper mapper = new ObjectMapper();
-
-        // parse response
-        try {
-            return mapper.readValue(jsonResponse, GeocodeResponse.class);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
     // google map api helper
-    private String getGeocodeData(String address) {
+    private double[] getLatAndLng(String address) {
         // init REST template
         RestTemplate restTemplate = new RestTemplate();
 
@@ -153,22 +148,50 @@ public class MarketService {
         String finalUrl = baseUrl + "?address=" + address + "&key=" + apiKey;
 
         // get response as a long string
-        ResponseEntity<String> response = restTemplate.getForEntity(finalUrl, String.class);
-        return response.getBody();
+        String response = restTemplate.getForEntity(finalUrl, String.class).getBody();
+
+        // parse json string into readable object
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode root;
+
+        try {
+            root = mapper.readTree(response);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace(System.out);
+            return null;
+        }
+
+        // get lat, lng
+        double lat = root.get("results").get(0).get("geometry").get("location").get("lat").asDouble();
+        double lng = root.get("results").get(0).get("geometry").get("location").get("lng").asDouble();
+        System.out.println("lat: " + lat + " lng: " + lng);
+
+        return new double[]{lat, lng};
     }
 
     private double haversineDistance(double lat1, double lng1, double lat2, double lng2) {
-        int earthRadius = 6371; // kilometers
+        int earthRadius = 6371; // km
 
         double dLat = Math.toRadians(lat2 - lat1);
-        double dLon = Math.toRadians(lng2 - lng1);
+        double dLng = Math.toRadians(lng2 - lng1);
 
         double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
                 Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
-                        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+                        Math.sin(dLng / 2) * Math.sin(dLng / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-        return earthRadius * c; // returns distance in kilometers
+        System.out.println("distance: " + earthRadius * c);
+        return earthRadius * c;
+    }
+
+    private void printPanelList(List<SolarPanel> list) {
+        if (list.isEmpty()) {
+            System.out.println("Nothing inside the list!");
+            return;
+        }
+        for (SolarPanel panel: list) {
+            System.out.println(panel.getId());
+        }
     }
 
 }

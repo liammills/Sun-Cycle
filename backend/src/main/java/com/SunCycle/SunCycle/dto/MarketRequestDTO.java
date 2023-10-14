@@ -58,6 +58,14 @@ public class MarketRequestDTO {
         this.state = state;
     }
 
+    public Map<String, Double> getBreakdown() {
+        return breakdown;
+    }
+
+    public void setBreakdown(Map<String, Double> breakdown) {
+        this.breakdown = breakdown;
+    }
+
     public double getPolymers() {
         return breakdown.get("polymers");
     }
