@@ -27,6 +27,7 @@ dependencies {
 
 	// Spring Boot Starter Test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
 
 	// MySQL
 	implementation 'mysql:mysql-connector-java:8.0.28'
@@ -42,6 +43,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+
+
 }
 
 tasks.named('test') {

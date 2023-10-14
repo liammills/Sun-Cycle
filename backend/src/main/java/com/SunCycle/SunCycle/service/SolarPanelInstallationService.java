@@ -1,10 +1,12 @@
 package com.SunCycle.SunCycle.service;
 
-import com.SunCycle.SunCycle.dto.SolarPanelInstallationDTO;
+import com.SunCycle.SunCycle.dto.SolarPanelInstallationRequestDTO;
+import com.SunCycle.SunCycle.dto.SolarPanelInstallationResponseDTO;
 import com.SunCycle.SunCycle.dto.Status;
-import com.SunCycle.SunCycle.model.*;
+import com.SunCycle.SunCycle.model.SolarPanel;
+import com.SunCycle.SunCycle.model.SolarPanelInstallation;
+import com.SunCycle.SunCycle.model.User;
 import com.SunCycle.SunCycle.repository.SolarPanelInstallationRepository;
-import com.SunCycle.SunCycle.repository.SolarPanelModelRepository;
 import com.SunCycle.SunCycle.repository.SolarPanelRepository;
 import com.SunCycle.SunCycle.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +28,7 @@ public class SolarPanelInstallationService {
     @Autowired
     private UserRepository userRepository;
 
-    public SolarPanelInstallationDTO createSolarPanelInstallation(SolarPanelInstallationDTO dto) {
+    public SolarPanelInstallationResponseDTO createSolarPanelInstallation(SolarPanelInstallationRequestDTO dto) {
         // convert dto to installation instance
         SolarPanelInstallation installation = new SolarPanelInstallation();
 
@@ -35,7 +37,7 @@ public class SolarPanelInstallationService {
         if (userOpt.isPresent())
             installation.setUser(userOpt.get());
         else
-            return new SolarPanelInstallationDTO("User not found", Status.NOT_FOUND);
+            return new SolarPanelInstallationResponseDTO("User not found", Status.NOT_FOUND);
 
         // set other fields
         installation.setGeoLocation(dto.getGeoLocation());
@@ -44,32 +46,32 @@ public class SolarPanelInstallationService {
         installation.setState(dto.getState());
         installation.setType(dto.getType());
 
-        return new SolarPanelInstallationDTO(solarPanelInstallationRepository.save(installation), Status.SUCCESS);
+        return new SolarPanelInstallationResponseDTO(solarPanelInstallationRepository.save(installation), Status.SUCCESS);
     }
 
-    public SolarPanelInstallationDTO updateSolarPanelInstallation(Authentication authentication, int panelId, SolarPanelInstallationDTO dto) {
+    public SolarPanelInstallationResponseDTO updateSolarPanelInstallation(Authentication authentication, int panelId, SolarPanelInstallationRequestDTO dto) {
         // try to find installation
         Optional<SolarPanelInstallation> installationOptional = solarPanelInstallationRepository.findById(panelId);
         if (installationOptional.isEmpty()) {
-            return new SolarPanelInstallationDTO("Installation not found", Status.NOT_FOUND);
+            return new SolarPanelInstallationResponseDTO("Installation not found", Status.NOT_FOUND);
         }
         SolarPanelInstallation oldInstallation = installationOptional.get();
 
         // check if user id matches
         if (oldInstallation.getUser().getUserId() != dto.getUserId()) {
-            return new SolarPanelInstallationDTO("Invalid user id", Status.ERROR);
+            return new SolarPanelInstallationResponseDTO("Invalid user id", Status.ERROR);
         }
 
         // try to find current user
         Optional<User> userOptional = userRepository.findByEmail(authentication.getName());
         if (userOptional.isEmpty()) {
-            return new SolarPanelInstallationDTO("Invalid user id", Status.NOT_FOUND);
+            return new SolarPanelInstallationResponseDTO("Invalid user id", Status.NOT_FOUND);
         }
         User user = userOptional.get();
 
         // check if user id matches
         if (oldInstallation.getUser().getUserId() != user.getUserId()){
-            return new SolarPanelInstallationDTO("Invalid user id", Status.ERROR);
+            return new SolarPanelInstallationResponseDTO("Invalid user id", Status.ERROR);
         }
 
         // convert dto to installation instance
@@ -85,14 +87,14 @@ public class SolarPanelInstallationService {
         oldInstallation.update(installation);
         solarPanelInstallationRepository.save(oldInstallation);
 
-        return new SolarPanelInstallationDTO(oldInstallation, Status.SUCCESS);
+        return new SolarPanelInstallationResponseDTO(oldInstallation, Status.SUCCESS);
     }
 
-    public SolarPanelInstallationDTO deleteInstallation(Authentication authentication, int panelId) {
+    public SolarPanelInstallationResponseDTO deleteInstallation(Authentication authentication, int panelId) {
         // try to find installation by id
         Optional<SolarPanelInstallation> installationOptional = solarPanelInstallationRepository.findById(panelId);
         if (installationOptional.isEmpty()) {
-            return new SolarPanelInstallationDTO("Invalid panel id", Status.NOT_FOUND);
+            return new SolarPanelInstallationResponseDTO("Invalid panel id", Status.NOT_FOUND);
         }
 
         SolarPanelInstallation found = installationOptional.get();
@@ -100,13 +102,13 @@ public class SolarPanelInstallationService {
         // try to find user
         Optional<User> userOptional = userRepository.findByEmail(authentication.getName());
         if (userOptional.isEmpty()) {
-            return new SolarPanelInstallationDTO("Invalid user id", Status.NOT_FOUND);
+            return new SolarPanelInstallationResponseDTO("Invalid user id", Status.NOT_FOUND);
         }
         User user = userOptional.get();
 
         // check if user id matches
         if (user.getUserId() != found.getUser().getUserId()){
-            return new SolarPanelInstallationDTO("Invalid user id", Status.ERROR);
+            return new SolarPanelInstallationResponseDTO("Invalid user id", Status.ERROR);
         }
 
         // fetch all panels related to this installation
@@ -123,7 +125,7 @@ public class SolarPanelInstallationService {
 
         // delete installation
         solarPanelInstallationRepository.delete(found);
-        return new SolarPanelInstallationDTO(found, Status.SUCCESS);
+        return new SolarPanelInstallationResponseDTO(found, Status.SUCCESS);
     }
 
     public List<SolarPanelInstallation> getInstallationsByEmail(String email) {
