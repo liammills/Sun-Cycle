@@ -27,9 +27,16 @@ dependencies {
 
 	// Spring Boot Starter Test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
 
 	// MySQL
 	implementation 'mysql:mysql-connector-java:8.0.28'
+
+	// Spring Cloud GCP Cloud SQL MySQL Starter
+	implementation group: 'org.springframework.cloud', name: 'spring-cloud-gcp-starter-sql-mysql', version: '1.2.8.RELEASE'
+
+	// Mysql Socket Factory Connector
+	implementation 'com.google.cloud.sql:mysql-socket-factory-connector-j-8:1.13.1'
 
 	// Authentication token
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
@@ -37,8 +44,12 @@ dependencies {
 
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 
+	// JSON parser
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.7.1'
+}
 
-
+bootRun {
+	environment 'GOOGLE_MAPS_API_KEY', System.getenv('GOOGLE_MAPS_API_KEY')
 }
 
 tasks.named('test') {

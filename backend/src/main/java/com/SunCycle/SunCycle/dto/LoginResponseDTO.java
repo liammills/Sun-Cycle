@@ -1,4 +1,6 @@
-package com.SunCycle.SunCycle.model;
+package com.SunCycle.SunCycle.dto;
+
+import com.SunCycle.SunCycle.model.User;
 
 public class LoginResponseDTO {
     private User user;
