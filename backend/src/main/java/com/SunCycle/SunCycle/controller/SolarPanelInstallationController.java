@@ -1,6 +1,7 @@
 package com.SunCycle.SunCycle.controller;
 
-import com.SunCycle.SunCycle.dto.SolarPanelInstallationDTO;
+import com.SunCycle.SunCycle.dto.SolarPanelInstallationRequestDTO;
+import com.SunCycle.SunCycle.dto.SolarPanelInstallationResponseDTO;
 import com.SunCycle.SunCycle.dto.Status;
 import com.SunCycle.SunCycle.model.SolarPanelInstallation;
 import com.SunCycle.SunCycle.service.SolarPanelInstallationService;
@@ -19,8 +20,8 @@ public class SolarPanelInstallationController {
     private SolarPanelInstallationService solarPanelInstallationService;
 
     @PostMapping("/create")
-    public ResponseEntity<?> createInstallation(@RequestBody SolarPanelInstallationDTO dto) {
-        SolarPanelInstallationDTO result = solarPanelInstallationService.createSolarPanelInstallation(dto);
+    public ResponseEntity<?> createInstallation(@RequestBody SolarPanelInstallationRequestDTO dto) {
+        SolarPanelInstallationResponseDTO result = solarPanelInstallationService.createSolarPanelInstallation(dto);
 
         if (result.getStatus() == Status.NOT_FOUND || result.getStatus() == Status.ERROR) {
             return ResponseEntity.badRequest().body(result.getMessage());
@@ -30,8 +31,8 @@ public class SolarPanelInstallationController {
     }
 
     @PutMapping("/{installationId}/update")
-    public ResponseEntity<?> updateInstallation(Authentication authentication, @PathVariable int installationId, @RequestBody SolarPanelInstallationDTO dto) {
-        SolarPanelInstallationDTO result = solarPanelInstallationService.updateSolarPanelInstallation(authentication, installationId, dto);
+    public ResponseEntity<?> updateInstallation(Authentication authentication, @PathVariable int installationId, @RequestBody SolarPanelInstallationRequestDTO dto) {
+        SolarPanelInstallationResponseDTO result = solarPanelInstallationService.updateSolarPanelInstallation(authentication, installationId, dto);
 
         if (result.getStatus() == Status.NOT_FOUND || result.getStatus() == Status.ERROR) {
             return ResponseEntity.badRequest().body(result.getMessage());
@@ -42,7 +43,7 @@ public class SolarPanelInstallationController {
 
     @DeleteMapping("/{installationId}/delete")
     public ResponseEntity<?> deleteInstallation(Authentication authentication, @PathVariable int installationId) {
-        SolarPanelInstallationDTO result = solarPanelInstallationService.deleteInstallation(authentication, installationId);
+        SolarPanelInstallationResponseDTO result = solarPanelInstallationService.deleteInstallation(authentication, installationId);
 
         if (result.getStatus() == Status.NOT_FOUND || result.getStatus() == Status.ERROR) {
             return ResponseEntity.badRequest().body(result.getMessage());

@@ -1,9 +1,8 @@
 package com.SunCycle.SunCycle.controller;
 
-import com.SunCycle.SunCycle.dto.SolarPanelDTO;
-import com.SunCycle.SunCycle.dto.SolarPanelInstallationDTO;
+import com.SunCycle.SunCycle.dto.SolarPanelRequestDTO;
+import com.SunCycle.SunCycle.dto.SolarPanelResponseDTO;
 import com.SunCycle.SunCycle.dto.Status;
-import com.SunCycle.SunCycle.model.*;
 import com.SunCycle.SunCycle.service.SolarPanelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +16,8 @@ public class SolarPanelController {
     private SolarPanelService solarPanelService;
 
     @PostMapping("/create")
-    public ResponseEntity<?> createPanel(@RequestBody SolarPanelDTO dto) {
-        SolarPanelDTO result = solarPanelService.createPanel(dto);
+    public ResponseEntity<?> createPanel(@RequestBody SolarPanelRequestDTO dto) {
+        SolarPanelResponseDTO result = solarPanelService.createPanel(dto);
 
         if (result.getStatus() == Status.NOT_FOUND || result.getStatus() == Status.ERROR) {
             return ResponseEntity.badRequest().body(result.getMessage());
@@ -28,8 +27,8 @@ public class SolarPanelController {
     }
 
     @PutMapping("/{panelId}/update")
-    public ResponseEntity<?> updatePanel(@PathVariable int panelId, @RequestBody SolarPanelDTO dto) {
-        SolarPanelDTO result = solarPanelService.updatePanel(panelId, dto);
+    public ResponseEntity<?> updatePanel(@PathVariable int panelId, @RequestBody SolarPanelRequestDTO dto) {
+        SolarPanelResponseDTO result = solarPanelService.updatePanel(panelId, dto);
 
         if (result.getStatus() == Status.NOT_FOUND || result.getStatus() == Status.ERROR) {
             return ResponseEntity.badRequest().body(result.getMessage());
@@ -40,7 +39,7 @@ public class SolarPanelController {
 
     @DeleteMapping("/{panelId}/delete")
     public ResponseEntity<?> deletePanel(@PathVariable int panelId) {
-        SolarPanelDTO result = solarPanelService.deletePanel(panelId);
+        SolarPanelResponseDTO result = solarPanelService.deletePanel(panelId);
 
         if (result.getStatus() == Status.NOT_FOUND || result.getStatus() == Status.ERROR) {
             return ResponseEntity.badRequest().body(result.getMessage());
