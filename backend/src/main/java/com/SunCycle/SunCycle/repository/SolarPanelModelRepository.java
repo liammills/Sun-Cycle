@@ -10,5 +10,6 @@ public interface SolarPanelModelRepository extends CrudRepository<SolarPanelMode
             double copper,
             double glass,
             double silver,
-            double aluminium);
+            double aluminium
+    );
 }
