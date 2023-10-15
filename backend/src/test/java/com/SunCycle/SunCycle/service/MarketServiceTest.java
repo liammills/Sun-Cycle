@@ -32,7 +32,7 @@ class MarketPlaceServiceTest {
     private SolarPanelInstallationRepository solarPanelInstallationRepository;
 
     @InjectMocks
-    private MarketPlaceService marketPlaceService;
+    private MarketService marketPlaceService;
 
     private MarketRequestDTO requestDTO;
 
