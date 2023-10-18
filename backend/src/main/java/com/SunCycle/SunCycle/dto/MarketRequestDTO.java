@@ -1,8 +1,10 @@
 package com.SunCycle.SunCycle.dto;
 
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 public class MarketRequestDTO {
@@ -15,7 +17,9 @@ public class MarketRequestDTO {
     private Map<String, Double> breakdown;
 
     // constructors
-    public MarketRequestDTO() {}
+    public MarketRequestDTO() {
+        this.breakdown = new HashMap<String, Double>();
+    }
 
     public MarketRequestDTO(String recyclingMethod, String retirementDate, String city, String state, Map<String, Double> breakdown) {
         this.recyclingMethod = recyclingMethod;

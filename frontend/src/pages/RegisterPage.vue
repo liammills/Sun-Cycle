@@ -12,13 +12,24 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue';
 import UserForm from '../components/UserForm.vue';
+import { useAuthStore } from 'stores/auth';
 
-export default defineComponent({
+export default {
   name: 'RegisterPage',
+  setup() {
+    const authStore = useAuthStore();
+    return {
+      authStore,
+    };
+  },
   components: {
     UserForm,
+  },
+  computed: {
+    areFieldsValid() {
+      return /^(\S+@\S+\.\S+|\d{10}|\d{11})$/.test(this.email);
+    },
   },
   data() {
     return {
@@ -30,27 +41,28 @@ export default defineComponent({
   methods: {
     async submit() {
       if (!this.areFieldsValid) {
+        this.error = 'Please enter a valid email';
         return;
       }
       this.error = null;
-      // try {
-      //   const result = await this.$store.dispatch('login/login', {
-      //     email: this.email,
-      //     password: this.password,
-      //   });
+      try {
+        const result = await this.authStore.register({
+          email: this.email,
+          password: this.password,
+        });
 
-      //   if (!result) {
-      //     this.password = '';
-      //     this.error = 'Invalid login. Please try again';
-      //   }
-      //   this.$router.push(this.redirect || '/panels');
-      // } catch (error) {
-      //   this.password = '';
-      //   if (error.response?.data?.message) {
-      //     this.error = error.response.data.message;
-      //   }
-      // }
+        if (!result) {
+          this.password = '';
+          this.error = 'Invalid login. Please try again';
+        }
+        this.$router.push(this.redirect || '/panels');
+      } catch (error) {
+        this.password = '';
+        if (error.response?.data?.message) {
+          this.error = error.response.data.message;
+        }
+      }
     },
   },
-})
+}
 </script>

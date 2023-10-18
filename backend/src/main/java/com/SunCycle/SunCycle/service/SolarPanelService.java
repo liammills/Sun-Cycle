@@ -10,6 +10,8 @@ import com.SunCycle.SunCycle.repository.SolarPanelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,6 +25,18 @@ public class SolarPanelService {
 
     @Autowired
     private SolarPanelInstallationRepository solarPanelInstallationRepository;
+
+    public List<SolarPanel> getPanelsByInstallation(int id) {
+        // get installation by id
+        Optional<SolarPanelInstallation> installationOpt = solarPanelInstallationRepository.findById(id);
+        if (installationOpt.isEmpty()) {
+            return null;
+        }
+
+        // get all panels associated with the installation
+        SolarPanelInstallation installation = installationOpt.get();
+        return solarPanelRepository.findSolarPanelsBySolarPanelInstallation(installation);
+    }
 
     public SolarPanelResponseDTO createPanel(SolarPanelRequestDTO dto) {
         // convert dto to panel instance

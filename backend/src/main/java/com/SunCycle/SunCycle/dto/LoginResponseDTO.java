@@ -37,4 +37,7 @@ public class LoginResponseDTO {
         this.jwt = jwt;
     }
 
+    public String getMessage() {
+        return this.result;
+    }
 }
