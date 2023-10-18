@@ -130,6 +130,8 @@
 </template>
 
 <script>
+import Papa from 'papaparse';
+
 export default {
   name: 'PanelsPage',
   data() {
@@ -218,9 +220,84 @@ export default {
       //   }
       // }
     },
+
     exportData() {
       console.log('use papa parse to export data');
+
+      // Sample JSON data
+      const jsonData = [{
+        id: 3,
+        installationDate: "2023-10-09T13:00:00.000+00:00",
+        retirementDate: "2028-10-09T13:00:00.000+00:00",
+        recyclingMethod: "Recycle",
+        installation: {
+          id: 1,
+          user: {
+            userId: 1,
+            email: "jili5381@uni.sydney.edu.au",
+            password: "{bcrypt}$2a$10$Qsiyn5t.MDbIyxml5LN72OOjWAfoYZU2mIlsXbUqV6tLfHwh4BIom",
+            enabled: true,
+            username: "jili5381@uni.sydney.edu.au",
+            authorities: null,
+            accountNonExpired: true,
+            accountNonLocked: true,
+            credentialsNonExpired: true
+          },
+          geoLocation: "-33.88832701093788, 151.19404158191045",
+          address: "1 Cleveland St, Camperdown",
+          state: "NSW",
+          postcode: 2006,
+          type: "Personal"
+        },
+        model: {
+          id: 1,
+          polymers: 100.0,
+          silicon: 100.0,
+          copper: 100.0,
+          glass: 100.0,
+          silver: 100.0,
+          aluminium: 100.0
+        }
+      }];
+
+      const flattenedData = this.flattenData(jsonData);
+      const csv = Papa.unparse(flattenedData);
+
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.setAttribute('hidden', '');
+      a.setAttribute('href', url);
+      a.setAttribute('download', 'data.csv');
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    },
+
+    flattenData(data) {
+      return data.map(item => {
+        return {
+          id: item.id,
+          installationDate: item.installationDate,
+          retirementDate: item.retirementDate,
+          recyclingMethod: item.recyclingMethod,
+          'installation.id': item.installation.id,
+          'installation.geoLocation': item.installation.geoLocation,
+          'installation.address': item.installation.address,
+          'installation.state': item.installation.state,
+          'installation.postcode': item.installation.postcode,
+          'installation.type': item.installation.type,
+          'model.id': item.model.id,
+          'model.polymers': item.model.polymers,
+          'model.silicon': item.model.silicon,
+          'model.copper': item.model.copper,
+          'model.glass': item.model.glass,
+          'model.silver': item.model.silver,
+          'model.aluminium': item.model.aluminium
+        };
+      });
     }
-  },
+  }
 }
 </script>
