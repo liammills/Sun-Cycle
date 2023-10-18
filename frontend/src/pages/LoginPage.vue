@@ -62,17 +62,19 @@ export default {
       }
       this.error = null;
       try {
-        const result = this.authStore.login({
+        const result = await this.authStore.login({
           email: this.email,
           password: this.password,
         });
 
-        if (!result) {
+        if (!result || result.status !== 200) {
           this.password = '';
           this.error = 'Invalid login. Please try again';
           return;
         }
-        this.$router.push('/panels');
+        else {
+          this.$router.push('/panels');
+        }
       } catch (error) {
         this.password = '';
         if (error.response?.data?.message) {

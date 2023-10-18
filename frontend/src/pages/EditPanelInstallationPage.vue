@@ -139,8 +139,16 @@
 </template>
 
 <script>
+import { useAuthStore } from 'src/stores/auth';
+
 export default {
   name: 'EditPanelInstallationPage',
+  setup() {
+    const authStore = useAuthStore();
+    return {
+      authStore,
+    };
+  },
   props: {
     panelInstallationId: {
       type: Number,
@@ -228,7 +236,48 @@ export default {
       ];
     },
     async savePanelInstallation() {
-      // TODO
+      try {
+        let response;
+        if (this.panelInstallationId) {
+          response = await this.$api.put(`/installations/${this.panelInstallationId}`, {
+            address: this.address,
+            installation_type: this.selectedInstallationType,
+          });
+        } else {
+          response = await this.$api.post('/installations/', {
+            userId: this.authStore.state.user.userId,
+            address: this.address,
+            geoLocation: "-33.88832701093788, 151.19404158191045",
+            state: "NSW",
+            postcode: "2006",
+            type: this.selectedInstallationType,
+          });
+        }
+        await this.savePanels(response.data.id);
+        if (response.status === 200) {
+          this.$q.notify('Panel installation saved successfully');
+        }
+        this.$router.push(`/panels`);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async savePanels() {
+      try {
+        if (this.panelInstallationId) {
+          await this.$api.put(`/installations/${this.panelInstallationId}/panels`, {
+            panels: this.panels,
+          });
+        }
+        else {
+          await this.$api.post('/installations/', {
+            panels: this.panels,
+          });
+        }
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
     },
     addPanel() {
       this.panels.push({

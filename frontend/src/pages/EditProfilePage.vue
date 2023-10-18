@@ -3,8 +3,8 @@
     <UserForm
       title="Edit profile details"
       submit-text="Save"
-      v-model:email="emailInput"
-      v-model:password="passwordInput"
+      v-model:email="email"
+      v-model:password="password"
       v-model:error="error"
       @submit="submit()"
     />
@@ -29,14 +29,19 @@ export default defineComponent({
   },
   data() {
     return {
-      emailInput: null,
-      passwordInput: null,
+      email: null,
+      password: null,
       error: null,
     };
   },
   mounted() {
-    this.emailInput = this.authStore.user?.email?.email;
-    this.passwordInput = this.authStore.user?.email?.password;
+    this.email = this.authStore.user?.email?.email;
+    this.password = this.authStore.user?.email?.password;
+  },
+  computed: {
+    areFieldsValid() {
+      return /^(\S+@\S+\.\S+|\d{10}|\d{11})$/.test(this.email);
+    },
   },
   methods: {
     toggleReset() {
@@ -45,26 +50,26 @@ export default defineComponent({
     },
     async submit() {
       if (!this.areFieldsValid) {
+        this.error = 'Please enter a valid email address';
         return;
       }
       this.error = null;
-      // try {
-      //   const result = await this.$store.dispatch('login/login', {
-      //     email: this.email,
-      //     password: this.password,
-      //   });
-
-      //   if (!result) {
-      //     this.password = '';
-      //     this.error = 'Invalid login. Please try again';
-      //   }
-      //   this.$router.push(this.redirect || '/panels');
-      // } catch (error) {
-      //   this.password = '';
-      //   if (error.response?.data?.message) {
-      //     this.error = error.response.data.message;
-      //   }
-      // }
+      try {
+        const response = await this.authStore.updateUser({
+          email: this.email,
+          password: this.password,
+        });
+        if (response.data?.message) {
+          this.error = response.data.message;
+          return;
+        }
+        this.$router.push('/panels');
+      }
+      catch (error) {
+        if (error.response?.data?.message) {
+          this.error = error.response.data.message;
+        }
+      }
     },
   },
 })

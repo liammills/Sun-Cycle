@@ -52,7 +52,7 @@ public class SolarPanelInstallationController {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<?> getInstallationsByUser(Authentication authentication) {
         List<SolarPanelInstallation> result = solarPanelInstallationService.getInstallationsByEmail(authentication.getName());
 
@@ -61,5 +61,4 @@ public class SolarPanelInstallationController {
 
         return ResponseEntity.ok(solarPanelInstallationService.getInstallationsByEmail(authentication.getName()));
     }
-
 }

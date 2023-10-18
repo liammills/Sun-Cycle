@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
-@CrossOrigin(origins = "http://localhost:3000")
+// @CrossOrigin(origins = "http://localhost:3000")
 public class AuthenticationController {
 
     @Autowired
@@ -57,7 +57,7 @@ public class AuthenticationController {
     }
 
     // Update user details
-    @PutMapping("/{id}/update")
+    @PutMapping("/{id}")
     public LoginResponseDTO updateUser(@PathVariable int id, @RequestBody User updateUserRequest) {
 
         return updateUserInfoService.updateUserById(id, updateUserRequest.getEmail(), updateUserRequest.getPassword());

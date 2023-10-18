@@ -36,19 +36,6 @@
             <div class="row justify-between items-center">
               <h3 style="font-weight: 600">{{ panel.address }}</h3>
               <div class="row items-center q-mt-xs">
-                <!-- <QBtn
-                  size="md"
-                  icon="add"
-                  no-caps
-                  ripple
-                  dense
-                  flat
-                  text-color="dark"
-                  class="q-mr-sm"
-                  @click="$router.push(`/panels/${panel.id}/edit`)"
-                >
-                  <QTooltip>Add a panel</QTooltip>
-                </QBtn> -->
                 <QBtn
                   size="md"
                   icon="edit"
@@ -75,16 +62,6 @@
                     <span>{{ panel.createdAt }}</span>
                   </div>
                 </div>
-                <!-- <div class="q-mt-xs row">
-                  <div class="q-mr-lg">
-                    <span style="font-weight: 600">Size: </span>
-                    <span>{{ panel.size }}</span>
-                  </div>
-                  <div>
-                    <span style="font-weight: 600">Status: </span>
-                    <span>{{ panel.status }}</span>
-                  </div>
-                </div> -->
                 <div
                   class="q-mt-xs"
                   style="font-weight: 600"
@@ -200,30 +177,21 @@ export default {
       ],
     };
   },
+  mounted() {
+    this.getPanels();
+  },
   methods: {
     async getPanels() {
-      // try {
-      //   const result = await this.$store.dispatch('login/login', {
-      //     email: this.email,
-      //     password: this.password,
-      //   });
-
-      //   if (!result) {
-      //     this.password = '';
-      //     this.error = 'Invalid login. Please try again';
-      //   }
-      //   this.$router.push(this.redirect || '/panels');
-      // } catch (error) {
-      //   this.password = '';
-      //   if (error.response?.data?.message) {
-      //     this.error = error.response.data.message;
-      //   }
-      // }
+      try {
+        const result = await this.$api.get('/installations');
+        console.log(result);
+      } catch (error) {
+        if (error.response?.data?.message) {
+          this.error = error.response.data.message;
+        }
+      }
     },
-
     exportData() {
-      console.log('use papa parse to export data');
-
       // Sample JSON data
       const jsonData = [{
         id: 3,
