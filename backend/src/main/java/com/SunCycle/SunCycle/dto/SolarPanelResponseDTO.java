@@ -9,6 +9,10 @@ public class SolarPanelResponseDTO {
     private Status status;
 
     // constructors for response data
+
+    public SolarPanelResponseDTO() {
+    }
+
     public SolarPanelResponseDTO(SolarPanel solarPanel, String message) {
         this.solarPanel = solarPanel;
         this.message = message;
