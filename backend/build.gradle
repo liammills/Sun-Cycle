@@ -49,7 +49,7 @@ dependencies {
 }
 
 bootRun {
-	environment 'GOOGLE_MAPS_API_KEY', System.getenv('GOOGLE_MAPS_API_KEY')
+	// environment 'VUE_APP_GOOGLE_MAPS_API_KEY', System.getenv('VUE_APP_GOOGLE_MAPS_API_KEY')
 }
 
 tasks.named('test') {
