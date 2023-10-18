@@ -23,11 +23,11 @@
                 style="width: 190px"
               >
                 <span class="q-mr-md">{{ material.name }}</span>
-                <QInput 
+                <QInput
                   outlined
                   dense
-                  v-model.number="material.input" 
-                  type="number" 
+                  v-model.number="material.input"
+                  type="number"
                   style="width: 100px;"
                 >
                   <template v-slot:append>

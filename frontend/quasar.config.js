@@ -7,7 +7,7 @@
 
 // Configuration for your app
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js
-
+require('dotenv').config();
 const { configure } = require("quasar/wrappers");
 
 module.exports = configure(function (/* ctx */) {
@@ -65,7 +65,7 @@ module.exports = configure(function (/* ctx */) {
 
       // publicPath: '/',
       // analyze: true,
-      // env: {},
+      env: {VUE_APP_GOOGLE_MAPS_API_KEY: JSON.stringify(process.env.VUE_APP_GOOGLE_MAPS_API_KEY)},
       // rawDefine: {}
       // ignorePublicFolder: true,
       // minify: false,
