@@ -25,6 +25,20 @@ export const useAuthStore = defineStore({
                 console.log(error);
             }
         },
+        async register(userDetails) {
+            try {
+                const user = await api.post(`/users/register`, {
+                    email: userDetails.email,
+                    password: userDetails.password
+                });
+                this.user = user;
+
+                // store user details and jwt in local storage to keep user logged in between page refreshes
+                localStorage.setItem('user', JSON.stringify(user));
+            } catch (error) {
+                console.log(error);
+            }
+        },
         logout() {
             this.user = null;
             localStorage.removeItem('user');
