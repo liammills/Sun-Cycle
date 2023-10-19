@@ -16,7 +16,7 @@ public class MarketController {
     @Autowired
     private MarketService marketService;
 
-    @PostMapping(value = "/")
+    @PostMapping(value = "")
     public ResponseEntity<?> getUserQueryPanels(@RequestBody MarketRequestDTO dto) {
         MarketResponseDTO result = marketService.searchUserQueryPanels(dto);
 
