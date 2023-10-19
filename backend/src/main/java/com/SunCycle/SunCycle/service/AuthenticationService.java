@@ -29,12 +29,26 @@ public class AuthenticationService  {
     private TokenService tokenService;
 
 
-    public User registerUser(String username, String password){
+    public LoginResponseDTO registerUser(String username, String password){
         System.out.println("registering user");
 
         String encodedPassword = "{bcrypt}"+passwordEncoder.encode(password);
 
-        return userRepository.save(new User(username, encodedPassword));
+        User user = userRepository.save(new User(username, encodedPassword));
+
+        try{
+            Authentication auth = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(username, password)
+            );
+
+            String token = tokenService.generateJwt(auth);
+
+            return new LoginResponseDTO(user, token);
+        }catch (AuthenticationException e) {
+            System.out.println(e);
+            return new LoginResponseDTO("register error");
+        }
+
     }
 
     public LoginResponseDTO loginUser(String username, String password){
