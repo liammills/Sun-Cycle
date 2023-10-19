@@ -44,8 +44,8 @@ public class AuthenticationController {
             return ResponseEntity.badRequest().body("email already exists");
         }
 
-        User registeredUser = authenticationService.registerUser(user.getUsername(), user.getPassword());
-        return ResponseEntity.ok(registeredUser);
+        LoginResponseDTO response = authenticationService.registerUser(user.getUsername(), user.getPassword());
+        return ResponseEntity.ok(response);
 
     }
 

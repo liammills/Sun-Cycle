@@ -1,5 +1,6 @@
 package com.SunCycle.SunCycle.controller;
 
+import com.SunCycle.SunCycle.dto.LoginResponseDTO;
 import com.SunCycle.SunCycle.model.User;
 import com.SunCycle.SunCycle.repository.UserRepository;
 import com.SunCycle.SunCycle.service.AuthenticationService;
@@ -44,7 +45,8 @@ class AuthenticationControllerTest {
     void createUser_Success() {
         // Mocking and stubbing
         when(userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
-        when(authenticationService.registerUser(anyString(), anyString())).thenReturn(new User());
+        LoginResponseDTO responseDTO = new LoginResponseDTO(new User(), "");
+        when(authenticationService.registerUser(anyString(), anyString())).thenReturn(responseDTO);
 
         // Execute the method being tested
         ResponseEntity<?> response = authenticationController.createUser(new User());

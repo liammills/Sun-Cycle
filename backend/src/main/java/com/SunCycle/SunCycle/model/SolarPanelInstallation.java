@@ -1,12 +1,16 @@
 package com.SunCycle.SunCycle.model;
 
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.Date;
 
 @Entity
 @Table(name = "solar_panel_installation")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class SolarPanelInstallation {
 
     @Id
@@ -16,6 +20,7 @@ public class SolarPanelInstallation {
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @JsonIgnore
     private User user;
 
     private String geoLocation;
@@ -23,6 +28,19 @@ public class SolarPanelInstallation {
     private String state;
     private int postcode;
     private String type;
+
+    @Column(name = "added_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone = "Australia/Sydney")
+    private Date addedDate;
+
+    @PrePersist
+    protected void onCreate() {
+        addedDate = new Date();
+    }
+
+    @OneToMany(mappedBy = "solarPanelInstallation", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<SolarPanel> solarPanels = new ArrayList<>();
 
     // Constructors, getters, setters, etc.
 
@@ -112,6 +130,22 @@ public class SolarPanelInstallation {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public List<SolarPanel> getSolarPanels() {
+        return solarPanels;
+    }
+
+    public void setSolarPanels(List<SolarPanel> solarPanels) {
+        this.solarPanels = solarPanels;
+    }
+
+    public Date getAddedDate() {
+        return addedDate;
+    }
+
+    public void setAddedDate(Date addedDate) {
+        this.addedDate = addedDate;
     }
 
     public void update(SolarPanelInstallation installation) {
