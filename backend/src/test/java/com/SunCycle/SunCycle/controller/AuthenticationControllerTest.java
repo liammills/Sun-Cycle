@@ -1,6 +1,7 @@
 package com.SunCycle.SunCycle.controller;
 
 import com.SunCycle.SunCycle.dto.LoginResponseDTO;
+import com.SunCycle.SunCycle.dto.SimpleUserDTO;
 import com.SunCycle.SunCycle.model.User;
 import com.SunCycle.SunCycle.repository.UserRepository;
 import com.SunCycle.SunCycle.service.AuthenticationService;
@@ -45,7 +46,7 @@ class AuthenticationControllerTest {
     void createUser_Success() {
         // Mocking and stubbing
         when(userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
-        LoginResponseDTO responseDTO = new LoginResponseDTO(new User(), "");
+        LoginResponseDTO responseDTO = new LoginResponseDTO(new User().toSimpleUserDTO(), "");
         when(authenticationService.registerUser(anyString(), anyString())).thenReturn(responseDTO);
 
         // Execute the method being tested
@@ -74,14 +75,16 @@ class AuthenticationControllerTest {
     @Test
     public void login_Success(){
         User user = new User("test@gmail.com", "test");
-        LoginResponseDTO response = new LoginResponseDTO(user, "");
+        SimpleUserDTO userDTO = user.toSimpleUserDTO();
+        LoginResponseDTO response = new LoginResponseDTO(userDTO, "");
 
         when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
         when(authenticationService.loginUser(anyString(), anyString())).thenReturn(response);
 
         LoginResponseDTO responseDTO = authenticationController.loginUser(user);
         assertNotNull(responseDTO);
-        assertEquals(user, responseDTO.getUser());
+        assertEquals(userDTO, responseDTO.getUser());
 
     }
+
 }

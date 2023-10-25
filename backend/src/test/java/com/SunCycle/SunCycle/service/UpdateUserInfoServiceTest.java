@@ -89,7 +89,10 @@ class UpdateUserInfoServiceTest {
 
         // Assert
         assertEquals("token", response.getJwt());
-        assertEquals(user, response.getUser());
+        assertEquals("new@example.com", response.getUser().getEmail());
+        assertEquals("new@example.com", response.getUser().getUsername());
+        assertEquals(user.getUserId(), response.getUser().getUserId());
+
     }
 
     @Test
