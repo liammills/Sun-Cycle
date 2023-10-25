@@ -45,6 +45,20 @@
           :zoom="7"
           style="width: 1100px; height: 600px"
         >
+          <GMapMarker
+            v-for="marker in markers"
+            :key="marker.id"
+            :position="marker.installation.geoLocation"
+            :clickable="true"
+            @click="center=marker.installation.geoLocation, openInfoWindow(marker)"
+          >
+            <GMapInfoWindow
+              v-if="infoWindowOpen && activeMarker === marker"
+            >
+              <div>{{ marker.installation.address }}</div>
+              <div>{{ marker.retirementDate.slice(0, 10) }}</div>
+            </GMapInfoWindow>
+          </GMapMarker>
         </GMapMap>
       </div>
     </div>
@@ -70,11 +84,126 @@ export default {
       ],
       center: {lat: 51.093048, lng: 6.842120},
       radius: 10000,
-      markers: [],
+      markers: [
+        {
+          id: 1,
+          installationDate: "2023-10-09T13:00:00.000+00:00",
+          retirementDate: "2028-10-09T13:00:00.000+00:00",
+          installation: {
+            id: 1,
+            geoLocation: {
+              lat: 40.730610,
+              lng: -73.935242
+            },
+            address: "1 Cleveland St, Camperdown",
+            state: "NSW",
+            postcode: 2006,
+            type: "Personal",
+            addedDate: null,
+          },
+          model: {
+            id: 1,
+            modelName: "Very cool model",
+            recyclingMethod: "Chemical processing",
+            polymers: 100.0,
+            silicon: 100.0,
+            copper: 100.0,
+            glass: 100.0,
+            silver: 100.0,
+            aluminium: 100.0
+          }
+        },
+        {
+          id: 2,
+          installationDate: "2023-10-09T13:00:00.000+00:00",
+          retirementDate: "2028-10-09T13:00:00.000+00:00",
+          installation: {
+            id: 1,
+            geoLocation: {
+              lat: 51.260197,
+              lng: 4.402771
+            },
+            address: "1 Cleveland St, Camperdown",
+            state: "NSW",
+            postcode: 2006,
+            type: "Personal",
+            addedDate: null,
+          },
+          model: {
+            id: 1,
+            modelName: "Very cool model",
+            recyclingMethod: "Chemical processing",
+            polymers: 100.0,
+            silicon: 100.0,
+            copper: 100.0,
+            glass: 100.0,
+            silver: 100.0,
+            aluminium: 100.0
+          }
+        },
+        {
+          id: 2,
+          installationDate: "2023-10-09T13:00:00.000+00:00",
+          retirementDate: "2028-10-09T13:00:00.000+00:00",
+          installation: {
+            id: 1,
+            geoLocation: {
+              lat: 51.049999,
+              lng: 3.733333
+            },
+            address: "1 Cleveland St, Camperdown",
+            state: "NSW",
+            postcode: 2006,
+            type: "Personal",
+            addedDate: null,
+          },
+          model: {
+            id: 1,
+            modelName: "Very cool model",
+            recyclingMethod: "Chemical processing",
+            polymers: 100.0,
+            silicon: 100.0,
+            copper: 100.0,
+            glass: 100.0,
+            silver: 100.0,
+            aluminium: 100.0
+          }
+        },
+      ],
+      infoWindowOpen: false,
+      activeMarker: null,
+      dummyData: [
+        {
+          "id": 2,
+          "installationDate": "2023-10-09T13:00:00.000+00:00",
+          "retirementDate": "2028-10-09T13:00:00.000+00:00",
+          "installation": {
+            "id": 1,
+            "geoLocation": "-33.88832701093788, 151.19404158191045",
+            "address": "1 Cleveland St, Camperdown",
+            "state": "NSW",
+            "postcode": 2006,
+            "type": "Personal",
+            "addedDate": null,
+          },
+          "model": {
+            "id": 1,
+            "modelName": "Very cool model",
+            "recyclingMethod": "Chemical processing",
+            "polymers": 100.0,
+            "silicon": 100.0,
+            "copper": 100.0,
+            "glass": 100.0,
+            "silver": 100.0,
+            "aluminium": 100.0
+          }
+        }
+      ],
     };
   },
   mounted() {
     this.loadMapData();
+    this.testAPI();
   },
   watch: {
     center: function() {
@@ -89,31 +218,43 @@ export default {
   },
   methods: {
     async loadMapData() {
+      // try {
+      //   const response = await this.$api.get('/map',
+      //     {
+      //       params: {
+      //         latitude: this.center.lat,
+      //         longitude: this.center.lng,
+      //         radius: this.radius,
+      //         state: this.selectedState,
+      //         recycling_method: this.selectedRecyclingMethod,
+      //       },
+      //     },
+      //   );
+      //   const markers = response.data.map(marker => {
+      //     return {
+      //       position: {
+      //         lat: panel.latitude,
+      //         lng: panel.longitude,
+      //       },
+      //       title: panel.name,
+      //       icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
+      //     };
+      //   });
+      //   this.markers = markers;
+      // } catch (error) {
+      //   console.log(error);
+      // }
+    },
+    openInfoWindow(marker) {
+      this.activeMarker = marker;
+      this.infoWindowOpen = true;
+    },
+    async testAPI() {
       try {
-        const response = await this.$api.get('/map',
-          {
-            params: {
-              latitude: this.center.lat,
-              longitude: this.center.lng,
-              radius: this.radius,
-              state: this.selectedState,
-              recycling_method: this.selectedRecyclingMethod,
-            },
-          },
-        );
-        const markers = response.data.map(marker => {
-          return {
-            position: {
-              lat: panel.latitude,
-              lng: panel.longitude,
-            },
-            title: panel.name,
-            icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
-          };
-        });
-        this.markers = markers;
+        const response = await this.$api.post('/market')
+        console.log(response);
       } catch (error) {
-        console.log(error);
+        console.error("Error making the API request:", error);
       }
     }
   }
