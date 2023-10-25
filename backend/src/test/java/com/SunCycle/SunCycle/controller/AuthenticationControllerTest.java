@@ -71,4 +71,17 @@ class AuthenticationControllerTest {
         // other necessary assertions
     }
 
+    @Test
+    public void login_Success(){
+        User user = new User("test@gmail.com", "test");
+        LoginResponseDTO response = new LoginResponseDTO(user, "");
+
+        when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
+        when(authenticationService.loginUser(anyString(), anyString())).thenReturn(response);
+
+        LoginResponseDTO responseDTO = authenticationController.loginUser(user);
+        assertNotNull(responseDTO);
+        assertEquals(user, responseDTO.getUser());
+
+    }
 }
