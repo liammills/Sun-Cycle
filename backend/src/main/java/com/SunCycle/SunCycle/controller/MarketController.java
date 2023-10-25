@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin("http://localhost:3000")
 @RequestMapping("/market")
@@ -18,13 +20,7 @@ public class MarketController {
 
     @PostMapping(value = "")
     public ResponseEntity<?> getUserQueryPanels(@RequestBody MarketRequestDTO dto) {
-        MarketResponseDTO result = marketService.searchUserQueryPanels(dto);
-
-        if (result.getStatus() == Status.NOT_FOUND || result.getStatus() == Status.ERROR) {
-            return ResponseEntity.badRequest().body(result.getMessage());
-        }
-
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(marketService.searchUserQueryPanels(dto));
     }
 
 }
