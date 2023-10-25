@@ -55,7 +55,7 @@ public class SolarPanelInstallationController {
 
     @GetMapping("")
     public ResponseEntity<?> getInstallationsByUser(Authentication authentication) {
-        List<SolarPanelInstallation> result = solarPanelInstallationService.getInstallationsByEmail(authentication.getName());
+        List<SolarPanelInstallationResponseDTO> result = solarPanelInstallationService.getInstallationsByEmail(authentication.getName());
 
         if (result == null)
             return ResponseEntity.badRequest().body("This user doesn't have any associated solar panel installations.");

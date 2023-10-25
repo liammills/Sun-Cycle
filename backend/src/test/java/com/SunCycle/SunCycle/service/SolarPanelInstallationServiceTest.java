@@ -248,7 +248,7 @@ class SolarPanelInstallationServiceTest {
 
         when(userRepository.findByEmail(nonExistentEmail)).thenReturn(Optional.empty());
 
-        List<SolarPanelInstallation> response = solarPanelInstallationService.getInstallationsByEmail(nonExistentEmail);
+        List<SolarPanelInstallationResponseDTO> response = solarPanelInstallationService.getInstallationsByEmail(nonExistentEmail);
 
         assertNull(response);
     }
@@ -259,13 +259,14 @@ class SolarPanelInstallationServiceTest {
         User mockUser = new User();
         // ... set user fields ...
 
+        // TODO: fix this test case @Edward
         List<SolarPanelInstallation> mockInstallations = new ArrayList<>();
         // ... add mock installations ...
 
         when(userRepository.findByEmail(existingEmail)).thenReturn(Optional.of(mockUser));
         when(solarPanelInstallationRepository.findSolarPanelInstallationsByUser(mockUser)).thenReturn(mockInstallations);
 
-        List<SolarPanelInstallation> response = solarPanelInstallationService.getInstallationsByEmail(existingEmail);
+        List<SolarPanelInstallationResponseDTO> response = solarPanelInstallationService.getInstallationsByEmail(existingEmail);
 
         assertEquals(mockInstallations, response);
     }

@@ -10,7 +10,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "solar_panel_installation")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class SolarPanelInstallation {
 
     @Id
@@ -39,13 +39,11 @@ public class SolarPanelInstallation {
         addedDate = new Date();
     }
 
-    @OneToMany(mappedBy = "solarPanelInstallation", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<SolarPanel> solarPanels = new ArrayList<>();
+//    @OneToMany(mappedBy = "solarPanelInstallation", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+//    private List<SolarPanel> solarPanels = new ArrayList<>();
 
     // Constructors, getters, setters, etc.
-
-    public SolarPanelInstallation() {
-    }
+    public SolarPanelInstallation() {}
 
     public SolarPanelInstallation(User user, String geoLocation, String address,
                                   String state, int postcode, String type) {
@@ -58,7 +56,6 @@ public class SolarPanelInstallation {
     }
 
     // Getters and setters for each field
-
     public int getId() {
         return id;
     }
@@ -132,13 +129,13 @@ public class SolarPanelInstallation {
         this.type = type;
     }
 
-    public List<SolarPanel> getSolarPanels() {
-        return solarPanels;
-    }
-
-    public void setSolarPanels(List<SolarPanel> solarPanels) {
-        this.solarPanels = solarPanels;
-    }
+//    public List<SolarPanel> getSolarPanels() {
+//        return solarPanels;
+//    }
+//
+//    public void setSolarPanels(List<SolarPanel> solarPanels) {
+//        this.solarPanels = solarPanels;
+//    }
 
     public Date getAddedDate() {
         return addedDate;

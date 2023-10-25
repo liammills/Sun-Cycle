@@ -1,14 +1,11 @@
 package com.SunCycle.SunCycle.dto;
 
 import com.SunCycle.SunCycle.model.SolarPanel;
-import com.SunCycle.SunCycle.model.SolarPanelInstallation;
 
 import java.util.List;
-import java.util.Map;
 
 public class MarketResponseDTO {
 
-//    private Map<SolarPanelInstallation, List<SolarPanel>> result;
     private List<SolarPanel> result;
     private String message;
     private Status status;

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -128,10 +129,32 @@ public class SolarPanelInstallationService {
         return new SolarPanelInstallationResponseDTO(found, Status.SUCCESS);
     }
 
-    public List<SolarPanelInstallation> getInstallationsByEmail(String email) {
-        System.out.println("Getting all installations for " + email);
-
+    public List<SolarPanelInstallationResponseDTO> getInstallationsByEmail(String email) {
+        // get user opt by email
         Optional<User> userOpt = userRepository.findByEmail(email);
-        return userOpt.map(user -> solarPanelInstallationRepository.findSolarPanelInstallationsByUser(user)).orElse(null);
+
+        // if user exists
+        if (userOpt.isPresent()) {
+            // prepare response list
+            List<SolarPanelInstallationResponseDTO> responses = new ArrayList<>();
+
+            // find installations by user
+            List<SolarPanelInstallation> installations = solarPanelInstallationRepository
+                    .findSolarPanelInstallationsByUser(userOpt.get());
+
+            // prepare response objects
+            for (SolarPanelInstallation installation: installations) {
+                SolarPanelInstallationResponseDTO response = new SolarPanelInstallationResponseDTO(installation, Status.SUCCESS);
+                response.setSolarPanels(solarPanelRepository.findSolarPanelsBySolarPanelInstallation(installation));
+                responses.add(response);
+            }
+
+            // return responses list
+            return responses;
+        }
+
+        // return null if user not exist
+        return null;
     }
+
 }

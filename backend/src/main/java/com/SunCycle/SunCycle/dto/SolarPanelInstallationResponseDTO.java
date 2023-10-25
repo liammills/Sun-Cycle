@@ -1,17 +1,16 @@
 package com.SunCycle.SunCycle.dto;
 
+import com.SunCycle.SunCycle.model.SolarPanel;
 import com.SunCycle.SunCycle.model.SolarPanelInstallation;
+
+import java.util.List;
 
 public class SolarPanelInstallationResponseDTO {
 
     private SolarPanelInstallation solarPanelInstallation;
+    private List<SolarPanel> solarPanels;
     private String message;
-    private Status status; // Assuming Status is an Enum or another class
-
-    public SolarPanelInstallationResponseDTO(SolarPanelInstallation solarPanelInstallation, String message) {
-        this.solarPanelInstallation = solarPanelInstallation;
-        this.message = message;
-    }
+    private Status status;
 
     public SolarPanelInstallationResponseDTO(SolarPanelInstallation solarPanelInstallation, Status status) {
         this.solarPanelInstallation = solarPanelInstallation;
@@ -47,4 +46,13 @@ public class SolarPanelInstallationResponseDTO {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    public List<SolarPanel> getSolarPanels() {
+        return solarPanels;
+    }
+
+    public void setSolarPanels(List<SolarPanel> solarPanels) {
+        this.solarPanels = solarPanels;
+    }
+
 }
