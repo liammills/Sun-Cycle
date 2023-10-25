@@ -3,7 +3,7 @@ package com.SunCycle.SunCycle.dto;
 import com.SunCycle.SunCycle.model.User;
 
 public class LoginResponseDTO {
-    private User user;
+    private SimpleUserDTO user;
     private String jwt;
 
     private String result;
@@ -12,7 +12,7 @@ public class LoginResponseDTO {
         super();
     }
 
-    public LoginResponseDTO(User user, String jwt){
+    public LoginResponseDTO(SimpleUserDTO user, String jwt){
         this.user = user;
         this.jwt = jwt;
     }
@@ -21,11 +21,11 @@ public class LoginResponseDTO {
         this.result = result;
     }
 
-    public User getUser(){
+    public SimpleUserDTO getUser(){
         return this.user;
     }
 
-    public void setUser(User user){
+    public void setUser(SimpleUserDTO user){
         this.user = user;
     }
 

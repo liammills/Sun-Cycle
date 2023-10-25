@@ -43,7 +43,7 @@ public class AuthenticationService  {
 
             String token = tokenService.generateJwt(auth);
 
-            return new LoginResponseDTO(user, token);
+            return new LoginResponseDTO(user.toSimpleUserDTO(), token);
         }catch (AuthenticationException e) {
             System.out.println(e);
             return new LoginResponseDTO("register error");
@@ -61,7 +61,7 @@ public class AuthenticationService  {
 
             String token = tokenService.generateJwt(auth);
 
-            return new LoginResponseDTO(userRepository.findByEmail(username).get(), token);
+            return new LoginResponseDTO(userRepository.findByEmail(username).get().toSimpleUserDTO(), token);
 
         } catch(AuthenticationException e){
             System.out.println(e);

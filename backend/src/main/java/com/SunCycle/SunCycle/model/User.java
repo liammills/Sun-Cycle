@@ -1,5 +1,6 @@
 package com.SunCycle.SunCycle.model;
 
+import com.SunCycle.SunCycle.dto.SimpleUserDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -118,6 +119,10 @@ public class User implements UserDetails {
     @Override
     public int hashCode() {
         return Objects.hash(userId);
+    }
+
+    public SimpleUserDTO toSimpleUserDTO() {
+        return new SimpleUserDTO(this.getUserId(), this.getEmail(), this.getUsername());
     }
 
 }

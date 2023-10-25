@@ -39,9 +39,9 @@ public class UpdateUserInfoService {
             return new LoginResponseDTO("this id does not exist");
         }
 
-        if (userRepository.findByEmail(newEmail).isPresent()) {
-            return new LoginResponseDTO("this email has aldready been used");
-        }
+//        if (userRepository.findByEmail(newEmail).isPresent()) {
+//            return new LoginResponseDTO("this email has aldready been used");
+//        }
 
         User user = userOptional.get();
 
@@ -59,7 +59,7 @@ public class UpdateUserInfoService {
             System.out.println(auth == null);
             String token = tokenService.generateJwt(auth);
 
-            return new LoginResponseDTO(user, token);
+            return new LoginResponseDTO(user.toSimpleUserDTO(), token);
 
         } catch(AuthenticationException e){
             System.out.println(e);
