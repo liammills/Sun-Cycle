@@ -35,7 +35,9 @@ public class SolarPanelModelService {
     public SolarPanelModelResponseDTO createModel(SolarPanelModelRequestDTO dto) {
         // check if model exists
         Optional<SolarPanelModel> modelOpt = Optional.ofNullable(solarPanelModelRepository.
-                findSolarPanelModelByPolymersAndSiliconAndCopperAndGlassAndSilverAndAluminium(
+                findSolarPanelModelByModelNameAndRecyclingMethodAndPolymersAndSiliconAndCopperAndGlassAndSilverAndAluminium(
+                        dto.getModelName(),
+                        dto.getRecyclingMethod(),
                         dto.getPolymers(),
                         dto.getSilicon(),
                         dto.getCopper(),
@@ -49,6 +51,8 @@ public class SolarPanelModelService {
 
         // create new model
         SolarPanelModel model = new SolarPanelModel(
+                dto.getModelName(),
+                dto.getRecyclingMethod(),
                 dto.getPolymers(),
                 dto.getSilicon(),
                 dto.getCopper(),
@@ -71,6 +75,8 @@ public class SolarPanelModelService {
 
         // update the model
         SolarPanelModel model = modelOpt.get();
+        model.setModelName(dto.getModelName());
+        model.setRecyclingMethod(dto.getRecyclingMethod());
         model.setAluminium(dto.getAluminium());
         model.setCopper(dto.getCopper());
         model.setGlass(dto.getGlass());

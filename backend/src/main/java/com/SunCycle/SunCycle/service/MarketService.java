@@ -56,23 +56,24 @@ public class MarketService {
                 .toList();
 
         // compute result map
-        Map<SolarPanelInstallation, List<SolarPanel>> result = new HashMap<>();
+//        Map<SolarPanelInstallation, List<SolarPanel>> result = new HashMap<>();
+//
+//        for (SolarPanel panel: resultPanels) {
+//            SolarPanelInstallation installation = panel.getInstallation();
+//            result.computeIfAbsent(
+//                    installation,
+//                    k -> new ArrayList<>()
+//            ).add(panel);
+//        }
 
-        for (SolarPanel panel: resultPanels) {
-            SolarPanelInstallation installation = panel.getInstallation();
-            result.computeIfAbsent(
-                    installation,
-                    k -> new ArrayList<>()
-            ).add(panel);
-        }
-
-        return new MarketResponseDTO(result, Status.SUCCESS);
+        return new MarketResponseDTO(resultPanels, Status.SUCCESS);
     }
 
     // find solar panels by model
     public List<SolarPanel> findPanelsByModel(MarketRequestDTO dto) {
-        SolarPanelModel model = solarPanelModelRepository
-                .findSolarPanelModelByPolymersAndSiliconAndCopperAndGlassAndSilverAndAluminium(
+        List<SolarPanelModel> models = solarPanelModelRepository
+                .findSolarPanelModelsByRecyclingMethodAndPolymersGreaterThanEqualAndSiliconGreaterThanEqualAndCopperGreaterThanEqualAndGlassGreaterThanEqualAndSilverGreaterThanEqualAndAluminiumGreaterThanEqual(
+                        dto.getRecyclingMethod(),
                         dto.getPolymers(),
                         dto.getSilicon(),
                         dto.getCopper(),
@@ -81,14 +82,19 @@ public class MarketService {
                         dto.getAluminium()
                 );
 
-        return solarPanelRepository.findSolarPanelsBySolarPanelModel(model);
+        List<SolarPanel> result = new ArrayList<>();
+
+        for (SolarPanelModel model: models) {
+            result.addAll(solarPanelRepository.findSolarPanelsBySolarPanelModel(model));
+        }
+
+        return result;
     }
 
-    // find solar panels by method and date
+    // find solar panels by date
     private List<SolarPanel> findPanelsByMethodAndDate(MarketRequestDTO dto) {
         return solarPanelRepository
-                .findSolarPanelsByRecyclingMethodAndRetirementDate(
-                        dto.getRecyclingMethod(),
+                .findSolarPanelsByRetirementDate(
                         dto.getRetirementDate()
                 );
     }
@@ -103,6 +109,7 @@ public class MarketService {
 
         // check if each installation satisfies the location requirement
         List<SolarPanelInstallation> goodInstallations = (List<SolarPanelInstallation>) solarPanelInstallationRepository.findAll();
+        assert !goodInstallations.isEmpty();
         for (SolarPanelInstallation installation: solarPanelInstallationRepository.findAll()) {
             // get lat. lng for the installation location
             double instLat = Double.parseDouble(installation.getGeoLocation().split(",")[0]);

@@ -8,12 +8,13 @@ import java.util.Map;
 
 public class MarketResponseDTO {
 
-    private Map<SolarPanelInstallation, List<SolarPanel>> result;
+//    private Map<SolarPanelInstallation, List<SolarPanel>> result;
+    private List<SolarPanel> result;
     private String message;
     private Status status;
 
     // constructors
-    public MarketResponseDTO(Map<SolarPanelInstallation, List<SolarPanel>> result, Status status) {
+    public MarketResponseDTO(List<SolarPanel> result, Status status) {
         this.result = result;
         this.status = status;
     }
@@ -24,11 +25,11 @@ public class MarketResponseDTO {
     }
 
     // response getters and setters
-    public Map<SolarPanelInstallation, List<SolarPanel>> getResult() {
+    public List<SolarPanel> getResult() {
         return result;
     }
 
-    public void setResult(Map<SolarPanelInstallation, List<SolarPanel>> result) {
+    public void setResult(List<SolarPanel> result) {
         this.result = result;
     }
 

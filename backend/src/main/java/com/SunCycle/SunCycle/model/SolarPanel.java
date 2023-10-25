@@ -1,14 +1,13 @@
 package com.SunCycle.SunCycle.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
-import java.util.Date;
-import java.text.SimpleDateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 @Entity
@@ -35,9 +34,6 @@ public class SolarPanel {
 
     @Column(name = "retirement_date")
     private Date retirementDate;
-
-    @Column(name = "recycling_method")
-    private String recyclingMethod;
 
     // constructor
     public SolarPanel() {}
@@ -81,14 +77,6 @@ public class SolarPanel {
 
     public void setRetirementDate(String retirementDateStr) {
         try { retirementDate = stringToDate(retirementDateStr); } catch (ParseException ignored) {}
-    }
-
-    public String getRecyclingMethod() {
-        return recyclingMethod;
-    }
-
-    public void setRecyclingMethod(String recyclingMethod) {
-        this.recyclingMethod = recyclingMethod;
     }
 
     private Date stringToDate(String dateStr) throws ParseException {

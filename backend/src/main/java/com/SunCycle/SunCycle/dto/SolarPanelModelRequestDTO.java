@@ -2,6 +2,8 @@ package com.SunCycle.SunCycle.dto;
 
 public class SolarPanelModelRequestDTO {
 
+    private String modelName;
+    private String recyclingMethod;
     private double polymers;
     private double silicon;
     private double copper;
@@ -12,7 +14,11 @@ public class SolarPanelModelRequestDTO {
     // constructors
     public SolarPanelModelRequestDTO() {}
 
-    public SolarPanelModelRequestDTO(double polymers, double silicon, double copper, double glass, double silver, double aluminium) {
+    public SolarPanelModelRequestDTO(String modelName, String recyclingMethod,
+                                     double polymers, double silicon, double copper,
+                                     double glass, double silver, double aluminium) {
+        this.modelName = modelName;
+        this.recyclingMethod = recyclingMethod;
         this.polymers = polymers;
         this.silicon = silicon;
         this.copper = copper;
@@ -22,6 +28,15 @@ public class SolarPanelModelRequestDTO {
     }
 
     // getters
+
+    public String getModelName() {
+        return modelName;
+    }
+
+    public String getRecyclingMethod() {
+        return recyclingMethod;
+    }
+
     public double getPolymers() {
         return polymers;
     }
@@ -47,6 +62,14 @@ public class SolarPanelModelRequestDTO {
     }
 
     // setters
+    public void setModelName(String modelName) {
+        this.modelName = modelName;
+    }
+
+    public void setRecyclingMethod(String recyclingMethod) {
+        this.recyclingMethod = recyclingMethod;
+    }
+
     public void setPolymers(double polymers) {
         this.polymers = polymers;
     }

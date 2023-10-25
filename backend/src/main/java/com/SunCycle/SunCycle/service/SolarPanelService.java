@@ -58,7 +58,6 @@ public class SolarPanelService {
         // set other fields
         panel.setInstallationDate(dto.getInstallationDate());
         panel.setRetirementDate(dto.getRetirementDate());
-        panel.setRecyclingMethod(dto.getRecyclingMethod());
 
         // return response DTO
         return new SolarPanelResponseDTO(solarPanelRepository.save(panel), Status.SUCCESS);
@@ -89,7 +88,6 @@ public class SolarPanelService {
         // update the rest fields
         panel.setInstallationDate(dto.getInstallationDate());
         panel.setRetirementDate(dto.getRetirementDate());
-        panel.setRecyclingMethod(dto.getRecyclingMethod());
 
         return new SolarPanelResponseDTO(solarPanelRepository.save(panel), Status.SUCCESS);
     }

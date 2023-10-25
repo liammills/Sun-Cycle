@@ -7,20 +7,18 @@ public class SolarPanelRequestDTO {
     private int installationId;
     private String installationDate;
     private String retirementDate;
-    private String recyclingMethod;
 
 
     // default constructor
     public SolarPanelRequestDTO() {}
 
     // constructors for request data
-    public SolarPanelRequestDTO(int modelId, int installationId, String installationDate,
-                                String retirementDate, String recyclingMethod) {
+    public SolarPanelRequestDTO(int modelId, int installationId,
+                                String installationDate, String retirementDate) {
         this.modelId = modelId;
         this.installationId = installationId;
         this.installationDate = installationDate;
         this.retirementDate = retirementDate;
-        this.recyclingMethod = recyclingMethod;
     }
 
     // getters and setters for request fields
@@ -55,14 +53,5 @@ public class SolarPanelRequestDTO {
     public void setRetirementDate(String retirementDate) {
         this.retirementDate = retirementDate;
     }
-
-    public String getRecyclingMethod() {
-        return recyclingMethod;
-    }
-
-    public void setRecyclingMethod(String recyclingMethod) {
-        this.recyclingMethod = recyclingMethod;
-    }
-
 
 }

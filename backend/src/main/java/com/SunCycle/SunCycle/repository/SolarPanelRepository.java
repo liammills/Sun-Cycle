@@ -11,5 +11,5 @@ import java.util.List;
 public interface SolarPanelRepository extends CrudRepository<SolarPanel, Integer> {
     List<SolarPanel> findSolarPanelsBySolarPanelInstallation(SolarPanelInstallation installation);
     List<SolarPanel> findSolarPanelsBySolarPanelModel(SolarPanelModel model);
-    List<SolarPanel> findSolarPanelsByRecyclingMethodAndRetirementDate(String method, Date date);
+    List<SolarPanel> findSolarPanelsByRetirementDate(Date date);
 }
