@@ -1,52 +1,35 @@
 package com.SunCycle.SunCycle.dto;
 
 import com.SunCycle.SunCycle.model.SolarPanel;
-import com.SunCycle.SunCycle.model.SolarPanelInstallation;
 
-import java.util.List;
 import java.util.Map;
 
 public class MarketResponseDTO {
 
-//    private Map<SolarPanelInstallation, List<SolarPanel>> result;
-    private List<SolarPanel> result;
-    private String message;
-    private Status status;
+    private SolarPanel solarPanel;
+    private Map<String, Double> geoLocation;
 
     // constructors
-    public MarketResponseDTO(List<SolarPanel> result, Status status) {
-        this.result = result;
-        this.status = status;
-    }
-
-    public MarketResponseDTO(String message, Status status) {
-        this.message = message;
-        this.status = status;
+    public MarketResponseDTO(SolarPanel solarPanel, Map<String, Double> geoLocation) {
+        this.solarPanel = solarPanel;
+        this.geoLocation = geoLocation;
     }
 
     // response getters and setters
-    public List<SolarPanel> getResult() {
-        return result;
+    public SolarPanel getSolarPanel() {
+        return solarPanel;
     }
 
-    public void setResult(List<SolarPanel> result) {
-        this.result = result;
+    public Map<String, Double> getGeoLocation() {
+        return geoLocation;
     }
 
-    public String getMessage() {
-        return message;
+    public void setSolarPanel(SolarPanel solarPanel) {
+        this.solarPanel = solarPanel;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setGeoLocation(Map<String, Double> geoLocation) {
+        this.geoLocation = geoLocation;
     }
 
 }

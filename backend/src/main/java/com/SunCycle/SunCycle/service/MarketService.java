@@ -17,10 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class MarketService {
@@ -38,7 +35,7 @@ public class MarketService {
     private String apiKey;
 
     // post
-    public MarketResponseDTO searchUserQueryPanels(MarketRequestDTO dto) {
+    public List<MarketResponseDTO> searchUserQueryPanels(MarketRequestDTO dto) {
         // find model by breakdown (model)
         List<SolarPanel> breakdownFilteredPanels = findPanelsByModel(dto);
 
@@ -55,18 +52,10 @@ public class MarketService {
                 .distinct()
                 .toList();
 
-        // compute result map
-//        Map<SolarPanelInstallation, List<SolarPanel>> result = new HashMap<>();
-//
-//        for (SolarPanel panel: resultPanels) {
-//            SolarPanelInstallation installation = panel.getInstallation();
-//            result.computeIfAbsent(
-//                    installation,
-//                    k -> new ArrayList<>()
-//            ).add(panel);
-//        }
+        // for every panel, get their geoLocations
+        List<MarketResponseDTO> response = populateGeoLocations(resultPanels);
 
-        return new MarketResponseDTO(resultPanels, Status.SUCCESS);
+        return response;
     }
 
     // find solar panels by model
@@ -187,14 +176,24 @@ public class MarketService {
         return earthRadius * c;
     }
 
-    private void printPanelList(List<SolarPanel> list) {
-        if (list.isEmpty()) {
-            System.out.println("Nothing inside the list!");
-            return;
+    private List<MarketResponseDTO> populateGeoLocations(List<SolarPanel> panels) {
+        List<MarketResponseDTO> resultList = new ArrayList<>();
+
+        for (SolarPanel panel: panels) {
+            String[] parts = panel.getInstallation().getGeoLocation().split(",");
+            Double lat = Double.parseDouble(parts[0]);
+            Double lng = Double.parseDouble(parts[1]);
+
+            Map<String, Double> locationMap = new HashMap<>();
+            locationMap.put("lat", lat);
+            locationMap.put("lng", lng);
+
+            MarketResponseDTO geoData = new MarketResponseDTO(panel, locationMap);
+
+            resultList.add(geoData);
         }
-        for (SolarPanel panel: list) {
-            System.out.println(panel.getId());
-        }
+
+        return resultList;
     }
 
 }

@@ -12,7 +12,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "solar_panel")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class SolarPanel {
 
     @Id
