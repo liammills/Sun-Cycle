@@ -4,13 +4,13 @@
       <h1>{{ panelInstallationId ? 'Edit' : 'Add' }} a solar panel installation</h1>
       <div class="row justify-between q-mt-lg">
         <div class="row">
-          <!-- <QInput
+          <QInput
             outlined
             v-model="address"
             label="Address"
             class="q-mr-md"
             style="width: 300px;"
-          /> -->
+          />
           <GoogleAddressAutocomplete
             :apiKey="apiKey"
             v-model="address"
@@ -18,6 +18,13 @@
             class="q-mr-md"
             style="width: 300px;"
           />
+          <GMapAutocomplete
+            placeholder="This is a placeholder"
+            @place_changed="setPlace"
+            class="q-mr-md"
+            style="width: 300px;"
+          >
+        </GMapAutocomplete>
           <QSelect
             outlined
             v-model="selectedInstallationType"
@@ -216,6 +223,7 @@ export default {
     callbackFunction(place) {
       console.log(place);
     },
+    setPlace() {},
     filterModels(val, update, abort) {
       update(() => {
         if (val === '') {
