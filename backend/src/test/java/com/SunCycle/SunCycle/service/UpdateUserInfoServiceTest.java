@@ -1,6 +1,7 @@
 package com.SunCycle.SunCycle.service;
 
 import com.SunCycle.SunCycle.dto.LoginResponseDTO;
+import com.SunCycle.SunCycle.dto.Status;
 import com.SunCycle.SunCycle.model.User;
 import com.SunCycle.SunCycle.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -59,7 +60,7 @@ class UpdateUserInfoServiceTest {
         LoginResponseDTO response = updateUserInfoService.updateUserById(user.getUserId(), "new@example.com", "newPassword");
 
         // Assert
-        assertEquals("this id does not exist", response.getMessage());
+        assertEquals(Status.NOT_FOUND, response.getStatus());
     }
 
 //    @Test
@@ -107,7 +108,7 @@ class UpdateUserInfoServiceTest {
         LoginResponseDTO response = updateUserInfoService.updateUserById(user.getUserId(), "new@example.com", "newPassword");
 
         // Assert
-        assertEquals("error", response.getMessage());
+        assertEquals(Status.ERROR, response.getStatus());
     }
 
 }

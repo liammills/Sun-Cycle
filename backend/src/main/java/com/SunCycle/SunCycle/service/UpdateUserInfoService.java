@@ -1,6 +1,7 @@
 package com.SunCycle.SunCycle.service;
 
 import com.SunCycle.SunCycle.dto.LoginResponseDTO;
+import com.SunCycle.SunCycle.dto.Status;
 import com.SunCycle.SunCycle.model.User;
 import com.SunCycle.SunCycle.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -36,7 +37,7 @@ public class UpdateUserInfoService {
         // Fetch the user by ID
         Optional<User> userOptional = userRepository.findById(id);
         if (!userOptional.isPresent()) {
-            return new LoginResponseDTO("this id does not exist");
+            return new LoginResponseDTO(Status.NOT_FOUND);
         }
 
 //        if (userRepository.findByEmail(newEmail).isPresent()) {
@@ -59,11 +60,11 @@ public class UpdateUserInfoService {
             System.out.println(auth == null);
             String token = tokenService.generateJwt(auth);
 
-            return new LoginResponseDTO(user.toSimpleUserDTO(), token);
+            return new LoginResponseDTO(user.toSimpleUserDTO(), token, Status.SUCCESS);
 
         } catch(AuthenticationException e){
             System.out.println(e);
-            return new LoginResponseDTO("error");
+            return new LoginResponseDTO(Status.ERROR);
         }
     }
 
