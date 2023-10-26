@@ -80,8 +80,8 @@
                   class="q-mt-xs q-ml-sm row items-center"
                 >
                   <div class="q-mr-lg">
-                    <span class="q-mr-xs">{{ panel.name }}</span>
-                    <span>({{ panel.units }} units)</span>
+                    <span class="q-mr-xs">{{ panel.model.modelName }}</span>
+                    <span>({{ panel.quantity }} units)</span>
                   </div>
                   <QBtn
                     size="sm"

@@ -30,7 +30,7 @@ public class SolarPanelController {
         return ResponseEntity.ok(resultPanels);
     }
 
-    @PostMapping("/create")
+    @PostMapping("")
     public ResponseEntity<?> createPanel(@RequestBody SolarPanelRequestDTO dto) {
         SolarPanelResponseDTO result = solarPanelService.createPanel(dto);
 
@@ -41,7 +41,7 @@ public class SolarPanelController {
         return ResponseEntity.ok(result);
     }
 
-    @PutMapping("/{panelId}/update")
+    @PutMapping("/{panelId}")
     public ResponseEntity<?> updatePanel(@PathVariable int panelId, @RequestBody SolarPanelRequestDTO dto) {
         SolarPanelResponseDTO result = solarPanelService.updatePanel(panelId, dto);
 
@@ -52,7 +52,7 @@ public class SolarPanelController {
         return ResponseEntity.ok(result);
     }
 
-    @DeleteMapping("/{panelId}/delete")
+    @DeleteMapping("/{panelId}")
     public ResponseEntity<?> deletePanel(@PathVariable int panelId) {
         SolarPanelResponseDTO result = solarPanelService.deletePanel(panelId);
 

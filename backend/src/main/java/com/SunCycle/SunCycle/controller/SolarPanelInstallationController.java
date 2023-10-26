@@ -30,6 +30,17 @@ public class SolarPanelInstallationController {
         return ResponseEntity.ok(solarPanelInstallationService.getInstallationsByEmail(authentication.getName()));
     }
 
+    @GetMapping("/{installationId}")
+    public ResponseEntity<?> getInstallationsById(Authentication authentication, @PathVariable int installationId) {
+        SolarPanelInstallationResponseDTO result = solarPanelInstallationService.getInstallationById(authentication, installationId);
+
+        if (result.getStatus() == Status.NOT_FOUND || result.getStatus() == Status.ERROR) {
+            return ResponseEntity.badRequest().body(result.getMessage());
+        }
+
+        return ResponseEntity.ok(result);
+    }
+
     @PostMapping("")
     public ResponseEntity<?> createInstallation(@RequestBody SolarPanelInstallationRequestDTO dto) {
         SolarPanelInstallationResponseDTO result = solarPanelInstallationService.createSolarPanelInstallation(dto);

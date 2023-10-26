@@ -44,12 +44,16 @@
       >
         <div style="font-weight: 600">Panel</div>
         <div class="row justify-between q-my-sm">
-          <QInput
+          <QSelect
             outlined
-            type="text"
-            v-model="panel.model"
+            use-input
+            v-model="panel.modelName"
+            :options="filteredModels"
+            option-value="id"
+            option-label="modelName"
             label="Model"
             class="q-mr-md col-5"
+            @filter="filterModels"
           />
           <QInput
             outlined
@@ -150,7 +154,7 @@ export default {
     };
   },
   props: {
-    panelInstallationIdProp: {
+    panelInstallationId: {
       type: Number,
       default: null,
       required: false,
@@ -158,22 +162,13 @@ export default {
   },
   data() {
     return {
-      panelInstallationId: this.panelInstallationIdProp,
+      installationId: null,
       address: '',
       selectedInstallationType: '',
       installationTypeOptions: [
-        {
-          label: 'Residential',
-          value: 'residential',
-        },
-        {
-          label: 'Commercial',
-          value: 'commercial',
-        },
-        {
-          label: 'Industrial',
-          value: 'industrial',
-        },
+        'Residential',
+        'Commercial',
+        'Industrial',
       ],
       selectedRecyclingMethod: '',
       recyclingMethodOptions: [
@@ -209,50 +204,67 @@ export default {
         { id: 5, name: 'Copper', input: '' },
         { id: 6, name: 'Glass', input: '' }
       ],
+      models: [],
+      filteredModels: [],
     }
   },
-  mounted() {
+  async mounted() {
     if (this.panelInstallationId) {
-      this.getPanelInstallation();
+      await this.getPanelInstallation();
+      this.installationId = this.panelInstallationId;
     }
+    this.getModels();
   },
   methods: {
+    filterModels(val, update, abort) {
+      update(() => {
+        if (val === '') {
+          this.filteredModels = this.models;
+        } else {
+          const needle = val.toLowerCase();
+          this.filteredModels = this.models.filter(v => v.modelName.toLowerCase().indexOf(needle) > -1);
+        }
+      });
+    },
     isValidInput() {
-      return this.address && this.address !== '' && this.selectedInstallationType && this.selectedInstallationType !== '';
+      return this.address && this.address !== '' && this.selectedInstallationType && this.selectedInstallationType !== ''
+      && this.panels.length > 0 && this.panels.every((panel) => panel.modelName && panel.modelName !== '' && panel.qty && panel.qty > 0
+      && panel.installation_date && panel.installation_date !== '');
     },
     async getPanelInstallation() {
-      // TODO
-      this.address = '131 Heeney Street, Chinchilla QLD 4413';
-      this.selectedRecyclingMethod = 'Chemical processing';
-      this.panels = [
-        {
-          id: 1,
-          model: 'SunPower Maxeon',
-          qty: 186,
-          installation_date: '2015-03-22',
-        },
-        {
-          id: 2,
-          model: 'Tindo Karra 300',
-          qty: 40,
-          installation_date: '2021-08-27',
-        },
-      ];
+      try {
+        const response = await this.$api.get(`/installations/${this.panelInstallationId}`);
+
+        this.address = response.data.solarPanelInstallation.address;
+        this.selectedInstallationType = response.data.solarPanelInstallation.type;
+        this.panels = response.data.solarPanels.map((panel) => {
+          const installationDate = new Date(panel.installationDate).toISOString().split('T')[0];
+          return {
+            id: panel.id,
+            modelName: panel.model.modelName,
+            modelId: panel.model.id,
+            qty: panel.quantity,
+            installation_date: installationDate,
+          }
+        });
+      } catch (error) {
+        console.log(error);
+      }
     },
     async savePanelInstallation() {
       try {
         if (!this.isValidInput()) {
-          this.$q.notify('Please fill in all fields.');
+          this.$q.notify('Please fill in all fields and add at least one panel.');
           return;
         }
         let response;
-        if (this.panelInstallationIdProp || this.panelInstallationId) {
-          response = await this.$api.put(`/installations/${this.panelInstallationId}`, {
+        if (this.installationId) {
+          response = await this.$api.put(`/installations/${this.installationId}`, {
+            userId: this.authStore.user.userId,
             address: this.address,
-            installation_type: this.selectedInstallationType,
+            type: this.selectedInstallationType,
           });
         } else {
-          console.log(this.authStore.user.userId)
           response = await this.$api.post('/installations', {
             userId: this.authStore.user.userId,
             address: this.address,
@@ -261,9 +273,9 @@ export default {
             postcode: "2006",
             type: this.selectedInstallationType,
           });
-          this.panelInstallationId = response.data.id;
+          this.installationId = response.data.id;
         }
-        await this.savePanels(response.data.id);
+        await this.savePanels();
         if (response.status === 200) {
           this.$q.notify('Panel installation saved successfully');
         }
@@ -274,31 +286,43 @@ export default {
     },
     async savePanels() {
       try {
-        if (this.panelInstallationId) {
-          await this.$api.put(`/installations/${this.panelInstallationId}/panels`, {
-            panels: this.panels,
-          });
+        for (const panel of this.panels) {
+          const panelData = {
+            modelId: panel.modelId,
+            installationId: this.installationId,
+            quantity: panel.qty,
+            installationDate: panel.installation_date,
+            retirementDate: '10/10/2028',  // Add retirement date logic here
+          };
+          if (this.panelInstallationId) {
+            await this.$api.put(`/panels/${panel.id}`, panelData);
+          } else {
+            await this.$api.post(`/panels`, { ...panelData, installationId: this.installationId });
+          }
         }
-        else {
-          await this.$api.post('/installations/', {
-            panels: this.panels,
-          });
-        }
-        console.log(response);
       } catch (error) {
         console.log(error);
       }
     },
     addPanel() {
+      const today = new Date().toISOString().split('T')[0];
       this.panels.push({
         id: this.panels.length + 1,
         model: '',
         qty: 0,
-        installation_date: '',
+        installation_date: today,
       });
     },
     async deletePanel(id) {
       this.panels = this.panels.filter((panel) => panel.id !== id);
+    },
+    async getModels() {
+      try {
+        const response = await this.$api.get('/models');
+        this.models = response.data;
+      } catch (error) {
+        console.log(error);
+      }
     },
     async createModel() {
       if (this.newModelName && this.selectedRecyclingMethod) {
