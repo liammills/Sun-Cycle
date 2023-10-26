@@ -56,7 +56,7 @@ public class UpdateUserInfoService {
             System.out.println(auth == null);
             String token = tokenService.generateJwt(auth);
 
-            return new LoginResponseDTO(user.toSimpleUserDTO(), token, Status.SUCCESS);
+            return new LoginResponseDTO(user.toSimpleUserDTO(token), token, Status.SUCCESS);
 
         } catch(AuthenticationException e){
             System.out.println(e);
