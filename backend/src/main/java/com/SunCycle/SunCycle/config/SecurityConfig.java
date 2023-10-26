@@ -54,39 +54,23 @@ public class SecurityConfig  {
         return new ProviderManager(provider);
     }
 
-    // @Bean
-    // CorsConfigurationSource corsConfigurationSource() {
-    //     CorsConfiguration configuration = new CorsConfiguration();
-    //     configuration.setAllowedOrigins(Arrays.asList("*"));
-    //     configuration.setAllowedMethods(Arrays.asList("*"));
-    //     configuration.setAllowedHeaders(Arrays.asList("*"));
-    //     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    //     source.registerCorsConfiguration("/**", configuration);
-    //     return source;
-    // }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-        // CorsConfiguration corsConfiguration = new CorsConfiguration();
-        // corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000"));
-        // corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        // corsConfiguration.setAllowedHeaders(List.of("*"));
-        // corsConfiguration.setAllowCredentials(true);
-
-        // UrlBasedCorsConfigurationSource corsSource = new UrlBasedCorsConfigurationSource();
-        // corsSource.registerCorsConfiguration("/**", corsConfiguration);
-
-        // http.cors();
         
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/users/**").permitAll();
-                    auth.requestMatchers("/panels/**").permitAll();
-                    auth.requestMatchers("/users/**").hasAnyRole("ADMIN", "USER");
+                    auth.requestMatchers("/market").permitAll();
+                    auth.requestMatchers("/users/login").permitAll();
+                    auth.requestMatchers("/users/create").permitAll();
+//                    auth.requestMatchers("/panels/**").permitAll();
+//                    auth.requestMatchers("/users/**").hasAnyRole( "USER");
                     auth.anyRequest().authenticated();
                 });
-
+//        http.authorizeHttpRequests(auth -> {
+//            auth.requestMatchers("/market").permitAll();
+////            auth.anyRequest().permitAll();
+//        });
         http.oauth2ResourceServer((oauth2ResourceServer) ->
                 {
                     oauth2ResourceServer

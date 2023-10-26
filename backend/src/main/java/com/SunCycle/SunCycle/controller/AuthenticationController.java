@@ -1,15 +1,20 @@
 package com.SunCycle.SunCycle.controller;
 
 import com.SunCycle.SunCycle.dto.LoginResponseDTO;
+import com.SunCycle.SunCycle.dto.Status;
 import com.SunCycle.SunCycle.model.User;
 import com.SunCycle.SunCycle.repository.UserRepository;
 import com.SunCycle.SunCycle.service.AuthenticationService;
 import com.SunCycle.SunCycle.service.TokenService;
 import com.SunCycle.SunCycle.service.UpdateUserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -39,21 +44,36 @@ public class AuthenticationController {
     @PostMapping("/create")
     public ResponseEntity<?> createUser(@RequestBody User user) {
 
-        // Check if email already exists
-        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-            return ResponseEntity.badRequest().body("email already exists");
+        LoginResponseDTO response = authenticationService.registerUser(user.getUsername(), user.getPassword());
+
+        if (response.getStatus() == Status.ALREADY_EXISTS){
+            return new ResponseEntity<String>("Email already exist", HttpStatusCode.valueOf(409));
         }
 
-        LoginResponseDTO response = authenticationService.registerUser(user.getUsername(), user.getPassword());
+        if (response.getStatus() == Status.ERROR) {
+            return new ResponseEntity<String>("Authentication failed", HttpStatusCode.valueOf(401));
+        }
+
         return ResponseEntity.ok(response);
 
     }
 
     // User login
     @PostMapping("/login")
-    public LoginResponseDTO loginUser(@RequestBody User user) {
+    public ResponseEntity<?> loginUser(@RequestBody User user) {
+        LoginResponseDTO response = authenticationService.loginUser(user.getUsername(), user.getPassword());
 
-        return authenticationService.loginUser(user.getUsername(), user.getPassword());
+        if (response.getStatus() == Status.NOT_FOUND) {
+            return new ResponseEntity<String>("User not found", HttpStatusCode.valueOf(401));
+        }
+
+        if (response.getStatus() == Status.ERROR) {
+            return new ResponseEntity<String>("Authentication failed", HttpStatusCode.valueOf(401));
+        }
+
+        return ResponseEntity.ok(response);
+
+
     }
 
     // Update user details
