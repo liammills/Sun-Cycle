@@ -4,10 +4,17 @@
       <h1>{{ panelInstallationId ? 'Edit' : 'Add' }} a solar panel installation</h1>
       <div class="row justify-between q-mt-lg">
         <div class="row">
-          <QInput
+          <!-- <QInput
             outlined
             v-model="address"
             label="Address"
+            class="q-mr-md"
+            style="width: 300px;"
+          /> -->
+          <GoogleAddressAutocomplete
+            :apiKey="apiKey"
+            v-model="address"
+            @callback="callbackFunction"    
             class="q-mr-md"
             style="width: 300px;"
           />
@@ -144,9 +151,13 @@
 
 <script>
 import { useAuthStore } from 'src/stores/auth';
+import GoogleAddressAutocomplete from 'vue3-google-address-autocomplete';
 
 export default {
   name: 'EditPanelInstallationPage',
+  components: {
+    GoogleAddressAutocomplete,
+  },
   setup() {
     const authStore = useAuthStore();
     return {
@@ -162,6 +173,7 @@ export default {
   },
   data() {
     return {
+      apiKey: process.env.VUE_APP_GOOGLE_MAPS_API_KEY.split("\"")[1],
       installationId: null,
       address: '',
       selectedInstallationType: '',
@@ -201,6 +213,9 @@ export default {
     this.getModels();
   },
   methods: {
+    callbackFunction(place) {
+      console.log(place);
+    },
     filterModels(val, update, abort) {
       update(() => {
         if (val === '') {
