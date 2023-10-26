@@ -38,6 +38,18 @@
               <div class="row items-center q-mt-xs">
                 <QBtn
                   size="md"
+                  icon="delete"
+                  no-caps
+                  ripple
+                  dense
+                  flat
+                  text-color="dark"
+                  @click="deleteInstallation(installation.solarPanelInstallation.id)"
+                >
+                  <QTooltip>Delete</QTooltip>
+                </QBtn>
+                <QBtn
+                  size="md"
                   icon="edit"
                   no-caps
                   ripple
@@ -80,8 +92,8 @@
                   class="q-mt-xs q-ml-sm row items-center"
                 >
                   <div class="q-mr-lg">
-                    <span class="q-mr-xs">{{ panel.name }}</span>
-                    <span>({{ panel.units }} units)</span>
+                    <span class="q-mr-xs">{{ panel.model.modelName }}</span>
+                    <span>({{ panel.quantity }} units)</span>
                   </div>
                   <QBtn
                     size="sm"
@@ -114,6 +126,7 @@
 
 <script>
 import Papa from 'papaparse';
+import { Dialog } from 'quasar';
 
 export default {
   name: 'PanelsPage',
@@ -136,6 +149,27 @@ export default {
         }
       }
     },
+    async deleteInstallation(id) {
+      try {
+        this.$q.dialog({
+          title: 'Confirm',
+          message: 'Are you sure you want to delete this installation?',
+          ok: 'Yes',
+          cancel: 'No',
+        }).onOk(async() => {
+          console.log("Dialog resolved with OK");
+          const response = await this.$api.delete(`/installations/${id}`);
+          this.installations = this.installations.filter(installation => installation.solarPanelInstallation.id !== id);
+          if (response.success) {
+            this.$q.notify('Installation deleted successfully');
+          }
+        });
+      } catch (error) {
+        if (error.response?.data?.message) {
+          this.error = error.response.data.message;
+        }
+      }
+    },
     formatDate(dateString) {
       const date = new Date(dateString);
       const day = String(date.getDate()).padStart(2, '0');
@@ -145,42 +179,6 @@ export default {
       return `${day}/${month}/${year}`;
     },
     exportData() {
-      // Sample JSON data
-      const jsonData = [{
-        id: 3,
-        installationDate: "2023-10-09T13:00:00.000+00:00",
-        retirementDate: "2028-10-09T13:00:00.000+00:00",
-        recyclingMethod: "Recycle",
-        installation: {
-          id: 1,
-          user: {
-            userId: 1,
-            email: "jili5381@uni.sydney.edu.au",
-            password: "{bcrypt}$2a$10$Qsiyn5t.MDbIyxml5LN72OOjWAfoYZU2mIlsXbUqV6tLfHwh4BIom",
-            enabled: true,
-            username: "jili5381@uni.sydney.edu.au",
-            authorities: null,
-            accountNonExpired: true,
-            accountNonLocked: true,
-            credentialsNonExpired: true
-          },
-          geoLocation: "-33.88832701093788, 151.19404158191045",
-          address: "1 Cleveland St, Camperdown",
-          state: "NSW",
-          postcode: 2006,
-          type: "Personal"
-        },
-        model: {
-          id: 1,
-          polymers: 100.0,
-          silicon: 100.0,
-          copper: 100.0,
-          glass: 100.0,
-          silver: 100.0,
-          aluminium: 100.0
-        }
-      }];
-
       const flattenedData = this.flattenData(jsonData);
       const csv = Papa.unparse(flattenedData);
 

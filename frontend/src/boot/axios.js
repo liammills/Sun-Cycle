@@ -41,12 +41,11 @@ export default async({ app, router }) => {
   if (!!user && user != 'null' && !!token && token != 'null') {
     api.defaults.headers.common.Authorization = `Bearer ${token}`;
   }
-  console.log('axios.js', api.defaults.headers.common.Authorization);
 
-  // api.interceptors.response.use(
-  //   response => response,
-  //   error => handleErrors({ error, router }),
-  // );
+  api.interceptors.response.use(
+    response => response,
+    error => handleErrors({ error, router }),
+  );
 
   app.config.globalProperties.$axios = axios
   app.config.globalProperties.$api = api

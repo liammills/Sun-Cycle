@@ -70,7 +70,7 @@ class SolarPanelControllerTest {
         responseDTO.setStatus(Status.SUCCESS);
         when(solarPanelService.createPanel(any(SolarPanelRequestDTO.class))).thenReturn(responseDTO);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/panels/create")
+        mockMvc.perform(MockMvcRequestBuilders.post("/panels")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestJson)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
@@ -94,7 +94,7 @@ class SolarPanelControllerTest {
         responseDTO.setMessage("An error occurred");
         when(solarPanelService.createPanel(any(SolarPanelRequestDTO.class))).thenReturn(responseDTO);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/panels/create")
+        mockMvc.perform(MockMvcRequestBuilders.post("/panels")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestJson)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
@@ -119,7 +119,7 @@ class SolarPanelControllerTest {
 
         when(solarPanelService.updatePanel(eq(1), any(SolarPanelRequestDTO.class))).thenReturn(responseDTO);
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/panels/1/update")
+        mockMvc.perform(MockMvcRequestBuilders.put("/panels/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestJson)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
@@ -146,7 +146,7 @@ class SolarPanelControllerTest {
 
         when(solarPanelService.updatePanel(eq(1), any(SolarPanelRequestDTO.class))).thenReturn(responseDTO);
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/panels/1/update")
+        mockMvc.perform(MockMvcRequestBuilders.put("/panels/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestJson)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
@@ -164,7 +164,7 @@ class SolarPanelControllerTest {
         when(solarPanelService.deletePanel(anyInt())).thenReturn(responseDTO);
 
         // Act & Assert
-        mockMvc.perform(delete("/panels/{panelId}/delete", 1)
+        mockMvc.perform(delete("/panels/{panelId}", 1)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isOk())
                 .andExpect(content().json("{\"status\":\"SUCCESS\"}"));
@@ -180,7 +180,7 @@ class SolarPanelControllerTest {
         when(solarPanelService.deletePanel(anyInt())).thenReturn(responseDTO);
 
         // Act & Assert
-        mockMvc.perform(delete("/panels/{panelId}/delete", 1)
+        mockMvc.perform(delete("/panels/{panelId}", 1)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("Panel not found"));
@@ -196,7 +196,7 @@ class SolarPanelControllerTest {
         when(solarPanelService.deletePanel(anyInt())).thenReturn(responseDTO);
 
         // Act & Assert
-        mockMvc.perform(delete("/panels/{panelId}/delete", 1)
+        mockMvc.perform(delete("/panels/{panelId}", 1)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("Internal error"));

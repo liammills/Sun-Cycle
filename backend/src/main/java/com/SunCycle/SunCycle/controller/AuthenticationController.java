@@ -41,7 +41,7 @@ public class AuthenticationController {
     private UpdateUserInfoService updateUserInfoService;
 
     // Create a new user
-    @PostMapping("/create")
+    @PostMapping("")
     public ResponseEntity<?> createUser(@RequestBody User user) {
 
         LoginResponseDTO response = authenticationService.registerUser(user.getUsername(), user.getPassword());

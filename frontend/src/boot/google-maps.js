@@ -9,5 +9,6 @@ export default boot(({ app }) => {
     });
 
     app.component('GMapMap', VueGoogleMaps.GMapMap);
+    app.component('GMapAutocomplete', VueGoogleMaps.GMapAutocomplete);
 });
 

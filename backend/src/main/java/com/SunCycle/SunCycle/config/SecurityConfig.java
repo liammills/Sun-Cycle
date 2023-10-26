@@ -32,7 +32,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 import java.util.List;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 
 @Configuration

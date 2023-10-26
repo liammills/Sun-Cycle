@@ -116,38 +116,10 @@ export default {
       ],
       infoWindowOpen: false,
       activeMarker: null,
-      dummyData: [
-        {
-          "id": 2,
-          "installationDate": "2023-10-09T13:00:00.000+00:00",
-          "retirementDate": "2028-10-09T13:00:00.000+00:00",
-          "installation": {
-            "id": 1,
-            "geoLocation": "-33.88832701093788, 151.19404158191045",
-            "address": "1 Cleveland St, Camperdown",
-            "state": "NSW",
-            "postcode": 2006,
-            "type": "Personal",
-            "addedDate": null,
-          },
-          "model": {
-            "id": 1,
-            "modelName": "Very cool model",
-            "recyclingMethod": "Chemical processing",
-            "polymers": 100.0,
-            "silicon": 100.0,
-            "copper": 100.0,
-            "glass": 100.0,
-            "silver": 100.0,
-            "aluminium": 100.0
-          }
-        }
-      ],
     };
   },
   mounted() {
     this.loadMapData();
-    this.getAllModels() // DELETE
   },
   watch: {
     center: function() {
@@ -161,14 +133,6 @@ export default {
     },
   },
   methods: {
-    async getAllModels() {
-      try {
-        const response = await this.$api.get('/models');
-        console.log(response.data)
-      } catch (error) {
-        console.log(error);
-      }
-    },
     openInfoWindow(marker) {
       this.activeMarker = marker;
       this.infoWindowOpen = true;
@@ -186,7 +150,7 @@ export default {
             },
           },
         );
-        const markers = response.data.map(marker => {
+        const markers = response.data.map(panel => {
           return {
             position: {
               lat: panel.latitude,
