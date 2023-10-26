@@ -172,26 +172,11 @@ export default {
       ],
       selectedRecyclingMethod: '',
       recyclingMethodOptions: [
-        {
-          label: 'Chemical processing',
-          value: 'chemical',
-        },
-        {
-          label: 'Electrochemical processing',
-          value: 'electrochemical',
-        },
-        {
-          label: 'Hydrometallurgical separation',
-          value: 'hydrometallurgical',
-        },
-        {
-          label: 'Mechanical processing',
-          value: 'mechanical',
-        },
-        {
-          label: 'Thermal processing',
-          value: 'thermal',
-        },
+        'Chemical processing',
+        'Electrochemical processing',
+        'Hydrometallurgical separation',
+        'Mechanical processing',
+        'Thermal processing',
       ],
       panels: [],
       showAddModelDialog: false,
@@ -272,7 +257,7 @@ export default {
             postcode: "2006",
             type: this.selectedInstallationType,
           });
-          this.installationId = response.data.id;
+          this.installationId = response.data.solarPanelInstallation.id;
         }
         await this.savePanels();
         if (response.status === 200) {
@@ -340,6 +325,7 @@ export default {
           if (response.status == 200) {
             this.$q.notify('Solar panel maodel created successfully.')
           }
+          this.getModels();
           console.log(response);
         } catch (error) {
           console.log(error);
