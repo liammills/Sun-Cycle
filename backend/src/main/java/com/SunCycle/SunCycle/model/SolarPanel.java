@@ -12,7 +12,6 @@ import java.util.Date;
 
 @Entity
 @Table(name = "solar_panel")
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class SolarPanel {
 
     @Id
@@ -34,6 +33,9 @@ public class SolarPanel {
 
     @Column(name = "retirement_date")
     private Date retirementDate;
+
+    @Column(name = "quantity")
+    private int quantity;
 
     // constructor
     public SolarPanel() {}
@@ -79,6 +81,15 @@ public class SolarPanel {
         try { retirementDate = stringToDate(retirementDateStr); } catch (ParseException ignored) {}
     }
 
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    // helper
     private Date stringToDate(String dateStr) throws ParseException {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         return formatter.parse(dateStr);

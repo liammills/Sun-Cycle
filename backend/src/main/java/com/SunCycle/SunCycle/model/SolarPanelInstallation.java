@@ -10,7 +10,6 @@ import java.util.Date;
 
 @Entity
 @Table(name = "solar_panel_installation")
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class SolarPanelInstallation {
 
     @Id
@@ -38,9 +37,6 @@ public class SolarPanelInstallation {
     protected void onCreate() {
         addedDate = new Date();
     }
-
-//    @OneToMany(mappedBy = "solarPanelInstallation", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-//    private List<SolarPanel> solarPanels = new ArrayList<>();
 
     // Constructors, getters, setters, etc.
     public SolarPanelInstallation() {}
@@ -128,14 +124,6 @@ public class SolarPanelInstallation {
     public void setType(String type) {
         this.type = type;
     }
-
-//    public List<SolarPanel> getSolarPanels() {
-//        return solarPanels;
-//    }
-//
-//    public void setSolarPanels(List<SolarPanel> solarPanels) {
-//        this.solarPanels = solarPanels;
-//    }
 
     public Date getAddedDate() {
         return addedDate;

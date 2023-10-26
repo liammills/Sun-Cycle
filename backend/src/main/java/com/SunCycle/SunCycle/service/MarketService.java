@@ -53,9 +53,7 @@ public class MarketService {
                 .toList();
 
         // for every panel, get their geoLocations
-        List<MarketResponseDTO> response = populateGeoLocations(resultPanels);
-
-        return response;
+        return populateGeoLocations(resultPanels);
     }
 
     // find solar panels by model
