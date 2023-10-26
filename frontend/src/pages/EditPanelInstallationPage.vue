@@ -23,7 +23,7 @@
           flat
           no-caps
           class="bg-primary text-white submit-button"
-          @click="submit()"
+          @click="savePanelInstallation()"
         >
           Save
         </QBtn>
@@ -96,7 +96,7 @@
             flat
             no-caps
             class="bg-primary text-white submit-button"
-            @click="submit()"
+            @click="createModel()"
           >
             Save
           </QBtn>
@@ -150,7 +150,7 @@ export default {
     };
   },
   props: {
-    panelInstallationId: {
+    panelInstallationIdProp: {
       type: Number,
       default: null,
       required: false,
@@ -158,6 +158,7 @@ export default {
   },
   data() {
     return {
+      panelInstallationId: this.panelInstallationIdProp,
       address: '',
       selectedInstallationType: '',
       installationTypeOptions: [
@@ -216,6 +217,9 @@ export default {
     }
   },
   methods: {
+    isValidInput() {
+      return this.address && this.address !== '' && this.selectedInstallationType && this.selectedInstallationType !== '';
+    },
     async getPanelInstallation() {
       // TODO
       this.address = '131 Heeney Street, Chinchilla QLD 4413';
@@ -237,21 +241,27 @@ export default {
     },
     async savePanelInstallation() {
       try {
+        if (!this.isValidInput()) {
+          this.$q.notify('Please fill in all fields.');
+          return;
+        }
         let response;
-        if (this.panelInstallationId) {
+        if (this.panelInstallationIdProp || this.panelInstallationId) {
           response = await this.$api.put(`/installations/${this.panelInstallationId}`, {
             address: this.address,
             installation_type: this.selectedInstallationType,
           });
         } else {
-          response = await this.$api.post('/installations/', {
-            userId: this.authStore.state.user.userId,
+          console.log(this.authStore.user.userId)
+          response = await this.$api.post('/installations', {
+            userId: this.authStore.user.userId,
             address: this.address,
             geoLocation: "-33.88832701093788, 151.19404158191045",
             state: "NSW",
             postcode: "2006",
             type: this.selectedInstallationType,
           });
+          this.panelInstallationId = response.data.id;
         }
         await this.savePanels(response.data.id);
         if (response.status === 200) {
@@ -290,10 +300,25 @@ export default {
     async deletePanel(id) {
       this.panels = this.panels.filter((panel) => panel.id !== id);
     },
-    addNewModel() {
-      if (this.newModelName) {
-        // TODO
-        console.log('New model:', this.newModelName);
+    async createModel() {
+      if (this.newModelName && this.selectedRecyclingMethod) {
+        try {
+          // STILL TO CHECK/DO
+          const [silicone, silver, polymers, aluminium, copper, glass] = this.materials.map(material => material.input);
+          const response = await this.$api.post('/models', {
+            name: this.newModelName,
+            recycling_method: this.selectedRecyclingMethod,
+            silicone,
+            silver,
+            polymers,
+            aluminium,
+            copper,
+            glass
+          });
+          console.log(response);
+        } catch (error) {
+          console.log(error);
+        }
 
         this.showAddModelDialog = false;
         this.newModelName = '';

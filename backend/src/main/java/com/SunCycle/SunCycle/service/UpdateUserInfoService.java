@@ -40,10 +40,6 @@ public class UpdateUserInfoService {
             return new LoginResponseDTO(Status.NOT_FOUND);
         }
 
-//        if (userRepository.findByEmail(newEmail).isPresent()) {
-//            return new LoginResponseDTO("this email has aldready been used");
-//        }
-
         User user = userOptional.get();
 
         // Update the email and password

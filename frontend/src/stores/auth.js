@@ -19,6 +19,7 @@ export const useAuthStore = defineStore({
                 });
                 console.log(response);
                 const { user, jwt } = response.data;
+                console.log(response.data);
 
                 this.user = user;
                 localStorage.setItem('user', JSON.stringify(user));

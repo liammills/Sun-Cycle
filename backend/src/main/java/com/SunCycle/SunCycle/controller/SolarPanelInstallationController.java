@@ -14,13 +14,23 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/installations")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin
 public class SolarPanelInstallationController {
 
     @Autowired
     private SolarPanelInstallationService solarPanelInstallationService;
 
-    @PostMapping("/create")
+    @GetMapping("")
+    public ResponseEntity<?> getInstallationsByUser(Authentication authentication) {
+        List<SolarPanelInstallationResponseDTO> result = solarPanelInstallationService.getInstallationsByEmail(authentication.getName());
+
+        if (result == null)
+            return ResponseEntity.badRequest().body("This user doesn't have any associated solar panel installations.");
+
+        return ResponseEntity.ok(solarPanelInstallationService.getInstallationsByEmail(authentication.getName()));
+    }
+
+    @PostMapping("")
     public ResponseEntity<?> createInstallation(@RequestBody SolarPanelInstallationRequestDTO dto) {
         SolarPanelInstallationResponseDTO result = solarPanelInstallationService.createSolarPanelInstallation(dto);
 
@@ -31,7 +41,7 @@ public class SolarPanelInstallationController {
         return ResponseEntity.ok(result);
     }
 
-    @PutMapping("/{installationId}/update")
+    @PutMapping("/{installationId}")
     public ResponseEntity<?> updateInstallation(Authentication authentication, @PathVariable int installationId, @RequestBody SolarPanelInstallationRequestDTO dto) {
         SolarPanelInstallationResponseDTO result = solarPanelInstallationService.updateSolarPanelInstallation(authentication, installationId, dto);
 
@@ -42,7 +52,7 @@ public class SolarPanelInstallationController {
         return ResponseEntity.ok(result);
     }
 
-    @DeleteMapping("/{installationId}/delete")
+    @DeleteMapping("/{installationId}")
     public ResponseEntity<?> deleteInstallation(Authentication authentication, @PathVariable int installationId) {
         SolarPanelInstallationResponseDTO result = solarPanelInstallationService.deleteInstallation(authentication, installationId);
 
@@ -51,15 +61,5 @@ public class SolarPanelInstallationController {
         }
 
         return ResponseEntity.ok(result);
-    }
-
-    @GetMapping("")
-    public ResponseEntity<?> getInstallationsByUser(Authentication authentication) {
-        List<SolarPanelInstallationResponseDTO> result = solarPanelInstallationService.getInstallationsByEmail(authentication.getName());
-
-        if (result == null)
-            return ResponseEntity.badRequest().body("This user doesn't have any associated solar panel installations.");
-
-        return ResponseEntity.ok(solarPanelInstallationService.getInstallationsByEmail(authentication.getName()));
     }
 }

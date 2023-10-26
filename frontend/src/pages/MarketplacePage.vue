@@ -113,62 +113,6 @@ export default {
             aluminium: 100.0
           }
         },
-        {
-          id: 2,
-          installationDate: "2023-10-09T13:00:00.000+00:00",
-          retirementDate: "2028-10-09T13:00:00.000+00:00",
-          installation: {
-            id: 1,
-            geoLocation: {
-              lat: 51.260197,
-              lng: 4.402771
-            },
-            address: "1 Cleveland St, Camperdown",
-            state: "NSW",
-            postcode: 2006,
-            type: "Personal",
-            addedDate: null,
-          },
-          model: {
-            id: 1,
-            modelName: "Very cool model",
-            recyclingMethod: "Chemical processing",
-            polymers: 100.0,
-            silicon: 100.0,
-            copper: 100.0,
-            glass: 100.0,
-            silver: 100.0,
-            aluminium: 100.0
-          }
-        },
-        {
-          id: 2,
-          installationDate: "2023-10-09T13:00:00.000+00:00",
-          retirementDate: "2028-10-09T13:00:00.000+00:00",
-          installation: {
-            id: 1,
-            geoLocation: {
-              lat: 51.049999,
-              lng: 3.733333
-            },
-            address: "1 Cleveland St, Camperdown",
-            state: "NSW",
-            postcode: 2006,
-            type: "Personal",
-            addedDate: null,
-          },
-          model: {
-            id: 1,
-            modelName: "Very cool model",
-            recyclingMethod: "Chemical processing",
-            polymers: 100.0,
-            silicon: 100.0,
-            copper: 100.0,
-            glass: 100.0,
-            silver: 100.0,
-            aluminium: 100.0
-          }
-        },
       ],
       infoWindowOpen: false,
       activeMarker: null,
@@ -203,7 +147,7 @@ export default {
   },
   mounted() {
     this.loadMapData();
-    this.testAPI();
+    this.getAllModels() // DELETE
   },
   watch: {
     center: function() {
@@ -217,44 +161,44 @@ export default {
     },
   },
   methods: {
-    async loadMapData() {
-      // try {
-      //   const response = await this.$api.get('/map',
-      //     {
-      //       params: {
-      //         latitude: this.center.lat,
-      //         longitude: this.center.lng,
-      //         radius: this.radius,
-      //         state: this.selectedState,
-      //         recycling_method: this.selectedRecyclingMethod,
-      //       },
-      //     },
-      //   );
-      //   const markers = response.data.map(marker => {
-      //     return {
-      //       position: {
-      //         lat: panel.latitude,
-      //         lng: panel.longitude,
-      //       },
-      //       title: panel.name,
-      //       icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
-      //     };
-      //   });
-      //   this.markers = markers;
-      // } catch (error) {
-      //   console.log(error);
-      // }
+    async getAllModels() {
+      try {
+        const response = await this.$api.get('/models');
+        console.log(response.data)
+      } catch (error) {
+        console.log(error);
+      }
     },
     openInfoWindow(marker) {
       this.activeMarker = marker;
       this.infoWindowOpen = true;
     },
-    async testAPI() {
+    async loadMapData() {
       try {
-        const response = await this.$api.post('/market')
-        console.log(response);
+        const response = await this.$api.post('/market',
+          {
+            params: {
+              latitude: this.center.lat,
+              longitude: this.center.lng,
+              radius: this.radius,
+              state: this.selectedState,
+              recycling_method: this.selectedRecyclingMethod,
+            },
+          },
+        );
+        const markers = response.data.map(marker => {
+          return {
+            position: {
+              lat: panel.latitude,
+              lng: panel.longitude,
+            },
+            title: panel.name,
+            icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
+          };
+        });
+        this.markers = markers;
       } catch (error) {
-        console.error("Error making the API request:", error);
+        console.log(error);
       }
     }
   }

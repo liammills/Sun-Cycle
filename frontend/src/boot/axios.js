@@ -36,8 +36,9 @@ async function handleErrors({ error, router }) {
 }
 
 export default async({ app, router }) => {
-  const token = await localStorage.getItem('user');
-  if (!!localStorage.getItem('user') && token) {
+  const user = await localStorage.getItem('user');
+  const token = await localStorage.getItem('jwt');
+  if (!!user && user != 'null' && !!token && token != 'null') {
     api.defaults.headers.common.Authorization = `Bearer ${token}`;
   }
   console.log('axios.js', api.defaults.headers.common.Authorization);

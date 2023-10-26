@@ -14,7 +14,7 @@
       </div>
       <div>
         <p
-          v-if="panels.length === 0"
+          v-if="installations.length === 0"
           class="text-center q-pt-xl"
         >
           You have no panels yet. Add an installation to get started.
@@ -29,12 +29,12 @@
             </a>
           </div>
           <div
-            v-for="panel in panels"
-            :key="panel.id"
+            v-for="installation in installations"
+            :key="installation.solarPanelInstallation.id"
             class="card-container full-width q-mt-md"
           >
             <div class="row justify-between items-center">
-              <h3 style="font-weight: 600">{{ panel.address }}</h3>
+              <h3 style="font-weight: 600">{{ installation.solarPanelInstallation.address }}</h3>
               <div class="row items-center q-mt-xs">
                 <QBtn
                   size="md"
@@ -44,7 +44,7 @@
                   dense
                   flat
                   text-color="dark"
-                  @click="$router.push(`/panels/${panel.id}/edit`)"
+                  @click="$router.push(`/panels/${installation.solarPanelInstallation.id}/edit`)"
                 >
                   <QTooltip>Edit</QTooltip>
                 </QBtn>
@@ -55,11 +55,11 @@
                 <div class="q-mt-xs row">
                   <div class="q-mr-lg">
                     <span style="font-weight: 600">Type: </span>
-                    <span>{{ panel.type }}</span>
+                    <span>{{ installation.solarPanelInstallation.type }}</span>
                   </div>
                   <div>
                     <span style="font-weight: 600">Added: </span>
-                    <span>{{ panel.createdAt }}</span>
+                    <span>{{ formatDate(installation.solarPanelInstallation.addedDate) }}</span>
                   </div>
                 </div>
                 <div
@@ -69,7 +69,13 @@
                   Panels
                 </div>
                 <div
-                  v-for="panel in panel.panels"
+                  v-if="installation.solarPanels?.length === 0"
+                  class="q-mt-xs q-ml-sm"
+                >
+                  No panels added yet.
+                </div>
+                <div
+                  v-for="panel in installation.solarPanels"
                   :key="panel.id"
                   class="q-mt-xs q-ml-sm row items-center"
                 >
@@ -85,14 +91,14 @@
                     dense
                     flat
                     text-color="dark"
-                    @click="$router.push(`/panels/${panel.id}/edit`)"
+                    @click="$router.push(`/panels/${installation.solarPanelInstallation.id}/edit`)"
                   >
                     <QTooltip>More info</QTooltip>
                   </QBtn>
                 </div>
               </div>
               <a
-                :href='`https://www.google.com/maps/search/?api=1&query=${panel.address}`'
+                :href='`https://www.google.com/maps/search/?api=1&query=${installation.solarPanelInstallation.address}`'
                 target="_blank"
                 class="self-end"
               >
@@ -113,83 +119,30 @@ export default {
   name: 'PanelsPage',
   data() {
     return {
-      panels: [
-        {
-          id: 1,
-          address: '131 Heeney Street, Chinchilla QLD 4413',
-          type: 'Commercial',
-          createdAt: '27/08/2021',
-          size: '10kW',
-          status: 'Active',
-          panels: [
-            {
-              id: 1,
-              name: 'SunPower Maxeon',
-              units: 186,
-            },
-            {
-              id: 2,
-              name: 'Tindo Karra 300',
-              units: 40,
-            }
-          ],
-        },
-        {
-          id: 2,
-          address: '123 Fake St, Chinchilla QLD 4413',
-          type: 'Commercial',
-          createdAt: '27/08/2021',
-          size: '10kW',
-          status: 'Active',
-          panels: [
-            {
-              id: 1,
-              name: 'SunPower Maxeon',
-              units: 186,
-            },
-            {
-              id: 2,
-              name: 'Tindo Karra 300',
-              units: 40,
-            }
-          ],
-        },
-        {
-          id: 3,
-          address: '123 Main St, Chinchilla QLD 4413',
-          type: 'Commercial',
-          createdAt: '27/08/2021',
-          size: '10kW',
-          status: 'Active',
-          panels: [
-            {
-              id: 1,
-              name: 'SunPower Maxeon',
-              units: 186,
-            },
-            {
-              id: 2,
-              name: 'Tindo Karra 300',
-              units: 40,
-            }
-          ],
-        },
-      ],
+      installations: [],
     };
   },
-  mounted() {
-    this.getPanels();
+  async mounted() {
+    await this.getPanels();
   },
   methods: {
     async getPanels() {
       try {
-        const result = await this.$api.get('/installations');
-        console.log(result);
+        const response = await this.$api.get('/installations');
+        this.installations = response.data;
       } catch (error) {
         if (error.response?.data?.message) {
           this.error = error.response.data.message;
         }
       }
+    },
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+      const year = date.getFullYear();
+      
+      return `${day}/${month}/${year}`;
     },
     exportData() {
       // Sample JSON data

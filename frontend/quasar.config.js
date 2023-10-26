@@ -85,7 +85,17 @@ module.exports = configure(function (/* ctx */) {
       https: false,
       port: 3000,
       open: false, // opens browser window automatically
-    },
+      // proxy: {
+      //   // proxy all requests starting with /api to your backend
+      //   '/api': {
+      //     target: 'http://localhost:8000',
+      //     changeOrigin: true,
+      //     pathRewrite: {
+      //       '^/api': ''
+      //     }
+      //   }
+      },
+    
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework
     framework: {

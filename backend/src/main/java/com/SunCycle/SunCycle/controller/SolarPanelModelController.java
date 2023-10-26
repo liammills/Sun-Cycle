@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/models")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin
 public class SolarPanelModelController {
 
     @Autowired

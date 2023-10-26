@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin
 @RequestMapping("/market")
 public class MarketController {
 
     @Autowired
     private MarketService marketService;
 
-    @PostMapping(value = "")
+    @PostMapping("")
     public ResponseEntity<?> getUserQueryPanels(@RequestBody MarketRequestDTO dto) {
         return ResponseEntity.ok(marketService.searchUserQueryPanels(dto));
     }

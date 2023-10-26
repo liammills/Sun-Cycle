@@ -31,6 +31,9 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 import java.util.List;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 
 @Configuration
 @EnableWebSecurity
@@ -55,44 +58,40 @@ public class SecurityConfig  {
     }
 
     @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost:3000"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-        
-        http
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/market").permitAll();
-                    auth.requestMatchers("/users/login").permitAll();
-                    auth.requestMatchers("/users/create").permitAll();
-//                    auth.requestMatchers("/panels/**").permitAll();
-//                    auth.requestMatchers("/users/**").hasAnyRole( "USER");
-                    auth.anyRequest().authenticated();
-                });
-//        http.authorizeHttpRequests(auth -> {
-//            auth.requestMatchers("/market").permitAll();
-////            auth.anyRequest().permitAll();
-//        });
-        http.oauth2ResourceServer((oauth2ResourceServer) ->
-                {
-                    oauth2ResourceServer
-                            .jwt((jwt) ->
-                                    jwt
-                                            .decoder(jwtDecoder())
-                            );
-
-                }
-
-        );
-        http.oauth2ResourceServer(oauth2 -> oauth2
-                .jwt(jwt -> jwt
-                        .jwtAuthenticationConverter(jwtAuthenticationConverter())
-                )
-        );
-        http.sessionManagement(
+        http.cors(Customizer.withDefaults())
+            .csrf(AbstractHttpConfigurer::disable)
+            .sessionManagement(
                 session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        );
+            )
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/market").permitAll()
+                .requestMatchers("/models/**").permitAll()
+                .requestMatchers("/installations/**").authenticated()
+                .requestMatchers("/panels/**").authenticated()
+                .anyRequest().permitAll()
+            );
+
+        http.oauth2ResourceServer(oauth2ResourceServer -> {
+            oauth2ResourceServer.jwt(jwt -> {
+                jwt.decoder(jwtDecoder());
+                jwt.jwtAuthenticationConverter(jwtAuthenticationConverter());
+            });
+        });
 
         return http.build();
-
     }
 
     @Bean
