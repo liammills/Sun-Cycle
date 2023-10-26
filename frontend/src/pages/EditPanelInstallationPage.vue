@@ -37,7 +37,7 @@
         Add a panel
       </QBtn>
       <div
-        v-for="panel in panels"
+        v-for="(panel) in panels"
         :key="panel.id"
         class="card-container full-width q-mt-md"
         style="font-size: 16px"
@@ -47,7 +47,7 @@
           <QSelect
             outlined
             use-input
-            v-model="panel.modelName"
+            v-model="panel.model"
             :options="filteredModels"
             option-value="id"
             option-label="modelName"
@@ -228,8 +228,8 @@ export default {
     },
     isValidInput() {
       return this.address && this.address !== '' && this.selectedInstallationType && this.selectedInstallationType !== ''
-      && this.panels.length > 0 && this.panels.every((panel) => panel.modelName && panel.modelName !== '' && panel.qty && panel.qty > 0
-      && panel.installation_date && panel.installation_date !== '');
+      && this.panels.length > 0 && this.panels.every((panel) => panel.model && panel.model?.modelName !== '' && panel.qty
+      && panel.qty > 0 && panel.installation_date && panel.installation_date !== '');
     },
     async getPanelInstallation() {
       try {
@@ -241,8 +241,7 @@ export default {
           const installationDate = new Date(panel.installationDate).toISOString().split('T')[0];
           return {
             id: panel.id,
-            modelName: panel.model.modelName,
-            modelId: panel.model.id,
+            model: panel.model,
             qty: panel.quantity,
             installation_date: installationDate,
           }
@@ -288,7 +287,7 @@ export default {
       try {
         for (const panel of this.panels) {
           const panelData = {
-            modelId: panel.modelId,
+            modelId: panel.model.id,
             installationId: this.installationId,
             quantity: panel.qty,
             installationDate: panel.installation_date,
@@ -327,11 +326,10 @@ export default {
     async createModel() {
       if (this.newModelName && this.selectedRecyclingMethod) {
         try {
-          // STILL TO CHECK/DO
           const [silicone, silver, polymers, aluminium, copper, glass] = this.materials.map(material => material.input);
           const response = await this.$api.post('/models', {
-            name: this.newModelName,
-            recycling_method: this.selectedRecyclingMethod,
+            modelName: this.newModelName,
+            recyclingMethod: this.selectedRecyclingMethod,
             silicone,
             silver,
             polymers,
@@ -339,6 +337,9 @@ export default {
             copper,
             glass
           });
+          if (response.status == 200) {
+            this.$q.notify('Solar panel maodel created successfully.')
+          }
           console.log(response);
         } catch (error) {
           console.log(error);
