@@ -6,18 +6,19 @@ public class LoginResponseDTO {
     private SimpleUserDTO user;
     private String jwt;
 
-    private String result;
+    private Status result;
 
     public LoginResponseDTO(){
         super();
     }
 
-    public LoginResponseDTO(SimpleUserDTO user, String jwt){
+    public LoginResponseDTO(SimpleUserDTO user, String jwt, Status result){
         this.user = user;
         this.jwt = jwt;
+        this.result = result;
     }
 
-    public LoginResponseDTO(String result) {
+    public LoginResponseDTO(Status result) {
         this.result = result;
     }
 
@@ -37,7 +38,9 @@ public class LoginResponseDTO {
         this.jwt = jwt;
     }
 
-    public String getMessage() {
+    public Status getStatus() {
         return this.result;
     }
+
+
 }

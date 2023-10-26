@@ -48,7 +48,7 @@ class SolarPanelServiceTest {
         solarPanel = new SolarPanel();
         solarPanelModel = new SolarPanelModel();
         solarPanelInstallation = new SolarPanelInstallation();
-        requestDTO = new SolarPanelRequestDTO(4, 4, "2023/10/14", "2023/10/14", "recycle");
+        requestDTO = new SolarPanelRequestDTO(4, 4, "2023/10/14", "2023/10/14");
 
     }
 
@@ -89,7 +89,7 @@ class SolarPanelServiceTest {
         mockRequest.setInstallationId(1); // assuming installation ID
         mockRequest.setInstallationDate("2023/10/14");
         mockRequest.setRetirementDate("2023/10/14");
-        mockRequest.setRecyclingMethod("recycle");
+//        mockRequest.setRecyclingMethod("recycle");
 
 
         // Mocking repository responses
@@ -128,7 +128,7 @@ class SolarPanelServiceTest {
         mockRequest.setInstallationId(1); // assuming installation ID
         mockRequest.setInstallationDate("2023/10/14");
         mockRequest.setRetirementDate("2023/10/14");
-        mockRequest.setRecyclingMethod("recycle");
+//        mockRequest.setRecyclingMethod("recycle");
 
         // Mocking repository responses
         when(solarPanelRepository.findById(anyInt())).thenReturn(Optional.of(new SolarPanel()));
@@ -151,7 +151,7 @@ class SolarPanelServiceTest {
         mockRequest.setInstallationId(1); // assuming installation ID
         mockRequest.setInstallationDate("2023/10/14");
         mockRequest.setRetirementDate("2023/10/14");
-        mockRequest.setRecyclingMethod("recycle");
+//        mockRequest.setRecyclingMethod("recycle");
 
         // Mocking repository responses
         when(solarPanelRepository.findById(anyInt())).thenReturn(Optional.of(new SolarPanel()));
