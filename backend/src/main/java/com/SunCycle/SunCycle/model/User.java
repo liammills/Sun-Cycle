@@ -1,6 +1,7 @@
 package com.SunCycle.SunCycle.model;
 
 import com.SunCycle.SunCycle.dto.SimpleUserDTO;
+import com.nimbusds.jwt.JWTParser;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -8,7 +9,11 @@ import jakarta.validation.constraints.Size;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -93,6 +98,7 @@ public class User implements UserDetails {
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
+
     }
 
     @Override
@@ -121,8 +127,21 @@ public class User implements UserDetails {
         return Objects.hash(userId);
     }
 
-    public SimpleUserDTO toSimpleUserDTO() {
-        return new SimpleUserDTO(this.getUserId(), this.getEmail(), this.getUsername());
+    public Date getJwtExpiration(String token) {
+        try {
+            Date expirationDate = JWTParser.parse(token).getJWTClaimsSet().getExpirationTime();
+
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String formattedDateStr = formatter.format(expirationDate);
+
+            return formatter.parse(formattedDateStr);
+        } catch (ParseException e) {
+            throw new RuntimeException("Error parsing JWT token", e);
+        }
+    }
+
+    public SimpleUserDTO toSimpleUserDTO(String token) {
+        return new SimpleUserDTO(this.getUserId(), this.getEmail(), this.getUsername(), this.getJwtExpiration(token));
     }
 
 }

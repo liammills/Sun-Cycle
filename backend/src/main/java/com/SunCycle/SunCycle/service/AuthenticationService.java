@@ -51,7 +51,7 @@ public class AuthenticationService  {
 
             String token = tokenService.generateJwt(auth);
 
-            return new LoginResponseDTO(user.toSimpleUserDTO(), token, Status.SUCCESS);
+            return new LoginResponseDTO(user.toSimpleUserDTO(token), token, Status.SUCCESS);
         }catch (AuthenticationException e) {
             System.out.println(e);
             return new LoginResponseDTO(Status.ERROR);
@@ -74,7 +74,7 @@ public class AuthenticationService  {
 
             String token = tokenService.generateJwt(auth);
 
-            return new LoginResponseDTO(userOptional.get().toSimpleUserDTO(), token, Status.SUCCESS);
+            return new LoginResponseDTO(userOptional.get().toSimpleUserDTO(token), token, Status.SUCCESS);
 
         } catch(AuthenticationException e){
             System.out.println(e);
