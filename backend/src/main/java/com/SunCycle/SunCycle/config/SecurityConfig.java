@@ -61,15 +61,11 @@ public class SecurityConfig  {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/market").permitAll();
-                    auth.requestMatchers("/users/**").permitAll();
+                    auth.requestMatchers("/users/login").permitAll();
+                    auth.requestMatchers("/users/create").permitAll();
 //                    auth.requestMatchers("/panels/**").permitAll();
 //                    auth.requestMatchers("/users/**").hasAnyRole( "USER");
                     auth.anyRequest().authenticated();
-//                    auth.requestMatchers("/users/**").authenticated();
-//                    auth.requestMatchers("/panels/**").authenticated();
-//                    auth.requestMatchers("/models/**").authenticated();
-//                    auth.requestMatchers("/installations/**").authenticated();
-
                 });
 //        http.authorizeHttpRequests(auth -> {
 //            auth.requestMatchers("/market").permitAll();
