@@ -120,6 +120,7 @@ module.exports = configure(function (/* ctx */) {
         'QCarouselSlide',
         'QCheckbox',
         'QChip',
+        'QDate',
         'QDialog',
         'QDrawer',
         'QExpansionItem',

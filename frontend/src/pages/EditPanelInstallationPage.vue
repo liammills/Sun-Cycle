@@ -66,7 +66,7 @@
             option-value="id"
             option-label="modelName"
             label="Model"
-            class="q-mr-md col-5"
+            class="col-4"
             @filter="filterModels"
           />
           <QInput
@@ -74,14 +74,21 @@
             type="number"
             v-model="panel.qty"
             label="Quantity"
-            class="q-mr-md col-3"
+            class="col-2"
           />
           <QInput
             outlined
             type="date"
             v-model="panel.installation_date"
             label="Installation Date"
-            class="col-3"
+            class="col-2"
+          />
+          <QInput
+            outlined
+            type="date"
+            v-model="panel.retirement_date"
+            label="Retirement Date"
+            class="col-2"
           />
         </div>
         <div class="row justify-between q-mt-md">
@@ -237,7 +244,7 @@ export default {
     isValidInput() {
       return this.address && this.address !== '' && this.selectedInstallationType && this.selectedInstallationType !== ''
       && this.panels.length > 0 && this.panels.every((panel) => panel.model && panel.model?.modelName !== '' && panel.qty
-      && panel.qty > 0 && panel.installation_date && panel.installation_date !== '');
+      && panel.qty > 0 && panel.installation_date && panel.installation_date !== '' && panel.retirement_date);
     },
     async getPanelInstallation() {
       try {
@@ -247,11 +254,13 @@ export default {
         this.selectedInstallationType = response.data.solarPanelInstallation.type;
         this.panels = response.data.solarPanels.map((panel) => {
           const installationDate = new Date(panel.installationDate).toISOString().split('T')[0];
+          const retirementDate = new Date(panel.retirementDate).toISOString().split('T')[0];
           return {
             id: panel.id,
             model: panel.model,
             qty: panel.quantity,
             installation_date: installationDate,
+            retirement_date: retirementDate,
           }
         });
       } catch (error) {
@@ -291,15 +300,21 @@ export default {
         console.log(error);
       }
     },
+    formatToDDMMYYYY(date) {
+      const d = new Date(date);
+      return [d.getDate(), d.getMonth() + 1, d.getFullYear()].join('/');
+    },
     async savePanels() {
       try {
         for (const panel of this.panels) {
+          const installationDate = this.formatToDDMMYYYY(panel.installation_date);
+          const retirementDate = this.formatToDDMMYYYY(panel.retirement_date);
           const panelData = {
             modelId: panel.model.id,
             installationId: this.installationId,
             quantity: panel.qty,
-            installationDate: panel.installation_date,
-            retirementDate: '10/10/2028',  // Add retirement date logic here
+            installationDate: installationDate,
+            retirementDate: retirementDate,
           };
           if (this.panelInstallationId) {
             await this.$api.put(`/panels/${panel.id}`, panelData);
@@ -318,6 +333,7 @@ export default {
         model: '',
         qty: 0,
         installation_date: today,
+        retirement_date: today,
       });
     },
     async deletePanel(id) {
