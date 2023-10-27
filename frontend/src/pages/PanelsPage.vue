@@ -175,11 +175,12 @@ export default {
       const day = String(date.getDate()).padStart(2, '0');
       const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
       const year = date.getFullYear();
-      
+
       return `${day}/${month}/${year}`;
     },
+
     exportData() {
-      const flattenedData = this.flattenData(jsonData);
+      const flattenedData = this.flattenData(this.installations);
       const csv = Papa.unparse(flattenedData);
 
       const blob = new Blob([csv], { type: 'text/csv' });
@@ -195,26 +196,58 @@ export default {
     },
 
     flattenData(data) {
-      return data.map(item => {
-        return {
-          id: item.id,
-          installationDate: item.installationDate,
-          retirementDate: item.retirementDate,
-          recyclingMethod: item.recyclingMethod,
-          'installation.id': item.installation.id,
-          'installation.geoLocation': item.installation.geoLocation,
-          'installation.address': item.installation.address,
-          'installation.state': item.installation.state,
-          'installation.postcode': item.installation.postcode,
-          'installation.type': item.installation.type,
-          'model.id': item.model.id,
-          'model.polymers': item.model.polymers,
-          'model.silicon': item.model.silicon,
-          'model.copper': item.model.copper,
-          'model.glass': item.model.glass,
-          'model.silver': item.model.silver,
-          'model.aluminium': item.model.aluminium
-        };
+      return data.flatMap(item => {
+        if (item.solarPanels && item.solarPanels.length > 0) {
+          // If there are solar panels, flatten each solar panel along with the installation data
+          return item.solarPanels.map(panel => {
+            return {
+              installationId: item.solarPanelInstallation.id,
+              geoLocation: item.solarPanelInstallation.geoLocation,
+              address: item.solarPanelInstallation.address,
+              state: item.solarPanelInstallation.state,
+              postcode: item.solarPanelInstallation.postcode,
+              installationType: item.solarPanelInstallation.type,
+              addedDate: item.solarPanelInstallation.addedDate,
+              panelId: panel.id,
+              installationDate: panel.installationDate,
+              retirementDate: panel.retirementDate,
+              quantity: panel.quantity,
+              modelId: panel.model.id,
+              modelName: panel.model.modelName,
+              recyclingMethod: panel.model.recyclingMethod,
+              polymers: panel.model.polymers,
+              silicon: panel.model.silicon,
+              copper: panel.model.copper,
+              glass: panel.model.glass,
+              silver: panel.model.silver,
+              aluminium: panel.model.aluminium
+            };
+          });
+        } else {
+          // If there are no solar panels, just return the installation data
+          return [{
+            installationId: item.solarPanelInstallation.id,
+            geoLocation: item.solarPanelInstallation.geoLocation,
+            address: item.solarPanelInstallation.address,
+            state: item.solarPanelInstallation.state,
+            postcode: item.solarPanelInstallation.postcode,
+            installationType: item.solarPanelInstallation.type,
+            addedDate: item.solarPanelInstallation.addedDate,
+            panelId: null,
+            installationDate: null,
+            retirementDate: null,
+            quantity: null,
+            modelId: null,
+            modelName: null,
+            recyclingMethod: null,
+            polymers: null,
+            silicon: null,
+            copper: null,
+            glass: null,
+            silver: null,
+            aluminium: null
+          }];
+        }
       });
     }
   }
