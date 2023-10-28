@@ -142,14 +142,22 @@ export default {
         const response = await this.$api.post('/market',
           {
             params: {
-              latitude: this.center.lat,
-              longitude: this.center.lng,
-              radius: this.radius,
-              state: this.selectedState,
-              recycling_method: this.selectedRecyclingMethod,
+              recyclingMethod: "Chemical processing",
+              retirementDate: "10/10/2028",
+              city: "Camperdown",
+              state: "NSW",
+              breakdown: {
+                polymers: 100,
+                silicon: 100,
+                copper: 100,
+                glass: 100,
+                aluminium: 100,
+                silver: 100
+              }
             },
           },
         );
+        console.log("HELLO", response);
         const markers = response.data.map(panel => {
           return {
             position: {
