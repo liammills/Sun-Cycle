@@ -5,7 +5,7 @@
       <div class="row q-mt-lg">
         <div class="column q-mr-md">
           <QSelect class="q-mb-md" outlined v-model="selectedRecyclingMethod" :options="recyclingMethodOptions" label="Method of recycling" style="width: 300px;" />
-          <QInput outlined v-model="text" label="City/town" />
+          <QInput outlined v-model="selectedCity" label="City/town" />
         </div>
         <div class="column">
           <QInput class="q-mb-md" outlined v-model="text" type="date" label="Retired by" />
@@ -38,25 +38,34 @@
             </div>
           </div>
         </div>
+        <QBtn
+          flat
+          no-caps
+          class="bg-primary text-white submit-button q-mt-sm"
+          @click="loadMapData"
+        >
+          Discover
+        </QBtn>
       </div>
       <div class="q-my-xl">
         <GMapMap
+          v-if="showMarkers"
           :center="center"
           :zoom="7"
           style="width: 1100px; height: 600px"
         >
           <GMapMarker
             v-for="marker in markers"
-            :key="marker.id"
-            :position="marker.installation.geoLocation"
+            :key="marker.solarPanel.id"
+            :position="marker.geoLocation"
             :clickable="true"
-            @click="center=marker.installation.geoLocation, openInfoWindow(marker)"
+            @click="center=marker.geoLocation, openInfoWindow(marker)"
           >
             <GMapInfoWindow
               v-if="infoWindowOpen && activeMarker === marker"
             >
-              <div>{{ marker.installation.address }}</div>
-              <div>{{ marker.retirementDate.slice(0, 10) }}</div>
+              <div>{{ marker.solarPanel.installation.address }}</div>
+              <div>{{ marker.solarPanel.retirementDate.slice(0, 10) }}</div>
             </GMapInfoWindow>
           </GMapMarker>
         </GMapMap>
@@ -66,6 +75,8 @@
 </template>
 
 <script>
+import { RemoteChunkSize } from 'papaparse';
+
 export default {
   name: 'MarketplacePage',
   data() {
@@ -74,6 +85,7 @@ export default {
       selectedState: '',
       recyclingMethodOptions: ["Chemical processing", "Electrochemical processing", "Hydrometallurgical separation", "Mechanical processing", "Thermal processing"],
       selectedRecyclingMethod: '',
+      selectedCity: '',
       materials: [
         { id: 1, name: 'Silicone', input: '' },
         { id: 2, name: 'Silver', input: '' },
@@ -85,52 +97,42 @@ export default {
       center: {lat: 51.093048, lng: 6.842120},
       radius: 10000,
       markers: [
-        {
-          id: 1,
-          installationDate: "2023-10-09T13:00:00.000+00:00",
-          retirementDate: "2028-10-09T13:00:00.000+00:00",
-          installation: {
-            id: 1,
-            geoLocation: {
-              lat: 40.730610,
-              lng: -73.935242
-            },
-            address: "1 Cleveland St, Camperdown",
-            state: "NSW",
-            postcode: 2006,
-            type: "Personal",
-            addedDate: null,
-          },
-          model: {
-            id: 1,
-            modelName: "Very cool model",
-            recyclingMethod: "Chemical processing",
-            polymers: 100.0,
-            silicon: 100.0,
-            copper: 100.0,
-            glass: 100.0,
-            silver: 100.0,
-            aluminium: 100.0
-          }
-        },
+        // {
+        //   id: 1,
+        //   installationDate: "2023-10-09T13:00:00.000+00:00",
+        //   retirementDate: "2028-10-09T13:00:00.000+00:00",
+        //   installation: {
+        //     id: 1,
+        //     geoLocation: {
+        //       lat: 40.730610,
+        //       lng: -73.935242
+        //     },
+        //     address: "1 Cleveland St, Camperdown",
+        //     state: "NSW",
+        //     postcode: 2006,
+        //     type: "Personal",
+        //     addedDate: null,
+        //   },
+        //   model: {
+        //     id: 1,
+        //     modelName: "Very cool model",
+        //     recyclingMethod: "Chemical processing",
+        //     polymers: 100.0,
+        //     silicon: 100.0,
+        //     copper: 100.0,
+        //     glass: 100.0,
+        //     silver: 100.0,
+        //     aluminium: 100.0
+        //   }
+        // },
       ],
+      showMarkers: false,
       infoWindowOpen: false,
       activeMarker: null,
     };
   },
   mounted() {
-    this.loadMapData();
-  },
-  watch: {
-    center: function() {
-      this.loadMapData();
-    },
-    selectedState: function() {
-      this.loadMapData();
-    },
-    selectedRecyclingMethod: function() {
-      this.loadMapData();
-    },
+    this.showMarkers = true;
   },
   methods: {
     openInfoWindow(marker) {
@@ -138,32 +140,29 @@ export default {
       this.infoWindowOpen = true;
     },
     async loadMapData() {
+      this.showMarkers = false;
       try {
-        const response = await this.$api.post('/market',
-          {
-            params: {
-              latitude: this.center.lat,
-              longitude: this.center.lng,
-              radius: this.radius,
-              state: this.selectedState,
-              recycling_method: this.selectedRecyclingMethod,
-            },
-          },
-        );
-        const markers = response.data.map(panel => {
-          return {
-            position: {
-              lat: panel.latitude,
-              lng: panel.longitude,
-            },
-            title: panel.name,
-            icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
-          };
-        });
-        this.markers = markers;
+        const body = {
+          recyclingMethod: this.selectedRecyclingMethod,
+          retirementDate: "10/10/2028",
+          city: this.selectedCity,
+          state: this.selectedState,
+          breakdown: {
+            silicon: this.materials[0].input,
+            silver: this.materials[1].input,
+            polymers: this.materials[2].input,
+            aluminium: this.materials[3].input,
+            copper: this.materials[4].input,
+            glass: this.materials[5].input,
+          }
+        };
+        const response = await this.$api.post('/market', body);
+        console.log("HELLO", response.data);
+        this.markers = response.data;
       } catch (error) {
         console.log(error);
       }
+      this.showMarkers = true;
     }
   }
 }
