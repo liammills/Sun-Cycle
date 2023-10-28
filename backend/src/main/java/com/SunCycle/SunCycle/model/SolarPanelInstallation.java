@@ -22,6 +22,7 @@ public class SolarPanelInstallation {
     @JsonIgnore
     private User user;
 
+    private String email;
     private String geoLocation;
     private String address;
     private String state;
@@ -36,6 +37,11 @@ public class SolarPanelInstallation {
     @PrePersist
     protected void onCreate() {
         addedDate = new Date();
+    }
+
+    @PostLoad
+    protected void onLoad() {
+        this.setEmail(this.user.getEmail());
     }
 
     // Constructors, getters, setters, etc.
@@ -123,6 +129,14 @@ public class SolarPanelInstallation {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Date getAddedDate() {
