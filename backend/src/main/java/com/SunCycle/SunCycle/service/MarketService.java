@@ -103,8 +103,6 @@ public class MarketService {
         assert !goodInstallations.isEmpty();
         for (SolarPanelInstallation installation: solarPanelInstallationRepository.findAll()) {
             // get lat. lng for the installation location
-            System.out.println(installation.getGeoLocation());
-            System.out.println(installation.getGeoLocation());
             double instLat = Double.parseDouble(installation.getGeoLocation().split(",")[0]);
             double instLng = Double.parseDouble(installation.getGeoLocation().split(",")[1]);
 

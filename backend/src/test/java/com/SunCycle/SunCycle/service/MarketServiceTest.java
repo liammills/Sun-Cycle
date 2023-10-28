@@ -33,22 +33,24 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 
-
+@SpringBootTest
+@ActiveProfiles("dev")
+@Transactional
 class MarketServiceTest {
 
-    @InjectMocks
+    @Autowired
     private MarketService marketService;
 
-    @Mock
+    @MockBean
     private SolarPanelInstallationRepository solarPanelInstallationRepository;
 
-    @Mock
+    @MockBean
     private SolarPanelModelRepository solarPanelModelRepository;
 
-    @Mock
+    @MockBean
     private SolarPanelRepository solarPanelRepository;
 
-    @Mock
+    @MockBean
     private GetGeoLocation getGeoLocation;
 
     @BeforeEach
@@ -56,36 +58,47 @@ class MarketServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
-//    @Test
-//    public void testSearchUserQueryPanels() {
-//        // 1. Define test data
-//        MarketRequestDTO dto = new MarketRequestDTO();
-//        // ... set properties for dto ...
-//
-//        SolarPanelModel mockModel = new SolarPanelModel();
-//        // ... set properties for mockModel ...
-//
-//        SolarPanel mockPanel = new SolarPanel();
-//        // ... set properties for mockPanel ...
-//
-//        SolarPanelInstallation mockInstallation = new SolarPanelInstallation();
-//        // ... set properties for mockInstallation ...
-//
-//        // 2. Mock external method calls
-//        when(solarPanelModelRepository.findSolarPanelModelsByRecyclingMethodAndPolymersGreaterThanEqualAndSiliconGreaterThanEqualAndCopperGreaterThanEqualAndGlassGreaterThanEqualAndSilverGreaterThanEqualAndAluminiumGreaterThanEqual(anyString(), anyDouble(), anyDouble(), anyDouble(), anyDouble(), anyDouble(), anyDouble()))
-//                .thenReturn(Arrays.asList(mockModel));
-//
-//        when(solarPanelRepository.findSolarPanelsBySolarPanelModel(any())).thenReturn(Arrays.asList(mockPanel));
-//        when(solarPanelRepository.findSolarPanelsByRetirementDate(any())).thenReturn(Arrays.asList(mockPanel));
-//        when(getGeoLocation.getLatAndLng(anyString())).thenReturn(new double[]{1.0, 1.0});
-//        when(solarPanelInstallationRepository.findAll()).thenReturn(Arrays.asList(mockInstallation));
-//
-//        // 3. Call the method
-//        List<MarketResponseDTO> result = marketService.searchUserQueryPanels(dto);
-//
-//        // 4. Validate the result
-//        assertNotNull(result);
+    @Test
+    public void testSearchUserQueryPanels() {
+        // 1. Define test data
+        MarketRequestDTO dto = new MarketRequestDTO();
+        // ... set properties for dto ...
+        dto.setRecyclingMethod("Chemical processing");
+        dto.setRetirementDate("10/10/2028");
+        dto.setCity("Camperdown");
+        dto.setState("NSW");
+        dto.setPolymers(100);
+        dto.setCopper(100);
+        dto.setGlass(100);
+        dto.setSilicon(100);
+        dto.setSilver(100);
+        dto.setAluminium(100);
+
+        SolarPanelModel mockModel = new SolarPanelModel();
+        // ... set properties for mockModel ...
+
+        SolarPanel mockPanel = new SolarPanel();
+        // ... set properties for mockPanel ...
+
+        SolarPanelInstallation mockInstallation = new SolarPanelInstallation();
+        // ... set properties for mockInstallation ...
+        mockInstallation.setGeoLocation("-33.88832701093788, 151.19404158191045");
+
+        // 2. Mock external method calls
+        when(solarPanelModelRepository.findSolarPanelModelsByRecyclingMethodAndPolymersGreaterThanEqualAndSiliconGreaterThanEqualAndCopperGreaterThanEqualAndGlassGreaterThanEqualAndSilverGreaterThanEqualAndAluminiumGreaterThanEqual(anyString(), anyDouble(), anyDouble(), anyDouble(), anyDouble(), anyDouble(), anyDouble()))
+                .thenReturn(Arrays.asList(mockModel));
+
+        when(solarPanelRepository.findSolarPanelsBySolarPanelModel(any())).thenReturn(Arrays.asList(mockPanel));
+        when(solarPanelRepository.findSolarPanelsByRetirementDate(any())).thenReturn(Arrays.asList(mockPanel));
+        when(getGeoLocation.getLatAndLng(anyString())).thenReturn(new double[]{-33.889327, 151.195041});
+        when(solarPanelInstallationRepository.findAll()).thenReturn(Arrays.asList(mockInstallation));
+
+// 3. Call the method
+        List<MarketResponseDTO> result = marketService.searchUserQueryPanels(dto);
+
+        // 4. Validate the result
+        assertNotNull(result);
 //        assertFalse(result.isEmpty());
-//        // ... other assertions based on expected behavior ...
-//    }
+        // ... other assertions based on expected behavior ...
+    }
 }

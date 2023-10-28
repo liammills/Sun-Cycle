@@ -55,6 +55,7 @@ public class SolarPanelInstallationService {
         installation.setPostcode(dto.getPostcode());
         installation.setState(dto.getState());
         installation.setType(dto.getType());
+        installation.setEmail(userOpt.get().getEmail());
 
         return new SolarPanelInstallationResponseDTO(solarPanelInstallationRepository.save(installation), Status.SUCCESS);
     }
@@ -96,6 +97,7 @@ public class SolarPanelInstallationService {
         installation.setPostcode(dto.getPostcode());
         installation.setState(dto.getState());
         installation.setType(dto.getType());
+        installation.setEmail(user.getEmail());
 
         // update old installation
         oldInstallation.update(installation);
