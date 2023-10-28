@@ -20,6 +20,7 @@ public class MarketController {
 
     @PostMapping("")
     public ResponseEntity<?> getUserQueryPanels(@RequestBody MarketRequestDTO dto) {
+        System.out.println(dto.toString());
         return ResponseEntity.ok(marketService.searchUserQueryPanels(dto));
     }
 

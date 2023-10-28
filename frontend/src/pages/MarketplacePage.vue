@@ -139,24 +139,23 @@ export default {
     },
     async loadMapData() {
       try {
-        const response = await this.$api.post('/market',
-          {
-            params: {
-              recyclingMethod: "Chemical processing",
-              retirementDate: "10/10/2028",
-              city: "Camperdown",
-              state: "NSW",
-              breakdown: {
-                polymers: 100,
-                silicon: 100,
-                copper: 100,
-                glass: 100,
-                aluminium: 100,
-                silver: 100
-              }
-            },
-          },
-        );
+        const requestBody = {
+          recyclingMethod: "Chemical processing",
+          retirementDate: "10/10/2028",
+          city: "Camperdown",
+          state: "NSW",
+          breakdown: {
+            polymers: 100,
+            silicon: 100,
+            copper: 100,
+            glass: 100,
+            aluminium: 100,
+            silver: 100
+          }
+        };
+
+        const response = await this.$api.post('/market', requestBody);
+
         console.log("HELLO", response);
         const markers = response.data.map(panel => {
           return {

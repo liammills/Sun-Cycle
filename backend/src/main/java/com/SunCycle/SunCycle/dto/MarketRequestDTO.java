@@ -1,6 +1,9 @@
 package com.SunCycle.SunCycle.dto;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,7 +21,7 @@ public class MarketRequestDTO {
 
     // constructors
     public MarketRequestDTO() {
-        this.breakdown = new HashMap<String, Double>();
+        this.breakdown = new HashMap<>();
     }
 
     public MarketRequestDTO(String recyclingMethod, String retirementDate, String city, String state, Map<String, Double> breakdown) {
@@ -121,6 +124,16 @@ public class MarketRequestDTO {
     private Date stringToDate(String dateStr) throws ParseException {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         return formatter.parse(dateStr);
+    }
+
+    @Override
+    public String toString() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            return "Error in converting object to JSON";
+        }
     }
 
 }
