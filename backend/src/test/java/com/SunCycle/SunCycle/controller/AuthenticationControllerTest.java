@@ -1,39 +1,42 @@
 package com.SunCycle.SunCycle.controller;
 
+
 import com.SunCycle.SunCycle.dto.LoginResponseDTO;
 import com.SunCycle.SunCycle.dto.SimpleUserDTO;
-import com.SunCycle.SunCycle.dto.Status;
 import com.SunCycle.SunCycle.model.User;
-import com.SunCycle.SunCycle.repository.UserRepository;
-import com.SunCycle.SunCycle.service.AuthenticationService;
-import com.SunCycle.SunCycle.service.UpdateUserInfoService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Optional;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.hamcrest.Matchers.is;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
-
+@SpringBootTest
+@ActiveProfiles("dev")
+@Transactional
+@AutoConfigureMockMvc
 class AuthenticationControllerTest {
-    @InjectMocks
+    @Autowired
     private AuthenticationController authenticationController;
 
-    @Mock
-    private UserRepository userRepository;
+    @Autowired
+    private ObjectMapper objectMapper;
 
-    @Mock
-    private AuthenticationService authenticationService;
-
-    @Mock
-    private UpdateUserInfoService updateUserInfoService;
+    @Autowired
+    private MockMvc mockMvc;
 
     // other service mocks as necessary
 
@@ -43,49 +46,83 @@ class AuthenticationControllerTest {
 
     }
 
-//    @Test
-//    void createUser_Success() {
-//        // Mocking and stubbing
-//        when(userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
-//        LoginResponseDTO responseDTO = new LoginResponseDTO(new User().toSimpleUserDTO(), "", Status.SUCCESS);
-//        when(authenticationService.registerUser(anyString(), anyString())).thenReturn(responseDTO);
-//
-//        // Execute the method being tested
-//        ResponseEntity<?> response = authenticationController.createUser(new User());
-//
-//        // Assertions and verifications
-//        assertNotNull(response);
-//        assertEquals(HttpStatus.OK, response.getStatusCode());
-//        // other necessary assertions
-//    }
+    @Test
+    void createUser_Success() throws Exception {
+        User user = new User();
+        user.setEmail("test@example.com");
+        user.setPassword("password");
 
-//    @Test
-//    void createUser_UserAlreadyExists() {
-//        // Mocking and stubbing
-//        when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(new User("test@gmail.com", "test")));
-//
-//        // Execute the method being tested
-//        ResponseEntity<?> response = authenticationController.createUser(new User("test@gmail.com", "test"));
-//
-//        // Assertions and verifications
-//        assertNotNull(response);
-//        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-//        // other necessary assertions
-//    }
+        mockMvc.perform(post("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(user)))
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.user.email", is("test@example.com")))
+                        .andExpect(jsonPath("$.user.username", is("test@example.com")))
+                        .andExpect(jsonPath("$.jwt", notNullValue()))
+                        .andExpect(jsonPath("$.status", is("SUCCESS")));
+    }
 
-//    @Test
-//    public void login_Success(){
-//        User user = new User("test@gmail.com", "test");
-//        SimpleUserDTO userDTO = user.toSimpleUserDTO();
-//        LoginResponseDTO response = new LoginResponseDTO(userDTO, "");
-//
-//        when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
-//        when(authenticationService.loginUser(anyString(), anyString())).thenReturn(response);
-//
-//        LoginResponseDTO responseDTO = authenticationController.loginUser(user);
-//        assertNotNull(responseDTO);
-//        assertEquals(userDTO, responseDTO.getUser());
-//
-//    }
+    @Test
+    void createUser_UserAlreadyExists() throws Exception {
+        User user = new User();
+        user.setEmail("test@example.com");
+        user.setPassword("password");
+
+//        create a new user
+        mockMvc.perform(post("/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(user)));
+
+        mockMvc.perform(post("/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(user)))
+                .andExpect(status().isConflict())
+                .andExpect(content().string("Email already exist"));
+    }
+
+    @Test
+    public void login_Success() throws Exception {
+        User user = new User();
+        user.setEmail("test@example.com");
+        user.setPassword("password");
+
+//        create a new user
+        mockMvc.perform(post("/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(user)));
+
+        mockMvc.perform(post("/users/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(user)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.user.email", is("test@example.com")))
+                .andExpect(jsonPath("$.user.username", is("test@example.com")))
+                .andExpect(jsonPath("$.jwt", notNullValue()))
+                .andExpect(jsonPath("$.status", is("SUCCESS")));
+
+    }
+
+    @Test
+    public void login_FAILED() throws Exception {
+        User user = new User();
+        user.setEmail("test@example.com");
+        user.setPassword("password");
+
+//        create a new user
+        mockMvc.perform(post("/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(user)));
+
+        User failed = new User();
+        failed.setEmail("test@example.com");
+        failed.setPassword("passwor");
+        mockMvc.perform(post("/users/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(failed)))
+                .andExpect(status().is4xxClientError())
+                .andExpect(status().is(401))
+                .andExpect(status().isUnauthorized())
+                .andExpect(content().string("Authentication failed"));
+    }
 
 }

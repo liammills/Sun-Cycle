@@ -4,7 +4,6 @@ public class SolarPanelInstallationRequestDTO {
 
     // request fields
     private int userId;
-    private String geoLocation;
     private String address;
     private String state;
     private int postcode;
@@ -15,10 +14,9 @@ public class SolarPanelInstallationRequestDTO {
     }
 
     // constructors for request fields
-    public SolarPanelInstallationRequestDTO(int userId, String geoLocation, String address,
+    public SolarPanelInstallationRequestDTO(int userId, String address,
                                             String state, int postcode, String type) {
         this.userId = userId;
-        this.geoLocation = geoLocation;
         this.address = address;
         this.state = state;
         this.postcode = postcode;
@@ -32,14 +30,6 @@ public class SolarPanelInstallationRequestDTO {
 
     public void setUserId(int userId) {
         this.userId = userId;
-    }
-
-    public String getGeoLocation() {
-        return geoLocation;
-    }
-
-    public void setGeoLocation(String geoLocation) {
-        this.geoLocation = geoLocation;
     }
 
     public String getAddress() {

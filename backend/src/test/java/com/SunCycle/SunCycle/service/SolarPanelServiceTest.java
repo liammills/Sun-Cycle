@@ -9,12 +9,13 @@ import com.SunCycle.SunCycle.model.SolarPanelModel;
 import com.SunCycle.SunCycle.repository.SolarPanelInstallationRepository;
 import com.SunCycle.SunCycle.repository.SolarPanelModelRepository;
 import com.SunCycle.SunCycle.repository.SolarPanelRepository;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
 
@@ -24,18 +25,21 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
+
+@SpringBootTest
+@ActiveProfiles("dev")
+@Transactional
 class SolarPanelServiceTest {
-    @Mock
+    @MockBean
     private SolarPanelModelRepository solarPanelModelRepository;
 
-    @Mock
+    @MockBean
     private SolarPanelInstallationRepository solarPanelInstallationRepository;
 
-    @Mock
+    @MockBean
     private SolarPanelRepository solarPanelRepository;
 
-    @InjectMocks
+    @Autowired
     private SolarPanelService solarPanelService;
 
     private SolarPanel solarPanel;
@@ -48,7 +52,7 @@ class SolarPanelServiceTest {
         solarPanel = new SolarPanel();
         solarPanelModel = new SolarPanelModel();
         solarPanelInstallation = new SolarPanelInstallation();
-        requestDTO = new SolarPanelRequestDTO(4, 4, "2023/10/14", "2023/10/14");
+        requestDTO = new SolarPanelRequestDTO(4, 4, 4, "2023/10/14", "2023/10/14");
 
     }
 
