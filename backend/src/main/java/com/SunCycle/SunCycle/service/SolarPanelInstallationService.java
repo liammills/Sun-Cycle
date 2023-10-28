@@ -47,7 +47,8 @@ public class SolarPanelInstallationService {
 
         // set other fields
         String address = dto.getAddress() + dto.getState() + ", AU";
-        String geoLocation = Arrays.toString(getGeoLocation.getLatAndLng(address));
+        double[] geoArray = getGeoLocation.getLatAndLng(address);
+        String geoLocation = String.join(",", Double.toString(geoArray[0]), Double.toString(geoArray[1]));
 
         installation.setGeoLocation(geoLocation);
         installation.setAddress(dto.getAddress());
@@ -85,7 +86,8 @@ public class SolarPanelInstallationService {
 
         // convert dto to installation instance
         String address = dto.getAddress() + dto.getState() + ", AU";
-        String geoLocation = Arrays.toString(getGeoLocation.getLatAndLng(address));
+        double[] geoArray = getGeoLocation.getLatAndLng(address);
+        String geoLocation = String.join(",", Double.toString(geoArray[0]), Double.toString(geoArray[1]));
 
         SolarPanelInstallation installation = new SolarPanelInstallation();
         installation.setUser(user);

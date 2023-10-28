@@ -14,7 +14,7 @@
           <GoogleAddressAutocomplete
             :apiKey="apiKey"
             v-model="address"
-            @callback="callbackFunction"    
+            @callback="callbackFunction"
             class="q-mr-md"
             style="width: 300px;"
           />
@@ -93,7 +93,7 @@
         </div>
         <div class="row justify-between q-mt-md">
           <div class="text-smaller">
-            Can’t find the model? 
+            Can’t find the model?
             <a
               class="text-underline cursor-pointer"
               @click="showAddModelDialog = true"
@@ -142,11 +142,11 @@
                   style="width: 190px"
                 >
                   <span class="q-mr-md">{{ material.name }}</span>
-                  <QInput 
+                  <QInput
                     outlined
                     dense
-                    v-model.number="material.input" 
-                    type="number" 
+                    v-model.number="material.input"
+                    type="number"
                     style="width: 100px;"
                   >
                     <template v-slot:append>
@@ -284,7 +284,7 @@ export default {
           response = await this.$api.post('/installations', {
             userId: this.authStore.user.userId,
             address: this.address,
-            geoLocation: "-33.88832701093788, 151.19404158191045",
+            // geoLocation: "-33.88832701093788, 151.19404158191045",
             state: "NSW",
             postcode: "2006",
             type: this.selectedInstallationType,
