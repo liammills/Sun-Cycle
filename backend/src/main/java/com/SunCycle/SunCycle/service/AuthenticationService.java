@@ -32,6 +32,12 @@ public class AuthenticationService  {
     @Autowired
     private TokenService tokenService;
 
+    public AuthenticationService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, TokenService tokenService) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+        this.tokenService = tokenService;
+    }
 
     public LoginResponseDTO registerUser(String username, String password){
         System.out.println("registering user");

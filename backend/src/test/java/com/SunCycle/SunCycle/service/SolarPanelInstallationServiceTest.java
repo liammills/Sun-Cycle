@@ -9,13 +9,15 @@ import com.SunCycle.SunCycle.model.User;
 import com.SunCycle.SunCycle.repository.SolarPanelInstallationRepository;
 import com.SunCycle.SunCycle.repository.SolarPanelRepository;
 import com.SunCycle.SunCycle.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.Authentication;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,28 +28,30 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 
+@SpringBootTest
+@Transactional
+@ActiveProfiles("dev")
 class SolarPanelInstallationServiceTest {
 
-    @InjectMocks
+    @Autowired
     private SolarPanelInstallationService solarPanelInstallationService;
 
-    @Mock
-    private SolarPanelInstallationRepository solarPanelInstallationRepository;
+    @MockBean
+    private Authentication authentication;
 
-    @Mock
-    private SolarPanelRepository solarPanelRepository;
-
-    @Mock
+    @MockBean
     private UserRepository userRepository;
 
-    @Mock
-    private Authentication authentication;
+    @MockBean
+    private SolarPanelInstallationRepository solarPanelInstallationRepository;
+
+    @MockBean
+    private SolarPanelRepository solarPanelRepository;
 
     private SolarPanelInstallationRequestDTO dto;
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.openMocks(this);
 
         when(authentication.getName()).thenReturn("test@example.com");
 
@@ -111,7 +115,7 @@ class SolarPanelInstallationServiceTest {
         assertEquals(Status.NOT_FOUND, response.getStatus());
         assertEquals("Installation not found", response.getMessage());
     }
-
+//
     @Test
     public void updateSolarPanelInstallation_UserNotFound() {
         SolarPanelInstallation installation = new SolarPanelInstallation();
@@ -119,7 +123,7 @@ class SolarPanelInstallationServiceTest {
         user.setUserId(1);
         installation.setUser(user);
 
-        when(userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
+        when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.empty());
         when(solarPanelInstallationRepository.findById(anyInt())).thenReturn(Optional.of(installation));
 
         SolarPanelInstallationResponseDTO response = solarPanelInstallationService.updateSolarPanelInstallation(authentication, anyInt(), dto);
@@ -128,7 +132,7 @@ class SolarPanelInstallationServiceTest {
         assertEquals("Invalid user id", response.getMessage());
 
     }
-
+//
     @Test
     public void updateSolarPanelInstallation_UserIdNotMatch(){
         SolarPanelInstallation installation = new SolarPanelInstallation();
@@ -136,7 +140,8 @@ class SolarPanelInstallationServiceTest {
         user.setUserId(2);
         installation.setUser(user);
 
-        when(userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
+        User notMatch = new User(1, "notMatch@example.com", "notMatch");
+        when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(notMatch));
         when(solarPanelInstallationRepository.findById(anyInt())).thenReturn(Optional.of(installation));
 
         SolarPanelInstallationResponseDTO response = solarPanelInstallationService.updateSolarPanelInstallation(authentication, anyInt(), dto);
@@ -144,7 +149,7 @@ class SolarPanelInstallationServiceTest {
         assertEquals(Status.ERROR, response.getStatus());
         assertEquals("Invalid user id", response.getMessage());
     }
-
+//
     @Test
     public void updateSolarPanelInstallation_SUCCESS() {
         // Mocking objects and the behavior of the mocked objects
@@ -153,9 +158,9 @@ class SolarPanelInstallationServiceTest {
         oldInstallation.getUser().setUserId(1); // the same ID as in dto
 
 
-        when(userRepository.findByEmail(any(String.class))).thenReturn(Optional.of(oldInstallation.getUser()));
-        when(solarPanelInstallationRepository.findById(anyInt())).thenReturn(Optional.of(oldInstallation));
-        when(solarPanelInstallationRepository.save(any(SolarPanelInstallation.class))).thenReturn(oldInstallation);
+        when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.of(oldInstallation.getUser()));
+        when(solarPanelInstallationRepository.findById(1)).thenReturn(Optional.of(oldInstallation));
+//        when(solarPanelInstallationRepository.save(any(SolarPanelInstallation.class))).thenReturn(oldInstallation);
 
         // Call the method to test
         SolarPanelInstallationResponseDTO response = solarPanelInstallationService.updateSolarPanelInstallation(authentication, 1, dto);
@@ -164,7 +169,7 @@ class SolarPanelInstallationServiceTest {
         assertEquals(Status.SUCCESS, response.getStatus());
     }
 
-
+//
     @Test
     public void deleteInstallation_Success() {
         int existingPanelId = 1; // Assuming this panel ID exists for this test case
@@ -181,7 +186,7 @@ class SolarPanelInstallationServiceTest {
         panels.add(panel);
 
         when(solarPanelInstallationRepository.findById(existingPanelId)).thenReturn(Optional.of(mockInstallation));
-        when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(mockUser));
+        when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.of(mockUser));
         when(solarPanelRepository.findSolarPanelsBySolarPanelInstallation(mockInstallation)).thenReturn(panels);
 
         SolarPanelInstallationResponseDTO response = solarPanelInstallationService.deleteInstallation(authentication, existingPanelId);
@@ -191,18 +196,18 @@ class SolarPanelInstallationServiceTest {
         verify(solarPanelRepository, times(1)).deleteAll(panels); // Ensure the related panels are deleted
         verify(solarPanelInstallationRepository, times(1)).delete(mockInstallation); // Ensure the installation is deleted
     }
-
+//
     @Test
     public void deleteInstallation_InvalidPanelId() {
         Authentication auth = Mockito.mock(Authentication.class);
         when(solarPanelInstallationRepository.findById(anyInt())).thenReturn(Optional.empty());
 
-        var response = solarPanelInstallationService.deleteInstallation(auth, 1);
+        SolarPanelInstallationResponseDTO response = solarPanelInstallationService.deleteInstallation(auth, 1);
 
         assertEquals(Status.NOT_FOUND, response.getStatus());
         assertEquals("Invalid panel id", response.getMessage());
     }
-
+//
     @Test
     public void deleteInstallation_InvalidUserId_NotFound() {
         SolarPanelInstallation mockInstallation = new SolarPanelInstallation();
@@ -212,15 +217,15 @@ class SolarPanelInstallationServiceTest {
 
         Authentication auth = Mockito.mock(Authentication.class);
         when(auth.getName()).thenReturn("test@example.com");
-        when(userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
-        when(solarPanelInstallationRepository.findById(anyInt())).thenReturn(Optional.of(mockInstallation));
+        when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.empty());
+        when(solarPanelInstallationRepository.findById(1)).thenReturn(Optional.of(mockInstallation));
 
         var response = solarPanelInstallationService.deleteInstallation(auth, 1);
 
         assertEquals(Status.NOT_FOUND, response.getStatus());
         assertEquals("Invalid user id", response.getMessage());
     }
-
+//
     @Test
     public void deleteInstallation_InvalidUserId_Error() {
         SolarPanelInstallation mockInstallation = new SolarPanelInstallation();
@@ -233,7 +238,7 @@ class SolarPanelInstallationServiceTest {
 
         Authentication auth = Mockito.mock(Authentication.class);
         when(auth.getName()).thenReturn("test@example.com");
-        when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(authUser));
+        when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.of(authUser));
         when(solarPanelInstallationRepository.findById(anyInt())).thenReturn(Optional.of(mockInstallation));
 
         var response = solarPanelInstallationService.deleteInstallation(auth, 1);
@@ -241,7 +246,7 @@ class SolarPanelInstallationServiceTest {
         assertEquals(Status.ERROR, response.getStatus());
         assertEquals("Invalid user id", response.getMessage());
     }
-
+//
     @Test
     public void getInstallationsByEmail_NotFound() {
         String nonExistentEmail = "nonexistent@example.com";
@@ -259,7 +264,6 @@ class SolarPanelInstallationServiceTest {
         User mockUser = new User();
         // ... set user fields ...
 
-        // TODO: fix this test case @Edward
         List<SolarPanelInstallation> mockInstallations = new ArrayList<>();
         // ... add mock installations ...
 

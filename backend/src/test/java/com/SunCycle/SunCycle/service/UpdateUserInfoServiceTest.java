@@ -4,16 +4,21 @@ import com.SunCycle.SunCycle.dto.LoginResponseDTO;
 import com.SunCycle.SunCycle.dto.Status;
 import com.SunCycle.SunCycle.model.User;
 import com.SunCycle.SunCycle.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Date;
 import java.util.Optional;
@@ -24,23 +29,18 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
+@ActiveProfiles("dev")
+@Transactional
 class UpdateUserInfoServiceTest {
 
-    @InjectMocks
+    @Autowired
     private UpdateUserInfoService updateUserInfoService;
+    @Autowired
+    private AuthenticationService authenticationService;
 
-    @Mock
-    private UserRepository userRepository;
-
-    @Mock
-    private PasswordEncoder passwordEncoder;
-
-    @Mock
-    private AuthenticationManager authenticationManager;
-
-    @Mock
-    private TokenService tokenService;
+//    @MockBean
+//    private UserRepository userRepository;
 
     private User user;
 
@@ -56,62 +56,35 @@ class UpdateUserInfoServiceTest {
     @Test
     void updateUserById_userNotFound() {
         // Arrange
-        when(userRepository.findById(user.getUserId())).thenReturn(Optional.empty());
 
         // Act
-        LoginResponseDTO response = updateUserInfoService.updateUserById(user.getUserId(), "new@example.com", "newPassword");
+        LoginResponseDTO response = updateUserInfoService.updateUserById(999, "new@example.com", "newPassword");
 
         // Assert
         assertEquals(Status.NOT_FOUND, response.getStatus());
     }
 
-//    @Test
-//    void updateUserById_emailAlreadyUsed() {
-//        // Arrange
-//        when(userRepository.findById(user.getUserId())).thenReturn(Optional.of(user));
-//        when(userRepository.findByEmail("new@example.com")).thenReturn(Optional.of(new User()));
-//
-//        // Act
-//        LoginResponseDTO response = updateUserInfoService.updateUserById(user.getUserId(), "new@example.com", "newPassword");
-//
-//        // Assert
-//        assertEquals("this email has aldready been used", response.getMessage());
-//    }
-
-//    @Test
-//    void updateUserById_success() {
-//        // Arrange
-//        when(userRepository.findById(user.getUserId())).thenReturn(Optional.of(user));
-////        when(userRepository.findByEmail("new@example.com")).thenReturn(Optional.empty());
-//        when(passwordEncoder.encode("newPassword")).thenReturn("encodedPassword");
-//        when(authenticationManager.authenticate(any())).thenReturn(mock(Authentication.class));
-//        when(tokenService.generateJwt(any())).thenReturn("token");
-//
-//
-//        // Act
-//        LoginResponseDTO response = updateUserInfoService.updateUserById(user.getUserId(), "new@example.com", "newPassword");
-//
-//        // Assert
-//        assertEquals("token", response.getJwt());
-//        assertEquals("new@example.com", response.getUser().getEmail());
-//        assertEquals("new@example.com", response.getUser().getUsername());
-//        assertEquals(user.getUserId(), response.getUser().getUserId());
-//
-//    }
 
     @Test
-    void updateUserById_authenticationFailed() {
+    public void updateUserById_success() {
         // Arrange
-        when(userRepository.findById(user.getUserId())).thenReturn(Optional.of(user));
-//        when(userRepository.findByEmail("new@example.com")).thenReturn(Optional.empty());
-        when(passwordEncoder.encode("newPassword")).thenReturn("encodedPassword");
-        when(authenticationManager.authenticate(any())).thenThrow(new BadCredentialsException("Mock exception"));
+        String username = "test@example.com";
+        String password = "password";
 
-        // Act
-        LoginResponseDTO response = updateUserInfoService.updateUserById(user.getUserId(), "new@example.com", "newPassword");
+        LoginResponseDTO register_response = authenticationService.registerUser(username, password);
+        assertEquals(Status.SUCCESS, register_response.getStatus());
+        assertEquals("test@example.com", register_response.getUser().getUsername());
 
-        // Assert
-        assertEquals(Status.ERROR, response.getStatus());
+        LoginResponseDTO update_response = updateUserInfoService.updateUserById(register_response.getUser().getUserId(), "new@example.com", "new");
+        assertEquals(Status.SUCCESS, update_response.getStatus());
+        assertEquals("new@example.com", update_response.getUser().getUsername());
+
+        LoginResponseDTO login_response = authenticationService.loginUser("new@example.com", "new");
+        assertEquals(Status.SUCCESS, login_response.getStatus());
+        assertEquals(login_response.getUser().getUsername(), "new@example.com");
+
+
     }
+
 
 }
