@@ -6,6 +6,7 @@ import com.SunCycle.SunCycle.model.SolarPanelModel;
 import com.SunCycle.SunCycle.repository.SolarPanelInstallationRepository;
 import com.SunCycle.SunCycle.repository.SolarPanelModelRepository;
 import com.SunCycle.SunCycle.repository.SolarPanelRepository;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +14,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
@@ -24,24 +29,24 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
-//@SpringBootTest
-//@TestPropertySource(locations="classpath:application-dev.properties")
+@SpringBootTest
+@Transactional
+@ActiveProfiles("dev")
 class MarketServiceTest {
 
-    @InjectMocks
+    @Autowired
     private MarketService marketService;
 
-    @Mock
+    @MockBean
     private SolarPanelInstallationRepository solarPanelInstallationRepository;
 
-    @Mock
+    @MockBean
     private SolarPanelModelRepository solarPanelModelRepository;
 
-    @Mock
+    @MockBean
     private SolarPanelRepository solarPanelRepository;
 
-    @Mock
+    @MockBean
     private RestTemplate restTemplate;
 
     private SolarPanelModel solarPanelModel;
@@ -73,60 +78,8 @@ class MarketServiceTest {
 
     }
 
-//    @Test
-//    public void testFindPanelsByModel() {
-//
-//        when(solarPanelModelRepository.findSolarPanelModelByModelNameAndRecyclingMethodAndPolymersAndSiliconAndCopperAndGlassAndSilverAndAluminium(
-//                anyString(), anyString(), anyDouble(), anyDouble(), anyDouble(), anyDouble(), anyDouble(), anyDouble()
-//        )).thenReturn(solarPanelModel);
-//
-//        when(solarPanelRepository.findSolarPanelsBySolarPanelModel(any())).thenReturn(Collections.singletonList(solarPanel));
-//
-//        List<SolarPanel> retrievedPanels = marketService.findPanelsByModel(requestDTO);
-//
-//        assertEquals(1, retrievedPanels.size());
-//        assertEquals(solarPanel, retrievedPanels.get(0));
-//    }
+    @Test
+    public void findPanelsByLocation_SUCCESS() {
 
-//    @Test
-//    public void testFindPanelsByMethodAndDate(){
-//        ArrayList<SolarPanel> list = new ArrayList<SolarPanel>();
-//        list.add(solarPanel);
-//        when(solarPanelRepository.findSolarPanelsByRecyclingMethodAndRetirementDate(anyString(), any(Date.class))).thenReturn(list);
-//
-//        List<SolarPanel> result = marketService.findPanelsByModel(requestDTO);
-//        assertEquals(1, result.size());
-//        assertEquals(solarPanel, result.get(0));
-//    }
-//
-//    @Test
-//    public void testSearchUserQueryPanels() {
-//
-//        SolarPanelInstallation solarPanelInstallation = new SolarPanelInstallation();
-//        solarPanel.setInstallation(solarPanelInstallation);
-//        solarPanel.setModel(solarPanelModel);
-//        List<SolarPanel> solarPanelList = List.of(solarPanel);
-//
-//        when(solarPanelModelRepository.findSolarPanelModelByPolymersAndSiliconAndCopperAndGlassAndSilverAndAluminium(anyDouble(), anyDouble(), anyDouble(), anyDouble(), anyDouble(), anyDouble()))
-//                .thenReturn(solarPanelModel);
-//
-//        when(solarPanelRepository.findSolarPanelsBySolarPanelModel(any(SolarPanelModel.class)))
-//                .thenReturn(solarPanelList);
-//
-//        when(solarPanelRepository.findSolarPanelsByRecyclingMethodAndRetirementDate(anyString(), any(Date.class)))
-//                .thenReturn(solarPanelList);
-//
-//        when(solarPanelRepository.findAll())
-//                .thenReturn(solarPanelList);
-//
-//
-//        MarketResponseDTO response = marketService.searchUserQueryPanels(requestDTO);
-//
-//
-//        assertNotNull(response);
-//        assertEquals(1, response.getResult().size());
-//        verify(solarPanelRepository, times(1)).findSolarPanelsBySolarPanelModel(any(SolarPanelModel.class));
-//
-//
-//    }
+    }
 }
