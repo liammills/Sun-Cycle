@@ -9,6 +9,7 @@ import com.SunCycle.SunCycle.model.SolarPanelModel;
 import com.SunCycle.SunCycle.repository.SolarPanelInstallationRepository;
 import com.SunCycle.SunCycle.repository.SolarPanelModelRepository;
 import com.SunCycle.SunCycle.repository.SolarPanelRepository;
+import com.SunCycle.SunCycle.utils.GetGeoLocation;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,8 +32,11 @@ public class MarketService {
     @Autowired
     private SolarPanelRepository solarPanelRepository;
 
-    @Value("${google.maps.api.key}")
-    private String apiKey;
+    @Autowired
+    private GetGeoLocation getGeoLocation;
+
+//    @Value("${google.maps.api.key}")
+//    private String apiKey;
 
     // post
     public List<MarketResponseDTO> searchUserQueryPanels(MarketRequestDTO dto) {
@@ -89,7 +93,7 @@ public class MarketService {
     // find solar panels by location
     private List<SolarPanel> findPanelsByLocation(MarketRequestDTO dto) {
         // get lat, lng for the query location
-        double[] queryGeoLocation = getLatAndLng(dto.getCity() + ", " + dto.getState() + ", AU");
+        double[] queryGeoLocation = getGeoLocation.getLatAndLng(dto.getCity() + ", " + dto.getState() + ", AU");
         assert queryGeoLocation != null;
         double queryLat = queryGeoLocation[0];
         double queryLng = queryGeoLocation[1];
@@ -128,37 +132,37 @@ public class MarketService {
     }
 
     // google map api helper
-    private double[] getLatAndLng(String address) {
-        // init REST template
-        RestTemplate restTemplate = new RestTemplate();
-
-        // replace all spaces by +
-        address = address.replace(' ', '+');
-
-        // setup request URL
-        String baseUrl = "https://maps.googleapis.com/maps/api/geocode/json";
-        String finalUrl = baseUrl + "?address=" + address + "&key=" + apiKey;
-
-        // get response as a long string
-        String response = restTemplate.getForEntity(finalUrl, String.class).getBody();
-
-        // parse json string into readable object
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode root;
-
-        try {
-            root = mapper.readTree(response);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace(System.out);
-            return null;
-        }
-
-        // get lat, lng
-        double lat = root.get("results").get(0).get("geometry").get("location").get("lat").asDouble();
-        double lng = root.get("results").get(0).get("geometry").get("location").get("lng").asDouble();
-
-        return new double[]{lat, lng};
-    }
+//    private double[] getLatAndLng(String address) {
+//        // init REST template
+//        RestTemplate restTemplate = new RestTemplate();
+//
+//        // replace all spaces by +
+//        address = address.replace(' ', '+');
+//
+//        // setup request URL
+//        String baseUrl = "https://maps.googleapis.com/maps/api/geocode/json";
+//        String finalUrl = baseUrl + "?address=" + address + "&key=" + apiKey;
+//
+//        // get response as a long string
+//        String response = restTemplate.getForEntity(finalUrl, String.class).getBody();
+//
+//        // parse json string into readable object
+//        ObjectMapper mapper = new ObjectMapper();
+//        JsonNode root;
+//
+//        try {
+//            root = mapper.readTree(response);
+//        } catch (JsonProcessingException e) {
+//            e.printStackTrace(System.out);
+//            return null;
+//        }
+//
+//        // get lat, lng
+//        double lat = root.get("results").get(0).get("geometry").get("location").get("lat").asDouble();
+//        double lng = root.get("results").get(0).get("geometry").get("location").get("lng").asDouble();
+//
+//        return new double[]{lat, lng};
+//    }
 
     private double haversineDistance(double lat1, double lng1, double lat2, double lng2) {
         int earthRadius = 6371; // km

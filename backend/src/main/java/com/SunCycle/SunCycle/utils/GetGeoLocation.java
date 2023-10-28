@@ -4,14 +4,16 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+@Service
 public class GetGeoLocation {
 
     @Value("${google.maps.api.key}")
     private String apiKey;
 
-    private double[] getLatAndLng(String address) {
+    public double[] getLatAndLng(String address) {
         // init REST template
         RestTemplate restTemplate = new RestTemplate();
 

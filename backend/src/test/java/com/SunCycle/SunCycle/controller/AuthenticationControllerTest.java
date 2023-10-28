@@ -52,7 +52,7 @@ class AuthenticationControllerTest {
         user.setEmail("test@example.com");
         user.setPassword("password");
 
-        mockMvc.perform(post("/users/create")
+        mockMvc.perform(post("/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(user)))
                         .andExpect(status().isOk())
@@ -69,11 +69,11 @@ class AuthenticationControllerTest {
         user.setPassword("password");
 
 //        create a new user
-        mockMvc.perform(post("/users/create")
+        mockMvc.perform(post("/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(user)));
 
-        mockMvc.perform(post("/users/create")
+        mockMvc.perform(post("/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(user)))
                 .andExpect(status().isConflict())
@@ -87,7 +87,7 @@ class AuthenticationControllerTest {
         user.setPassword("password");
 
 //        create a new user
-        mockMvc.perform(post("/users/create")
+        mockMvc.perform(post("/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(user)));
 
@@ -109,7 +109,7 @@ class AuthenticationControllerTest {
         user.setPassword("password");
 
 //        create a new user
-        mockMvc.perform(post("/users/create")
+        mockMvc.perform(post("/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(user)));
 

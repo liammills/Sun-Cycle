@@ -9,6 +9,7 @@ import com.SunCycle.SunCycle.model.User;
 import com.SunCycle.SunCycle.repository.SolarPanelInstallationRepository;
 import com.SunCycle.SunCycle.repository.SolarPanelRepository;
 import com.SunCycle.SunCycle.repository.UserRepository;
+import com.SunCycle.SunCycle.utils.GetGeoLocation;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -48,6 +49,9 @@ class SolarPanelInstallationServiceTest {
     @MockBean
     private SolarPanelRepository solarPanelRepository;
 
+    @MockBean
+    private GetGeoLocation getGeoLocation;
+
     private SolarPanelInstallationRequestDTO dto;
 
     @BeforeEach
@@ -61,7 +65,9 @@ class SolarPanelInstallationServiceTest {
         dto.setType("mock");
         dto.setPostcode(1);
         dto.setState("mock");
-        dto.setGeoLocation("mock");
+
+        double[] mockedResult = new double[]{1,1};
+        when(getGeoLocation.getLatAndLng(anyString())).thenReturn(mockedResult);
     }
 
     @Test
@@ -88,6 +94,7 @@ class SolarPanelInstallationServiceTest {
 
         when(userRepository.findById(anyInt())).thenReturn(Optional.of(mockUser));
         when(solarPanelInstallationRepository.save(any(SolarPanelInstallation.class))).thenAnswer(i -> i.getArguments()[0]);
+
 
         // Execute service call
         SolarPanelInstallationResponseDTO response = solarPanelInstallationService.createSolarPanelInstallation(dto);

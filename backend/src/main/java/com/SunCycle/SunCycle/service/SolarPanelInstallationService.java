@@ -9,11 +9,13 @@ import com.SunCycle.SunCycle.model.User;
 import com.SunCycle.SunCycle.repository.SolarPanelInstallationRepository;
 import com.SunCycle.SunCycle.repository.SolarPanelRepository;
 import com.SunCycle.SunCycle.repository.UserRepository;
+import com.SunCycle.SunCycle.utils.GetGeoLocation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +31,9 @@ public class SolarPanelInstallationService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private GetGeoLocation getGeoLocation;
+
     public SolarPanelInstallationResponseDTO createSolarPanelInstallation(SolarPanelInstallationRequestDTO dto) {
         // convert dto to installation instance
         SolarPanelInstallation installation = new SolarPanelInstallation();
@@ -41,7 +46,10 @@ public class SolarPanelInstallationService {
             return new SolarPanelInstallationResponseDTO("User not found", Status.NOT_FOUND);
 
         // set other fields
-        installation.setGeoLocation(dto.getGeoLocation());
+        String address = dto.getAddress() + dto.getState() + ", AU";
+        String geoLocation = Arrays.toString(getGeoLocation.getLatAndLng(address));
+
+        installation.setGeoLocation(geoLocation);
         installation.setAddress(dto.getAddress());
         installation.setPostcode(dto.getPostcode());
         installation.setState(dto.getState());
@@ -76,9 +84,12 @@ public class SolarPanelInstallationService {
         }
 
         // convert dto to installation instance
+        String address = dto.getAddress() + dto.getState() + ", AU";
+        String geoLocation = Arrays.toString(getGeoLocation.getLatAndLng(address));
+
         SolarPanelInstallation installation = new SolarPanelInstallation();
         installation.setUser(user);
-        installation.setGeoLocation(dto.getGeoLocation());
+        installation.setGeoLocation(geoLocation);
         installation.setAddress(dto.getAddress());
         installation.setPostcode(dto.getPostcode());
         installation.setState(dto.getState());
