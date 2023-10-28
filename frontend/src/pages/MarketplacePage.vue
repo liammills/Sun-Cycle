@@ -66,6 +66,12 @@
             >
               <div>{{ marker.solarPanel.installation.address }}</div>
               <div>{{ marker.solarPanel.retirementDate.slice(0, 10) }}</div>
+              <div>Silicone: {{ marker.solarPanel.model.silicon }}</div>
+              <div>Silver: {{ marker.solarPanel.model.silver }}</div>
+              <div>Polymers: {{ marker.solarPanel.model.polymers }}</div>
+              <div>Aluminium: {{ marker.solarPanel.model.aluminium }}</div>
+              <div>Copper: {{ marker.solarPanel.model.copper }}</div>
+              <div>Glass: {{ marker.solarPanel.model.glass }}</div>
             </GMapInfoWindow>
           </GMapMarker>
         </GMapMap>
