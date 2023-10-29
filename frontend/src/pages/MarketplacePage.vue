@@ -51,7 +51,7 @@
         <GMapMap
           v-if="showMarkers"
           :center="center"
-          :zoom="7"
+          :zoom="4.2"
           style="width: 1100px; height: 600px"
         >
           <GMapMarker
@@ -102,7 +102,7 @@ export default {
         { id: 5, name: 'Copper', input: '' },
         { id: 6, name: 'Glass', input: '' }
       ],
-      center: {lat: 51.093048, lng: 6.842120},
+      center: {lat: -25.274398, lng: 133.775136},
       radius: 10000,
       markers: [
         // {
