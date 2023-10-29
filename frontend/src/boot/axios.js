@@ -14,14 +14,14 @@ const api = axios.create({
 
 async function handleErrors({ error, router }) {
   if (error.response.status === 401) {
-    // if (router.currentRoute.path !== '/login') {
-    //   router.replace({
-    //     path: '/login',
-    //     query: {
-    //       redirect: router.currentRoute.fullPath,
-    //     },
-    //   });
-    // }
+    if (router.currentRoute.path !== '/login') {
+      router.replace({
+        path: '/login',
+        query: {
+          redirect: router.currentRoute.fullPath,
+        },
+      });
+    }
 
     Notify.create({
       message: 'Session expired, please retry login',
