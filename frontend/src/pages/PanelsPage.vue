@@ -14,7 +14,7 @@
       </div>
       <div>
         <p
-          v-if="installations.length === 0"
+          v-if="installations?.length === 0"
           class="text-center q-pt-xl"
         >
           You have no panels yet. Add an installation to get started.
@@ -126,7 +126,6 @@
 
 <script>
 import Papa from 'papaparse';
-import { Dialog } from 'quasar';
 
 export default {
   name: 'PanelsPage',

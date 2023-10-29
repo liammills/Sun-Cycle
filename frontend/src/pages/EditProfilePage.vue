@@ -35,8 +35,7 @@ export default defineComponent({
     };
   },
   mounted() {
-    this.email = this.authStore.user?.email?.email;
-    this.password = this.authStore.user?.email?.password;
+    this.email = this.authStore.user?.email;
   },
   computed: {
     areFieldsValid() {

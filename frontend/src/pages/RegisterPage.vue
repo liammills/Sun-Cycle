@@ -55,7 +55,7 @@ export default {
           this.password = '';
           this.error = 'Invalid login. Please try again';
         }
-        this.$router.push(this.redirect || '/panels');
+        this.$router.push('/panels');
       } catch (error) {
         this.password = '';
         if (error.response?.data?.message) {

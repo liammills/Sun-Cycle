@@ -6,6 +6,7 @@
         <div class="row">
           <QInput
             outlined
+            dense
             v-model="address"
             label="Address"
             class="q-mr-md"
@@ -13,6 +14,7 @@
           />
           <QSelect
             outlined
+            dense
             v-model="selectedInstallationType"
             :options="installationTypeOptions"
             label="Type"
@@ -27,6 +29,24 @@
         >
           Save
         </QBtn>
+      </div>
+      <div class="row q-mt-sm">
+        <QInput
+          outlined
+          dense
+          v-model="state"
+          label="State"
+          class="q-mr-md"
+          style="width: 300px;"
+        />
+        <QInput
+          outlined
+          dense
+          v-model="postcode"
+          label="Postcode"
+          class="q-mr-md"
+          style="width: 220px;"
+        />
       </div>
       <QBtn
         flat
@@ -171,6 +191,8 @@ export default {
     return {
       installationId: null,
       address: '',
+      state: '',
+      postcode: '',
       selectedInstallationType: '',
       installationTypeOptions: [
         'Residential',
@@ -221,7 +243,8 @@ export default {
     isValidInput() {
       return this.address && this.address !== '' && this.selectedInstallationType && this.selectedInstallationType !== ''
       && this.panels.length > 0 && this.panels.every((panel) => panel.model && panel.model?.modelName !== '' && panel.qty
-      && panel.qty > 0 && panel.installation_date && panel.installation_date !== '' && panel.retirement_date);
+      && panel.qty > 0 && panel.installation_date && panel.installation_date !== '' && panel.retirement_date && panel.retirement_date !== ''
+      && panel.installation_date <= panel.retirement_date) && this.state && this.state !== '' && this.postcode && this.postcode !== '';
     },
     async getPanelInstallation() {
       try {
@@ -261,9 +284,8 @@ export default {
           response = await this.$api.post('/installations', {
             userId: this.authStore.user.userId,
             address: this.address,
-            // geoLocation: "-33.88832701093788, 151.19404158191045",
-            // state: "NSW",
-            // postcode: "2006",
+            state: this.state,
+            postcode: this.postcode,
             type: this.selectedInstallationType,
           });
           this.installationId = response.data.solarPanelInstallation.id;
