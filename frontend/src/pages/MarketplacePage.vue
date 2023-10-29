@@ -64,8 +64,11 @@
             <GMapInfoWindow
               v-if="infoWindowOpen && activeMarker === marker"
             >
-              <div>{{ marker.solarPanel.installation.address }}</div>
-              <div>{{ marker.solarPanel.retirementDate.slice(0, 10) }}</div>
+              <div style="font-weight: bold;">Solar panel information</div>
+              <div style="font-style: italic;">{{ marker.solarPanel.installation.address }}</div>
+              <div>Retires on {{ marker.solarPanel.retirementDate.slice(0, 10) }}</div>
+              <a :href="ownerEmail">Email the owner</a>
+              <div style="font-weight: bold; margin-top: 12px;">Material breakdown</div>
               <div>Silicone: {{ marker.solarPanel.model.silicon }}</div>
               <div>Silver: {{ marker.solarPanel.model.silver }}</div>
               <div>Polymers: {{ marker.solarPanel.model.polymers }}</div>
@@ -135,6 +138,7 @@ export default {
       showMarkers: false,
       infoWindowOpen: false,
       activeMarker: null,
+      ownerEmail: "",
     };
   },
   mounted() {
@@ -142,6 +146,7 @@ export default {
   },
   methods: {
     openInfoWindow(marker) {
+      this.ownerEmail = "mailto:" + marker.solarPanel.installation.email;
       this.activeMarker = marker;
       this.infoWindowOpen = true;
     },
