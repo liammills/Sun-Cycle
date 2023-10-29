@@ -84,6 +84,10 @@ public class MarketService {
 
     // find solar panels by date
     private List<SolarPanel> findPanelsByMethodAndDate(MarketRequestDTO dto) {
+
+        if (dto.getRetirementDate() == null ){
+            return new ArrayList<SolarPanel>();
+        }
         return solarPanelRepository
                 .findSolarPanelsByRetirementDate(
                         dto.getRetirementDate()
@@ -93,7 +97,15 @@ public class MarketService {
     // find solar panels by location
     private List<SolarPanel> findPanelsByLocation(MarketRequestDTO dto) {
         // get lat, lng for the query location
-        double[] queryGeoLocation = getGeoLocation.getLatAndLng(dto.getCity() + ", " + dto.getState() + ", AU");
+        String address = "";
+        double[] queryGeoLocation;
+        if (dto.getCity() != "" || dto.getState() != "") {
+            address = dto.getCity() + ", " + dto.getState() + ", AU";
+            queryGeoLocation = getGeoLocation.getLatAndLng(address);
+        }
+        else{
+            return new ArrayList<SolarPanel>();
+        }
         assert queryGeoLocation != null;
         double queryLat = queryGeoLocation[0];
         double queryLng = queryGeoLocation[1];
