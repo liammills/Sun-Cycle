@@ -136,7 +136,9 @@ export default {
     };
   },
   async mounted() {
-    await this.getPanels();
+    setTimeout(async () => {
+      await this.getPanels();
+    }, 300);
   },
   methods: {
     async getPanels() {

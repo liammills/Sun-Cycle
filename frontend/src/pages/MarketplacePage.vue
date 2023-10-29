@@ -64,17 +64,16 @@
             <GMapInfoWindow
               v-if="infoWindowOpen && activeMarker === marker"
             >
-              <div style="font-weight: bold;">Solar panel information</div>
-              <div style="font-style: italic;">{{ marker.solarPanel.installation.address }}</div>
+              <div class="text-h6">{{ marker.solarPanel.installation.address }}</div>
               <div>Retires on {{ marker.solarPanel.retirementDate.slice(0, 10) }}</div>
-              <a :href="ownerEmail">Email the owner</a>
-              <div style="font-weight: bold; margin-top: 12px;">Material breakdown</div>
+              <div class="text-bold q-mt-sm">Material breakdown</div>
               <div>Silicone: {{ marker.solarPanel.model.silicon }}</div>
               <div>Silver: {{ marker.solarPanel.model.silver }}</div>
               <div>Polymers: {{ marker.solarPanel.model.polymers }}</div>
               <div>Aluminium: {{ marker.solarPanel.model.aluminium }}</div>
               <div>Copper: {{ marker.solarPanel.model.copper }}</div>
               <div>Glass: {{ marker.solarPanel.model.glass }}</div>
+              <a  class="q-mt-sm" :href="ownerEmail">Email the owner</a>
             </GMapInfoWindow>
           </GMapMarker>
         </GMapMap>

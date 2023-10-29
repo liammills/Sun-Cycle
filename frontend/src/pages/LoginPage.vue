@@ -66,7 +66,6 @@ export default {
           email: this.email,
           password: this.password,
         });
-
         if (!result || result.status !== 200) {
           this.password = '';
           this.error = 'Invalid login. Please try again';

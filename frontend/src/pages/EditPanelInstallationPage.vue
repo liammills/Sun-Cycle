@@ -11,20 +11,6 @@
             class="q-mr-md"
             style="width: 300px;"
           />
-          <GoogleAddressAutocomplete
-            :apiKey="apiKey"
-            v-model="address"
-            @callback="callbackFunction"
-            class="q-mr-md"
-            style="width: 300px;"
-          />
-          <GMapAutocomplete
-            placeholder="This is a placeholder"
-            @place_changed="setPlace"
-            class="q-mr-md"
-            style="width: 300px;"
-          >
-        </GMapAutocomplete>
           <QSelect
             outlined
             v-model="selectedInstallationType"
@@ -165,13 +151,9 @@
 
 <script>
 import { useAuthStore } from 'src/stores/auth';
-import GoogleAddressAutocomplete from 'vue3-google-address-autocomplete';
 
 export default {
   name: 'EditPanelInstallationPage',
-  components: {
-    GoogleAddressAutocomplete,
-  },
   setup() {
     const authStore = useAuthStore();
     return {
@@ -187,7 +169,6 @@ export default {
   },
   data() {
     return {
-      apiKey: process.env.VUE_APP_GOOGLE_MAPS_API_KEY.split("\"")[1],
       installationId: null,
       address: '',
       selectedInstallationType: '',
@@ -227,10 +208,6 @@ export default {
     this.getModels();
   },
   methods: {
-    callbackFunction(place) {
-      console.log(place);
-    },
-    setPlace() {},
     filterModels(val, update, abort) {
       update(() => {
         if (val === '') {
@@ -285,8 +262,8 @@ export default {
             userId: this.authStore.user.userId,
             address: this.address,
             // geoLocation: "-33.88832701093788, 151.19404158191045",
-            state: "NSW",
-            postcode: "2006",
+            // state: "NSW",
+            // postcode: "2006",
             type: this.selectedInstallationType,
           });
           this.installationId = response.data.solarPanelInstallation.id;
